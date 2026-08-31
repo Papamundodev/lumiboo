@@ -1,0 +1,79 @@
+@use "design-tokens/color" as *;
+@use "design-tokens/tokens" as *;
+@use "design-tokens/fonts" as *;
+@use "atoms/img" as *;
+@use "atoms/scroll-top" as *;
+@use "atoms/burger" as *;
+@use "atoms/button" as *;
+@use "atoms/text" as *;
+@use "atoms/nav-item" as *;
+@use "atoms/post-preview" as *;
+@use "atoms/dropdown" as *;
+@use "molecules/navmenu" as *;
+@use "molecules/pagination" as *;
+@use "molecules/breadcrumbs" as *;
+@use "organisms/header" as *;
+@use "organisms/hero" as *;
+@use "organisms/aside" as *;
+@use "organisms/popover" as *;
+@use "organisms/form" as *;
+@use "organisms/reviews" as *;
+@use "utilities/container" as *;
+@use "utilities/spacer" as *;
+@use "utilities/animations" as *;
+@use "utilities/slider" as *;
+
+@use "sections/valeurs" as *;
+@use "reset" as *;
+@use "mixins" as *;
+
+body {
+  background-color: $background-color;
+  color: $default-color;
+}
+
+.design-system {
+  .design-system-buttons-container {
+    display: flex;
+    gap: $spacer-md;
+    margin-block: $spacer-xl;
+  }
+}
+
+.content-wysiwyg {
+  section {
+    margin-block: 0 $spacer-xxl;
+  }
+
+  h2 {
+    margin-block-end: $spacer-xl;
+    @include heading-lg;
+  }
+
+  h3 {
+    margin-block-end: $spacer-lg;
+    @include heading-md;
+  }
+
+  p {
+    margin-block-end: $spacer-lg;
+    @include text-default;
+  }
+
+  ul,
+  ol {
+    @include list;
+  }
+
+  figure {
+    margin-block-end: $spacer-xl;
+  }
+
+  img {
+    margin-block-end: $spacer-lg;
+  }
+
+  p:last-child {
+    margin-block-end: 0;
+  }
+}

@@ -1,0 +1,24 @@
+@use "../mixins" as *;
+@use "../utilities/spacer" as *;
+/* ------- BUTTONS  ------- */
+
+.btn {
+  @include btn;
+}
+
+// PRIMARY BUTTON
+
+.button-background-primary {
+  @include button-background-primary;
+}
+
+.button-background-secondary {
+  @include button-background-secondary;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-block: $spacer-xl;
+}

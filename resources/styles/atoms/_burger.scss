@@ -1,0 +1,110 @@
+@use "../design-tokens/color" as *;
+@mixin burger-menu($color: $primary-color) {
+  .burger-menu {
+    --width: 26px;
+    --height: 8px;
+    --base-height: calc(var(--height) / 4);
+    width: var(--width);
+    height: auto;
+    min-height: calc((var(--height) * 3));
+    position: relative;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+    -webkit-transition: 0.5s ease-in-out;
+    -moz-transition: 0.5s ease-in-out;
+    -o-transition: 0.5s ease-in-out;
+    transition: 0.5s ease-in-out;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    outline: none;
+
+    .custom-burger {
+      background-color: $color;
+      display: block;
+      position: absolute;
+      height: 1.5px;
+      width: 100%;
+      border-radius: 9px;
+      opacity: 1;
+      left: 0;
+      margin-block-start: 1.5px;
+      -webkit-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+      -webkit-transition: 0.25s ease-in-out;
+      -moz-transition: 0.25s ease-in-out;
+      -o-transition: 0.25s ease-in-out;
+      transition: 0.25s ease-in-out;
+    }
+
+    .custom-burger:nth-child(1) {
+      top: var(--base-height);
+    }
+
+    .custom-burger:nth-child(3),
+    .custom-burger:nth-child(2) {
+      top: calc(var(--base-height) + (var(--height)));
+    }
+
+    .custom-burger:nth-child(4) {
+      top: calc(var(--base-height) + (var(--height) * 2));
+    }
+  }
+
+  &.open .custom-burger:nth-child(1) {
+    top: 6px;
+    width: 0%;
+    left: 50%;
+  }
+
+  &.open .custom-burger:nth-child(2) {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    height: 3px;
+  }
+
+  &.open .custom-burger:nth-child(3) {
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+    height: 3px;
+  }
+
+  &.open .custom-burger:nth-child(4) {
+    top: 6px;
+    width: 0%;
+    left: 50%;
+  }
+}
+
+.burger-menu-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.burger-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  padding: 3px;
+  margin-inline-start: auto;
+  cursor: pointer;
+  @include burger-menu;
+
+  &:focus-visible {
+    outline: 2px solid blue;
+    outline-offset: 2px;
+  }
+}

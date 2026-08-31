@@ -1,0 +1,52 @@
+/* ------- IMG  ------- */
+$icon-xs: 8px;
+$icon-sm: 22px;
+$icon-md: 28px;
+$icon-lg: 38px;
+$logo-sm: 60px;
+$logo-md: 80px;
+$logo-lg: 100px;
+$img-md: 150px;
+$img-lg: 200px;
+$full: 100%;
+$img-default: $icon-md;
+
+$img-sizes: (
+  "icon-xs": $icon-xs,
+  "icon-sm": $icon-sm,
+  "icon-md": $icon-md,
+  "icon-lg": $icon-lg,
+  "logo-sm": $logo-sm,
+  "logo-md": $logo-md,
+  "logo-lg": $logo-lg,
+  "full": 100%,
+  "default": $img-default,
+);
+
+/* ------- border-radius ------- */
+
+$border-radius-sharp: 0.02em;
+$border-radius-sm: 3px;
+$border-radius-md: 5px;
+$border-radius-rounded: 10px;
+$border-radius-pill: 999px;
+$border-radius-circle: 50%;
+$border-radius-retro: 10px 20px 30px 40px;
+$border-radius-default: $border-radius-md;
+
+$border-radius: (
+  "sharp": $border-radius-sharp,
+  "sm": $border-radius-sm,
+  "md": $border-radius-md,
+  "rounded": $border-radius-rounded,
+  "pill": $border-radius-pill,
+  "circle": $border-radius-circle,
+  "retro": $border-radius-retro,
+  "default": $border-radius-default,
+);
+
+:root {
+  --header-height: 80px;
+}
+
+$header-height: var(--header-height);

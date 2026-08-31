@@ -1,0 +1,135 @@
+@use "utilities/spacer" as *;
+@use "design-tokens/color" as *;
+
+@view-transition {
+  navigation: auto;
+}
+
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Prevent font size inflation */
+html {
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+  line-height: 1.6;
+  scrollbar-gutter: stable;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+*[popover] {
+  border: none;
+  outline: none;
+}
+
+/* Remove default margin in favour of better control in authored CSS */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+a:not(.btn) {
+  &:focus-visible {
+    outline: 2px solid blue;
+    outline-offset: $spacer-xs;
+  }
+}
+
+/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+ul,
+ol {
+  padding: 0;
+  margin: 0;
+}
+
+/*forms elements dont inherit fonts body attributes so we need to set them manually */
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
+
+/* Set shorter line heights on headings and interactive elements */
+h1,
+h2,
+h3,
+h4,
+input,
+label {
+  line-height: 1.2;
+}
+
+/* Make sure textareas without a rows attribute are not tiny */
+textarea:not([rows]) {
+  min-height: 10em;
+}
+
+/* Make images easier to work with */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+::-moz-selection {
+  color: $contrast-color;
+  background: $focus-within-color; // recettage
+}
+
+::selection {
+  color: $contrast-color;
+  background: $focus-within-color; // recettage
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: $primary-color;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $secondary-color;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $gray-color;
+  cursor: pointer;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: color-mix(in srgb, $default-color 100%, transparent 30%);
+}

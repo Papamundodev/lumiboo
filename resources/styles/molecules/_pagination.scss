@@ -1,0 +1,68 @@
+@use "../utilities/container" as *;
+@use "../utilities/spacer" as *;
+@use "../design-tokens/color" as *;
+@use "../design-tokens/fonts" as *;
+@use "../design-tokens/tokens" as *;
+@use "../mixins" as *;
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  gap: $spacer-md;
+  padding: 0;
+  margin-inline: 0;
+  margin-block: $spacer-xxl;
+
+  .page-item {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $border-radius-sharp;
+
+    &:hover {
+      background-color: $gray-color;
+    }
+
+    .img-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: $icon-xs;
+      margin-block-end: 3px;
+      height: auto;
+
+      svg {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+
+        path {
+          fill: $primary-color;
+        }
+      }
+    }
+
+    .page-link {
+      @include text-default;
+
+      & {
+        color: $default-color;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: $spacer-xs $spacer-sm;
+      }
+    }
+  }
+
+  .page-item.active {
+    .page-link {
+      @include text-bold;
+    }
+  }
+}

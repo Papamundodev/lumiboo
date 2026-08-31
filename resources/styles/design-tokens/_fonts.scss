@@ -1,0 +1,148 @@
+/*
+See post on fluid typo in my blog.
+*/
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("../fonts/Montserrat-VariableFont_wght.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+  font-stretch: 100%;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "EB Garamond";
+  src: url("../fonts/EBGaramond-VariableFont_wght.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+  font-stretch: 100%;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Oswald";
+  src: url("../fonts/Oswald-VariableFont_wght.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+  font-stretch: 100%;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Fira Code";
+  src: url("../fonts/FiraCode-VariableFont_wght.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+  font-stretch: 100%;
+  font-style: normal;
+}
+
+/********* Fonts *********/
+
+/* font family */
+
+$text-font:
+  "EB Garamond",
+  system-ui,
+  -apple-system,
+  "Segoe UI",
+  sans-serif;
+$heading-font:
+  "Oswald",
+  system-ui,
+  -apple-system,
+  "Segoe UI",
+  sans-serif;
+$nav-font:
+  "Montserrat",
+  system-ui,
+  -apple-system,
+  "Segoe UI",
+  sans-serif;
+$link-font:
+  "Fira Code",
+  system-ui,
+  -apple-system,
+  "Segoe UI",
+  sans-serif;
+$fonts: (
+  "text": $text-font,
+  "heading": $heading-font,
+  "nav": $nav-font,
+  "link": $link-font,
+);
+
+@each $key, $value in $fonts {
+  .#{$key}-font {
+    font-family: $value;
+  }
+}
+
+/* font size */
+$font-size-lead: 0.625rem;
+$font-size-xs: 0.875rem;
+$font-size-sm: 1rem;
+$font-size-default: 1.25rem;
+$font-size-md: 1.5rem;
+$font-size-lg: 2rem;
+$font-size-xl: 2.5rem;
+$font-size-xxl: 3rem;
+$font-size-bg: 4.5rem;
+$font-size-big: 5rem;
+
+$font-sizes: (
+  "xs": $font-size-xs,
+  "sm": $font-size-sm,
+  "default": $font-size-default,
+  "md": $font-size-md,
+  "lg": $font-size-lg,
+  "xl": $font-size-xl,
+  "xxl": $font-size-xxl,
+  "bg": $font-size-bg,
+  "big": $font-size-big,
+);
+
+@each $key, $value in $font-sizes {
+  .fs-#{$key} {
+    font-size: $value;
+  }
+}
+
+/* ------- Font Weight Test ------- */
+$font-weight-100: 100;
+$font-weight-200: 200;
+$font-weight-300: 300;
+$font-weight-400: 400;
+$font-weight-500: 500;
+$font-weight-600: 600;
+$font-weight-700: 700;
+$font-weight-800: 800;
+$font-weight-900: 900;
+
+$font-weights: (
+  "100": $font-weight-100,
+  "200": $font-weight-200,
+  "300": $font-weight-300,
+  "400": $font-weight-400,
+  "500": $font-weight-500,
+  "600": $font-weight-600,
+  "700": $font-weight-700,
+  "800": $font-weight-800,
+  "900": $font-weight-900,
+  "default": $font-weight-400,
+);
+
+@each $key, $value in $font-weights {
+  .fw-#{$key} {
+    font-weight: $value;
+  }
+}
+
+/* line height */
+$line-height-heading: 1.1;
+$line-height-paragraph: 1.6;
+
+/* letter spacing */
+$letter-spacing-heading: 0.02em;
+$letter-spacing-paragraph: 0.04em;

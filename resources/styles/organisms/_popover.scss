@@ -1,0 +1,54 @@
+@use "../utilities/_container" as *;
+@use "../utilities/_spacer" as *;
+@use "../mixins" as *;
+@use "../design-tokens/tokens" as *;
+
+.popover {
+  position: fixed;
+  top: $header-height;
+  left: 0;
+  z-index: 10;
+  overflow: auto;
+  height: 100vh;
+  margin-block: 0;
+  /* Final state when closed — exit animation ends here */
+  opacity: 0;
+  display: none;
+  flex-direction: column;
+  margin-inline-end: auto;
+  transition:
+    opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    overlay 0.5s allow-discrete,
+    display 0.5s allow-discrete;
+
+  .popover-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    button {
+      @include img-container($padding: 0, $width: $icon-md, $height: $icon-md);
+      padding-inline-start: $spacer-md;
+      cursor: pointer;
+    }
+  }
+
+  .popover-content {
+    transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+  }
+}
+
+.popover:popover-open {
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+  .popover-content {
+    opacity: 1;
+  }
+}
+/* Entry animation — starting values when popover opens */
+@starting-style {
+  .popover:popover-open {
+    opacity: 0;
+  }
+}

@@ -1,0 +1,641 @@
+@use "design-tokens/color" as *;
+@use "design-tokens/tokens" as *;
+@use "design-tokens/fonts" as *;
+@use "utilities/container" as *;
+@use "utilities/spacer" as *;
+
+/* =======================================================
+   Shared mixins — no CSS output here, only @mixin blocks.
+   Depends only on design-tokens and utilities.
+   ======================================================= */
+
+/* ------- TEXT ------- */
+
+@mixin text-base {
+  font-family: $text-font;
+  line-height: $line-height-paragraph;
+  font-weight: $font-weight-400;
+  letter-spacing: $letter-spacing-paragraph;
+  text-wrap: pretty;
+}
+
+@mixin text-default {
+  font-size: $font-size-default;
+  @include text-base;
+
+  @media (width <=$breakpoint-xl) {
+    font-size: $font-size-sm;
+  }
+}
+
+@mixin text-sm {
+  font-size: $font-size-sm;
+  @include text-base;
+}
+
+@mixin text-xs {
+  font-size: $font-size-xs;
+  @include text-base;
+}
+
+@mixin text-lead {
+  font-size: $font-size-lead;
+  @include text-base;
+}
+
+@mixin text-bold {
+  @include text-base;
+  font-weight: $font-weight-800;
+}
+
+@mixin text-button {
+  font-size: $font-size-default;
+  font-weight: $font-weight-700;
+  line-height: $line-height-paragraph;
+  letter-spacing: $letter-spacing-paragraph;
+  text-box-trim: trim-both;
+
+  @media (width <=$breakpoint-xl) {
+    font-size: $font-size-sm;
+  }
+}
+
+@mixin text-nav {
+  @include text-base;
+  font-size: $font-size-default;
+
+  @media (width <=$breakpoint-xxxl) {
+    font-size: $font-size-sm;
+  }
+
+  @media (width <=$breakpoint-xxl) {
+    font-size: $font-size-xs;
+  }
+}
+
+@mixin heading-base {
+  font-family: $heading-font;
+  line-height: $line-height-heading;
+  letter-spacing: $letter-spacing-heading;
+  font-weight: $font-weight-800;
+  word-break: keep-all;
+  text-wrap: balance;
+}
+
+@mixin heading-big {
+  font-size: $font-size-big;
+  @include heading-base;
+
+  @media (width <=$breakpoint-md) {
+    font-size: 2.3rem;
+  }
+}
+
+@mixin heading-xxl {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-700;
+  @include heading-base;
+}
+
+@mixin heading-xl {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-700;
+  @include heading-base;
+
+  @media (width <=$breakpoint-md) {
+    font-size: $font-size-lg;
+  }
+}
+
+@mixin heading-lg {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-700;
+  @include heading-base;
+
+  @media (width <=$breakpoint-md) {
+    font-size: $font-size-md;
+  }
+}
+
+@mixin heading-md {
+  font-size: $font-size-md;
+  font-weight: $font-weight-400;
+  @include heading-base;
+}
+
+@mixin heading-product-title {
+  font-size: $font-size-md;
+  @include heading-base;
+}
+
+@mixin list {
+  & {
+    padding-inline: $spacer-sm;
+    padding-block-end: $spacer-xxl;
+
+    li {
+      margin-block-end: $spacer-xs;
+      margin-inline-start: $spacer-sm;
+    }
+
+    li:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+@mixin text-container {
+  max-width: 90ch;
+  margin-inline: auto;
+
+  p {
+    margin-block-end: $spacer-lg;
+  }
+}
+
+/* ------- LINKS ------- */
+
+@mixin link {
+  color: $link-color;
+  text-decoration: none;
+  &:hover {
+    color: $link-hover-color;
+    transition: color 0.3s ease-in-out;
+  }
+  &:focus-within,
+  &:focus-visible {
+    @include button-focus-within;
+  }
+}
+
+@mixin stretched-link {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  content: "";
+}
+
+/* ------- BUTTONS ------- */
+
+@mixin button-focus-within {
+  &:focus-within,
+  &:focus-visible {
+    outline: 2px solid $focus-within-color;
+    outline-offset: $spacer-xs;
+    border-radius: $border-radius-sm;
+  }
+}
+
+@mixin btn {
+  outline: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  background-color: transparent;
+  @include button-focus-within;
+}
+
+@mixin button-background-primary {
+  width: fit-content;
+  background-color: $primary-color;
+  transition: background-color 0.3s ease-in-out;
+  border-radius: $border-radius-md;
+  button,
+  a,
+  input[type="submit"] {
+    color: $contrast-color;
+    padding-block: $spacer-xs;
+    padding-inline: $spacer-lg;
+    display: inline-block;
+    text-decoration: none;
+    @include text-button;
+  }
+  &:hover {
+    transition: background-color 0.3s ease-in-out;
+    background-color: $background-hover-primary-color;
+    button,
+    a,
+    .btn,
+    input[type="submit"] {
+      color: $contrast-color;
+    }
+  }
+}
+
+@mixin button-background-secondary {
+  width: fit-content;
+  background-color: $secondary-color;
+  transition: background-color 0.3s ease-in-out;
+  border-radius: $border-radius-md;
+  button,
+  a,
+  input[type="submit"] {
+    color: $contrast-color;
+    padding-block: $spacer-xs;
+    padding-inline: $spacer-lg;
+    display: inline-block;
+    text-decoration: none;
+    @include text-button;
+  }
+  &:hover {
+    transition: background-color 0.3s ease-in-out;
+    background-color: $background-hover-secondary-color;
+    button,
+    a,
+    .btn,
+    input[type="submit"] {
+      color: $contrast-color;
+    }
+  }
+}
+
+/* ------- IMAGES ------- */
+
+@mixin img-container($padding: 0, $width: $logo-sm, $height: $logo-sm) {
+  padding: $padding;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $width;
+  height: $height;
+
+  svg,
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+@mixin icon-container {
+  .btn {
+    border-radius: $border-radius-circle;
+    padding: $spacer-sm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $primary-color;
+    width: $icon-lg;
+    height: $icon-lg;
+    opacity: 1;
+    transition: background-color 0.3s ease-in-out;
+    svg {
+      width: 100%;
+      height: 100%;
+
+      path {
+        stroke: $contrast-color;
+        fill: $contrast-color;
+      }
+    }
+    &:hover {
+      background-color: $secondary-color;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
+
+      svg path {
+        stroke: $contrast-color;
+        fill: $contrast-color;
+      }
+    }
+  }
+}
+
+/* ------- SLIDER ------- */
+
+@mixin slider-items($count) {
+  --items: #{$count};
+
+  &:not(:has(.slider-wrapper > :nth-child(#{$count + 1}))) {
+    .wrapper-button-container {
+      display: none;
+    }
+  }
+}
+
+@mixin slider-nav($color, $hover-color) {
+  position: relative;
+  .slider-wrapper {
+    --gap: 1rem;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: var(--gap);
+    padding-inline: calc(var(--gap) * 0.5);
+    margin-block: $spacer-xl;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: calc(var(--gap) * 0.5);
+
+    @media (width >=$breakpoint-md) {
+      --gap: 1rem;
+    }
+
+    @media (width >=$breakpoint-lg) {
+      --gap: 1.5rem;
+    }
+
+    .slide {
+      min-width: calc((100% - (var(--items) - 1) * var(--gap)) / var(--items));
+      scroll-snap-align: start;
+    }
+
+    @media (width >=$breakpoint-md) and (pointer: fine) {
+      overflow: hidden;
+    }
+
+    @media (width <=$breakpoint-md) {
+      padding: 1em;
+      scroll-padding-inline: 0;
+
+      &::-webkit-scrollbar {
+        height: 10px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: $primary-color;
+        border-radius: 999px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: $secondary-color;
+        border-radius: 999px;
+      }
+
+      .slide {
+        scroll-snap-align: center;
+      }
+    }
+  }
+}
+
+@mixin slider-buttons {
+  width: fit-content;
+  margin-inline: auto;
+  display: grid;
+  gap: $spacer-xl;
+  grid-template-columns: repeat(2, 1fr);
+
+  .slide-button-container {
+    margin-block: $spacer-md;
+    @include icon-container;
+
+    &:first-child {
+      justify-self: start;
+    }
+
+    &:last-child {
+      justify-self: end;
+    }
+
+    .btn {
+      opacity: 1;
+
+      &[hidden],
+      &.disabled {
+        opacity: 0.5;
+
+        &:hover {
+          background-color: $primary-color;
+        }
+
+        svg {
+          path {
+            stroke: $default-color;
+            fill: $default-color;
+          }
+        }
+      }
+    }
+  }
+}
+
+@mixin dropdown-custom-hover-open($color: $primary-color) {
+  overflow: hidden;
+
+  //hover and focus states
+  &:focus-visible {
+    @include button-focus-within;
+  }
+
+  &:focus-within:has(.nav-link:focus-visible) {
+    outline: $spacer-xs solid $focus-within-color;
+
+    .dropdown-menu {
+      outline: none;
+    }
+  }
+
+  .dropdown-link {
+    border-radius: $border-radius-md;
+    transition:
+      background-color 0.3s ease-in-out,
+      color 0.3s ease-in-out;
+  }
+
+  .dropdown-menu {
+    //position absolute
+    position: absolute;
+    z-index: 20;
+    opacity: 0;
+    left: 0;
+    top: calc((#{$header-height} / 2) + #{$spacer-md});
+    visibility: hidden;
+    pointer-events: none;
+    width: fit-content;
+    max-width: 100%;
+    height: fit-content;
+    background-color: transparent;
+    li {
+      height: 0;
+    }
+  }
+  &:hover {
+    overflow: initial;
+
+    .dropdown-link {
+      cursor: pointer;
+      background-color: $secondary-color;
+      color: $contrast-color;
+      transition:
+        background-color 0.3s ease-in-out,
+        color 0.3s ease-in-out;
+    }
+
+    .dropdown-menu {
+      // animation
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition:
+        opacity 0.3s ease-in-out,
+        visibility 0.3s ease-in-out;
+      width: 100%;
+      transition: 0;
+      border-block-start: none;
+      padding-block-start: calc((#{$header-height} / 2) - #{$spacer-md});
+
+      & > ul {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: $spacer-xl;
+        width: 100%;
+        height: fit-content;
+        padding: $spacer-xl;
+        background-color: $gray-color;
+        border-block-end: 2px solid $gray-color;
+        overflow: hidden;
+        list-style: none;
+
+        li {
+          height: fit-content;
+        }
+      }
+    }
+  }
+}
+
+/* ------- FAQ ------- */
+
+@mixin dropdown-summary {
+  display: grid;
+  grid-template-columns: 1fr minmax($icon-md, auto);
+  align-items: center;
+  width: 100%;
+  align-items: center;
+  padding-block: $spacer-xl;
+
+  @media (width >=$breakpoint-xxl) {
+    grid-template-columns: minmax(500px, auto) calc($spacer-xxl * 2);
+  }
+
+  .dropdown-title {
+    text-wrap: balance;
+  }
+
+  .svg-container {
+    width: $icon-sm;
+    height: $icon-sm;
+    display: flex;
+
+    svg {
+      path {
+        stroke: $default-color;
+        fill: $default-color;
+      }
+    }
+  }
+}
+
+@mixin dropdown-svg-open {
+  svg {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+    transition: all 0.2s ease;
+  }
+}
+
+@mixin dropdown-details {
+  border-block-end: 2px solid $default-color;
+  scroll-margin-top: calc(var(--header-height, 0px) + 16px);
+
+  &:first-of-type {
+    border-block-start: 2px solid $default-color;
+  }
+
+  &::marker {
+    content: "";
+    visibility: hidden;
+    display: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary {
+    cursor: pointer;
+    @include dropdown-summary;
+
+    .svg-container {
+      width: var(--font-size-default);
+      height: var(--font-size-default);
+      align-self: flex-start;
+      margin-inline-start: auto;
+
+      svg {
+        width: $icon-sm;
+        margin: auto;
+        transition: all 0.3s ease;
+      }
+    }
+  }
+
+  .dropdown-title {
+    font-size: 1.4rem;
+    font-weight: $font-weight-400;
+  }
+
+  &[open] {
+    summary {
+      padding-block: $spacer-xl 0;
+
+      .svg-container {
+        @include dropdown-svg-open;
+
+        svg {
+          animation: none;
+        }
+      }
+    }
+
+    .dropdown-title {
+      padding-block-end: $spacer-lg;
+    }
+
+    p {
+      width: 100%;
+      padding-block-end: $spacer-xl;
+    }
+  }
+
+  summary:focus-visible,
+  a:focus-visible {
+    outline: $spacer-xs solid $secondary-color;
+    padding-inline: $spacer-xs;
+  }
+
+  &:focus-within:has(summary:focus-visible),
+  &:focus-within:has(a:focus-visible) {
+    outline: $spacer-xs solid $secondary-color;
+
+    summary {
+      outline: none;
+    }
+  }
+
+  &::details-content {
+    width: 100%;
+  }
+
+  // Smooth open/close animation (progressive enhancement)
+  @supports selector(::details-content) and (interpolate-size: allow-keywords) {
+    &::details-content {
+      height: 0;
+      overflow: clip;
+      content-visibility: auto;
+      transition:
+        height 0.3s ease,
+        content-visibility 0.3s ease allow-discrete;
+    }
+
+    &[open]::details-content {
+      height: auto;
+    }
+  }
+}

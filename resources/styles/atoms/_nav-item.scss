@@ -1,0 +1,9 @@
+@use "../design-tokens/color" as *;
+@use "../design-tokens/tokens" as *;
+@use "../utilities/spacer" as *;
+
+.nav-link {
+  border-radius: $border-radius-md;
+  padding: $spacer-xs $spacer-lg;
+  display: inline-block;
+}

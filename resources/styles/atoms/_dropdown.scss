@@ -1,0 +1,17 @@
+@use "../mixins" as *;
+
+:root {
+  interpolate-size: allow-keywords;
+}
+
+.dropdown-hover {
+  @include dropdown-custom-hover-open;
+}
+
+/**
+ * Accordéons <details> hors FAQ (ex. bloc accessibilité de la fiche produit).
+ * La FAQ, elle, est stylée par le mu-plugin `faq`.
+ */
+.dropdown-details {
+  @include dropdown-details;
+}

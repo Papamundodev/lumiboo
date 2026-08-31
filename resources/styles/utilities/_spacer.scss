@@ -1,0 +1,20 @@
+/* ------- Spacer ------- */
+:root {
+  --spacer-xs: 5px;
+  --spacer-sm: 12px;
+  --spacer-md: 15px;
+  --spacer-lg: 20px;
+  --spacer-xl: 26px;
+  --spacer-xxl: 50px;
+  --spacer-xxxl: 60px;
+  --spacer-big: 70px;
+}
+
+$spacer-xs: var(--spacer-xs);
+$spacer-sm: var(--spacer-sm);
+$spacer-md: var(--spacer-md);
+$spacer-lg: var(--spacer-lg);
+$spacer-xl: var(--spacer-xl);
+$spacer-xxl: var(--spacer-xxl);
+$spacer-xxxl: var(--spacer-xxxl);
+$spacer-big: var(--spacer-big);

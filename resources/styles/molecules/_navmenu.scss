@@ -1,0 +1,74 @@
+@use "../utilities/_container" as *;
+@use "../utilities/_spacer" as *;
+@use "../design-tokens/color" as *;
+@use "../design-tokens/tokens" as *;
+
+.navmenu {
+  & > ul {
+    width: max-content;
+    display: flex;
+    align-items: center;
+    list-style: none;
+    gap: $spacer-md;
+  }
+}
+
+.navmenu-mobile {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  overflow: auto;
+  height: 100vh;
+  margin-block: 0;
+  /* Final state when closed — exit animation ends here */
+  opacity: 0;
+  display: none;
+  align-items: start;
+  background-color: $gray-color;
+  transition:
+    opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    overlay 0.4s allow-discrete,
+    display 0.4s allow-discrete;
+
+  & > ul {
+    padding-block: $spacer-lg;
+  }
+
+  ul {
+    height: fit-content;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    gap: $spacer-md;
+  }
+}
+
+@media (width <= $breakpoint-navbar) {
+  .navmenu-mobile:popover-open {
+    opacity: 1;
+    display: flex;
+    align-items: start;
+    padding-inline: $spacer-md;
+  }
+  /* Entry animation — starting values when popover opens */
+  @starting-style {
+    .navmenu-mobile:popover-open {
+      opacity: 0;
+      animation: fade-in 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  }
+}
+
+.navmenu-desktop {
+  display: none;
+}
+
+@media (width >=$breakpoint-navbar) {
+  .navmenu-desktop {
+    display: flex;
+  }
+}

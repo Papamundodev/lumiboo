@@ -1,0 +1,28 @@
+@use "../design-tokens/color" as *;
+@use "../design-tokens/tokens" as *;
+@use "../utilities/spacer" as *;
+@use "../mixins" as *;
+
+@mixin form-base {
+  form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    input {
+      @include text-sm;
+      padding-inline-start: $spacer-md;
+      padding-block: $spacer-xs;
+      opacity: 1;
+      width: 100%;
+      color: $default-color;
+      border-radius: $border-radius-sm;
+      &::placeholder {
+        color: $default-color;
+      }
+      &:focus {
+        outline: 1.5px solid $secondary-color;
+      }
+    }
+  }
+}

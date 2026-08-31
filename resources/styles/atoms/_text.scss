@@ -1,0 +1,67 @@
+@use "../mixins" as *;
+
+p {
+  @include text-default;
+}
+
+.text-default {
+  @include text-default;
+}
+
+.text-sm {
+  @include text-sm;
+}
+
+.text-xs {
+  @include text-xs;
+}
+
+.text-lead {
+  @include text-lead;
+}
+
+.text-bold {
+  @include text-bold;
+}
+
+// LINKS
+
+a {
+  @include link;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.heading-big {
+  @include heading-big;
+}
+
+.heading-xxl {
+  @include heading-xxl;
+}
+
+.heading-xl {
+  @include heading-xl;
+}
+
+.heading-lg {
+  @include heading-lg;
+}
+
+.heading-md {
+  @include heading-md;
+}
+
+.section-title {
+  @include heading-xl;
+}

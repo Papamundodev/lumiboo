@@ -1,0 +1,66 @@
+@use "../utilities/_container" as *;
+@use "../design-tokens/tokens" as *;
+@use "../design-tokens/color" as *;
+
+/* HEADER ----- */
+
+.main-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: $background-color;
+}
+
+.header-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  height: $header-height;
+  position: relative;
+
+  .logo-container {
+    grid-area: logo;
+  }
+  .burger-menu-container {
+    grid-area: burger;
+  }
+  .nav-container {
+    grid-area: nav;
+  }
+  .navmenu-mobile {
+    top: $header-height;
+  }
+
+  @media (width <=$breakpoint-sm) {
+    display: grid;
+    grid-template-areas: "logo burger";
+    grid-template-columns: auto 1fr;
+    grid-template-rows: $header-height;
+  }
+
+  @media (width >=$breakpoint-sm) {
+    display: grid;
+    grid-template-areas: "logo burger";
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: $header-height;
+  }
+
+  @media (width >=$breakpoint-navbar) {
+    grid-template-columns: minmax(100px, 250px) 1fr 0;
+    grid-template-rows: $header-height;
+
+    .burger-container {
+      display: none;
+    }
+  }
+}
+
+.logged-in .header-container {
+  .navmenu-mobile {
+    top: calc(#{$header-height} + 50px);
+    @media (width >=$breakpoint-sm) {
+      top: calc(#{$header-height} + 32px);
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "resources/fonts/EBGaramond-VariableFont_wght.woff2": {
+    "file": "B-dihWjQ.woff2",
+    "src": "resources/fonts/EBGaramond-VariableFont_wght.woff2"
+  },
+  "resources/fonts/FiraCode-VariableFont_wght.woff2": {
+    "file": "CW4irVxm.woff2",
+    "src": "resources/fonts/FiraCode-VariableFont_wght.woff2"
+  },
+  "resources/fonts/Montserrat-VariableFont_wght.woff2": {
+    "file": "C-kcA8-z.woff2",
+    "src": "resources/fonts/Montserrat-VariableFont_wght.woff2"
+  },
+  "resources/fonts/Oswald-VariableFont_wght.woff2": {
+    "file": "7l2IHa_2.woff2",
+    "src": "resources/fonts/Oswald-VariableFont_wght.woff2"
+  },
+  "resources/scripts/banner.js": {
+    "file": "Bw1vYX9y.js",
+    "name": "banner",
+    "src": "resources/scripts/banner.js",
+    "isEntry": true
+  },
+  "resources/scripts/main.js": {
+    "file": "l0sNRNKZ.js",
+    "name": "main",
+    "src": "resources/scripts/main.js",
+    "isEntry": true
+  },
+  "resources/scripts/popover.js": {
+    "file": "BZX1_TAA.js",
+    "name": "popover",
+    "src": "resources/scripts/popover.js",
+    "isEntry": true
+  },
+  "resources/scripts/slider.js": {
+    "file": "Blssmc72.js",
+    "name": "slider",
+    "src": "resources/scripts/slider.js",
+    "isEntry": true
+  },
+  "resources/styles/main.scss": {
+    "file": "V_BbnJ3D.css",
+    "src": "resources/styles/main.scss",
+    "isEntry": true
+  }
+}

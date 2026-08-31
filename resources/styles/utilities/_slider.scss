@@ -1,0 +1,44 @@
+@use "../mixins" as *;
+@use "../design-tokens/color" as *;
+@use "../design-tokens/tokens" as *;
+@use "../design-tokens/fonts" as *;
+@use "../utilities/spacer" as *;
+@use "../utilities/container" as *;
+
+#section-products-front-page {
+  @include slider-items(1);
+  @include slider-nav($primary-color, $secondary-color);
+
+  @media (width >=$breakpoint-lg) {
+    @include slider-items(2);
+  }
+
+  @media (width >=$breakpoint-xxl) {
+    @include slider-items(3);
+  }
+
+  .wrapper-button-container {
+    @include slider-buttons;
+  }
+}
+
+#section-reviews-front-page {
+  @include slider-items(1);
+  @include slider-nav($primary-color, $secondary-color);
+
+  @media (width >=$breakpoint-lg) {
+    @include slider-items(2);
+  }
+
+  @media (width >=$breakpoint-xxl) {
+    @include slider-items(3);
+  }
+
+  .slider-wrapper .slide {
+    align-items: stretch;
+  }
+
+  .wrapper-button-container {
+    @include slider-buttons;
+  }
+}

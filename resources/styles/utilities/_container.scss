@@ -1,0 +1,43 @@
+/* ------- Breakpoint ------- */
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+$breakpoint-xxl: 1440px;
+$breakpoint-xxxl: 1600px;
+$breakpoint-big: 1800px;
+
+$breakpoint-navbar: $breakpoint-xl;
+
+$breakpoints: (
+  "sm": $breakpoint-sm,
+  "md": $breakpoint-md,
+  "lg": $breakpoint-lg,
+  "xl": $breakpoint-xl,
+  "xxl": $breakpoint-xxl,
+  "xxxl": $breakpoint-xxxl,
+  "big": $breakpoint-big,
+  "navbar": $breakpoint-navbar,
+);
+
+@mixin container() {
+  width: 100%;
+  padding-inline: 2rem;
+
+  @each $key, $value in $breakpoints {
+    @media (width >=$value) and (width < $breakpoint-sm) {
+      width: 100%;
+    }
+    @media (width >=$value) and (width < $breakpoint-xl) {
+      width: calc($value - 22vw);
+    }
+    @media (width >=$value) and (width >=$breakpoint-xl) {
+      width: calc($value - 18vw);
+    }
+  }
+}
+
+.container {
+  margin-inline: auto;
+  @include container;
+}

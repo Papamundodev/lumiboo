@@ -1,0 +1,15 @@
+{
+  "name": "joandev/theme_base",
+  "autoload": {
+    "psr-4": {
+      "Theme_base\\": "classes/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Papamundodev",
+      "email": "papamundodev@gmail.com"
+    }
+  ],
+  "require": {}
+}

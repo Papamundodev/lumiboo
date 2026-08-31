@@ -1,0 +1,82 @@
+@use "../design-tokens/color" as *;
+@use "../design-tokens/tokens" as *;
+@use "../design-tokens/fonts" as *;
+@use "../utilities/container" as *;
+@use "../utilities/spacer" as *;
+@use "../mixins" as *;
+
+#breadcrumbs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: $spacer-xs;
+  padding: 0;
+  padding-inline: $spacer-xl;
+  margin-block: $spacer-xxl;
+  list-style: none;
+
+  @media (width >=$breakpoint-md) {
+    gap: $spacer-sm;
+  }
+
+  a {
+    color: $default-color;
+    text-decoration: none;
+    @include text-default;
+
+    &:hover {
+      color: $secondary-color;
+    }
+  }
+
+  span {
+    @include text-bold;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .svg-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .svg-container.separator-icon {
+    --svg-size: 0.8rem;
+    width: var(--svg-size);
+    height: var(--svg-size);
+    min-width: var(--svg-size);
+    color: $default-color;
+    align-self: center;
+    @include text-default;
+
+    path {
+      fill: $default-color;
+      stroke: $default-color;
+    }
+  }
+}
+
+.svg-container.home-icon {
+  --svg-size: 19px;
+  width: var(--svg-size);
+  height: var(--svg-size);
+  min-width: var(--svg-size);
+  margin-block-end: 3px;
+
+  @media (width >=$breakpoint-md) {
+    margin-inline-end: -5px;
+  }
+
+  &:has(+ a:hover) {
+    svg {
+      path {
+        fill: $secondary-color;
+      }
+    }
+  }
+}

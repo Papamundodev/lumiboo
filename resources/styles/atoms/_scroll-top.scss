@@ -1,0 +1,25 @@
+@use "../design-tokens/tokens" as *;
+@use "../design-tokens/color" as *;
+@use "../utilities/container" as *;
+@use "../utilities/spacer" as *;
+@use "../mixins" as *;
+
+.scroll-top-container {
+  @include icon-container;
+  position: fixed;
+  right: 1.8em;
+  bottom: calc($spacer-xl * 3);
+  z-index: 999;
+  @media (width >= $breakpoint-md) {
+    right: 2.6em;
+  }
+  .scroll-top {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+
+.scroll-top.active {
+  visibility: visible;
+  opacity: 1;
+}
