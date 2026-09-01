@@ -86,15 +86,17 @@ $breadcrumbs = Base::get_breadcrumbs();
         $related_posts = $related_products_query->posts;
         ?>
 
-        <div class="container">
-            <h2 class="section-title"><?= __('Articles similaires', 'theme_base'); ?></h2>
-            <div class="card-container">
-                <?php foreach ($related_posts as $post) : ?>
-                    <?php get_template_part('partials/article/post-preview', null, ['post' => $post]); ?>
-                <?php endforeach; ?>
+        <?php if ($related_posts) : ?>
+            <div class="container">
+                <h2 class="section-title"><?= __('Articles similaires', 'theme_base'); ?></h2>
+                <div class="card-container">
+                    <?php foreach ($related_posts as $post) : ?>
+                        <?php get_template_part('partials/article/post-preview', null, ['post' => $post]); ?>
+                    <?php endforeach; ?>
+                </div>
+                <?php get_template_part('pagination', null, ['id' => 'section-related-posts']); ?>
             </div>
-            <?php get_template_part('pagination', null, ['id' => 'section-related-posts']); ?>
-        </div>
+        <?php endif; ?>
     <?php endif; ?>
 
 </div>

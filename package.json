@@ -1,9 +1,10 @@
 {
-  "name": "drone",
+  "name": "lumiboo",
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "fonts:build": "mkdir -p resources/fonts && for f in resources/fonts-src/*.ttf; do [ -f \"$f\" ] || continue; woff2_compress \"$f\" && mv \"${f%.ttf}.woff2\" resources/fonts/; done",
+    "build": "npm run fonts:build && vite build"
   },
   "devDependencies": {
     "sass": "^1.69.0",

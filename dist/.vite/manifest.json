@@ -1,28 +1,22 @@
 {
-  "resources/fonts/EBGaramond-VariableFont_wght.woff2": {
-    "file": "B-dihWjQ.woff2",
-    "src": "resources/fonts/EBGaramond-VariableFont_wght.woff2"
+  "resources/fonts/Barlow-Bold.woff2": {
+    "file": "CewTUPeB.woff2",
+    "src": "resources/fonts/Barlow-Bold.woff2"
   },
-  "resources/fonts/FiraCode-VariableFont_wght.woff2": {
-    "file": "CW4irVxm.woff2",
-    "src": "resources/fonts/FiraCode-VariableFont_wght.woff2"
+  "resources/fonts/Barlow-Regular.woff2": {
+    "file": "Bre0Y4Y4.woff2",
+    "src": "resources/fonts/Barlow-Regular.woff2"
   },
-  "resources/fonts/Montserrat-VariableFont_wght.woff2": {
-    "file": "C-kcA8-z.woff2",
-    "src": "resources/fonts/Montserrat-VariableFont_wght.woff2"
+  "resources/fonts/CharisSIL-Bold.woff2": {
+    "file": "C860p6Of.woff2",
+    "src": "resources/fonts/CharisSIL-Bold.woff2"
   },
-  "resources/fonts/Oswald-VariableFont_wght.woff2": {
-    "file": "7l2IHa_2.woff2",
-    "src": "resources/fonts/Oswald-VariableFont_wght.woff2"
-  },
-  "resources/scripts/banner.js": {
-    "file": "Bw1vYX9y.js",
-    "name": "banner",
-    "src": "resources/scripts/banner.js",
-    "isEntry": true
+  "resources/fonts/CharisSIL-Regular.woff2": {
+    "file": "CdQFMq1B.woff2",
+    "src": "resources/fonts/CharisSIL-Regular.woff2"
   },
   "resources/scripts/main.js": {
-    "file": "l0sNRNKZ.js",
+    "file": "DyeI6cnp.js",
     "name": "main",
     "src": "resources/scripts/main.js",
     "isEntry": true
@@ -34,13 +28,13 @@
     "isEntry": true
   },
   "resources/scripts/slider.js": {
-    "file": "Blssmc72.js",
+    "file": "BIbPo8Sg.js",
     "name": "slider",
     "src": "resources/scripts/slider.js",
     "isEntry": true
   },
   "resources/styles/main.scss": {
-    "file": "V_BbnJ3D.css",
+    "file": "DP4tTyZ1.css",
     "src": "resources/styles/main.scss",
     "isEntry": true
   }

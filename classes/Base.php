@@ -444,31 +444,64 @@ class Base
     }
 
     /**
-     * Get active class for parent menu items
-     * @param array $item Menu item array
-     * @param object $object Current queried object
-     * @param int $page_for_posts ID of the posts page
-     * @return string Active class if conditions are met
+     * Return 'active' when a menu item (or any descendant) matches the current page.
+     * Works for Custom Link dropdown parents that never receive WP's native
+     * current-menu-parent / current-menu-ancestor classes (e.g. product children).
+     *
+     * @param array $item   Menu item array as produced by wp_get_menu_array()
+     * @param mixed $object Current queried object (WP_Post|WP_Term|null)
      */
-    public static function get_parent_active_class($item, $object): string
+    public static function get_parent_active_class($item, $object = null): string
     {
-        $active_class = '';
-        $page_for_posts = get_option('page_for_posts');
+        if (! is_array($item)) {
+            return '';
+        }
+
+        $flags          = ['current-menu-item', 'current-menu-parent', 'current-menu-ancestor'];
+        $page_for_posts = (int) get_option('page_for_posts');
 
         if (function_exists('is_shop') && function_exists('wc_get_page_id') && is_shop()) {
-            $object = get_post(wc_get_page_id('shop'));
+            $shop = get_post(wc_get_page_id('shop'));
+            if ($shop) {
+                $object = $shop;
+            }
         }
 
-        if (self::get_object_type($item['object']) === 'post' && $object && $object->post_type === 'post') {
-            if ($item['object']->ID === intval($page_for_posts)) {
-                $active_class = 'active';
+        $current_post_id = $object instanceof \WP_Post ? (int) $object->ID : 0;
+        $current_term    = $object instanceof \WP_Term ? $object : null;
+        $is_single_post  = $object instanceof \WP_Post && $object->post_type === 'post';
+
+        $stack = [$item];
+        while ($stack) {
+            $node = array_pop($stack);
+            if (! is_array($node)) {
+                continue;
             }
-        } elseif (self::get_object_type($item['object']) === 'term' && $object) {
-            if ($item['object']->term_id === intval($object->parent)) {
-                $active_class = 'active';
+
+            if (array_intersect($flags, $node['classes'] ?? [])) {
+                return 'active';
+            }
+
+            if ($current_post_id && (int) ($node['object_id'] ?? 0) === $current_post_id) {
+                return 'active';
+            }
+
+            $node_object = $node['object'] ?? null;
+
+            if ($is_single_post && $page_for_posts && $node_object instanceof \WP_Post && $node_object->ID === $page_for_posts) {
+                return 'active';
+            }
+
+            if ($current_term && $node_object instanceof \WP_Term && $node_object->term_id === (int) $current_term->parent) {
+                return 'active';
+            }
+
+            foreach ($node['children'] ?? [] as $child) {
+                $stack[] = $child;
             }
         }
-        return $active_class;
+
+        return '';
     }
 
     /**
@@ -688,5 +721,14 @@ class Base
         }
 
         return (int) $term_id;
+    }
+
+
+
+    public static function pre_debug($data)
+    {
+        echo '<pre class="debug" style="color: #17194a; position: fixed; top: 0; left: 0; width: 100%; max-width: 75vi; height: 75vh; display: block; background-color: white; padding: 100px; z-index: 9999; overflow-y: scroll;">';
+        print_r($data);
+        echo '</pre>';
     }
 }

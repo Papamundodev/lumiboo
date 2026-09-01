@@ -17,14 +17,24 @@ $theme_template_name = basename(__FILE__, ".php");
                         <div class="button-background-primary">
                             <a href="#" class="btn">Click me</a>
                         </div>
-                        <p>primary button : primary-color, primary-hover-color, contrast-color.</p>
                     </div>
 
                     <div>
                         <div class="button-background-secondary">
                             <a href="#" class="btn">Click me</a>
                         </div>
-                        <p>secondary button : secondary-color, secondary-hover-color, contrast-color.</p>
+                    </div>
+
+                    <div>
+                        <div class="button-background-tertiary">
+                            <a href="#" class="btn">Click me</a>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="button-background-quaternary">
+                            <a href="#" class="btn">Click me</a>
+                        </div>
                     </div>
 
                 </div>

@@ -3,39 +3,35 @@ See post on fluid typo in my blog.
 */
 
 @font-face {
-  font-family: "Montserrat";
-  src: url("../fonts/Montserrat-VariableFont_wght.woff2") format("woff2");
-  font-weight: 100 900;
-  font-display: swap;
-  font-stretch: 100%;
+  font-family: "Barlow";
+  src: url("../fonts/Barlow-Regular.woff2") format("woff2");
+  font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-  font-family: "EB Garamond";
-  src: url("../fonts/EBGaramond-VariableFont_wght.woff2") format("woff2");
-  font-weight: 100 900;
-  font-display: swap;
-  font-stretch: 100%;
+  font-family: "Barlow";
+  src: url("../fonts/Barlow-Bold.woff2") format("woff2");
+  font-weight: 700;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-  font-family: "Oswald";
-  src: url("../fonts/Oswald-VariableFont_wght.woff2") format("woff2");
-  font-weight: 100 900;
-  font-display: swap;
-  font-stretch: 100%;
+  font-family: "Charis SIL";
+  src: url("../fonts/CharisSIL-Regular.woff2") format("woff2");
+  font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
-  font-family: "Fira Code";
-  src: url("../fonts/FiraCode-VariableFont_wght.woff2") format("woff2");
-  font-weight: 100 900;
-  font-display: swap;
-  font-stretch: 100%;
+  font-family: "Charis SIL";
+  src: url("../fonts/CharisSIL-Bold.woff2") format("woff2");
+  font-weight: 700;
   font-style: normal;
+  font-display: swap;
 }
 
 /********* Fonts *********/
@@ -43,25 +39,18 @@ See post on fluid typo in my blog.
 /* font family */
 
 $text-font:
-  "EB Garamond",
+  "Barlow",
   system-ui,
   -apple-system,
   "Segoe UI",
   sans-serif;
 $heading-font:
-  "Oswald",
-  system-ui,
-  -apple-system,
-  "Segoe UI",
-  sans-serif;
+  "Charis SIL",
+  Georgia,
+  "Times New Roman",
+  serif;
 $nav-font:
-  "Montserrat",
-  system-ui,
-  -apple-system,
-  "Segoe UI",
-  sans-serif;
-$link-font:
-  "Fira Code",
+  "Barlow",
   system-ui,
   -apple-system,
   "Segoe UI",
@@ -70,7 +59,6 @@ $fonts: (
   "text": $text-font,
   "heading": $heading-font,
   "nav": $nav-font,
-  "link": $link-font,
 );
 
 @each $key, $value in $fonts {
@@ -110,27 +98,13 @@ $font-sizes: (
 }
 
 /* ------- Font Weight Test ------- */
-$font-weight-100: 100;
-$font-weight-200: 200;
-$font-weight-300: 300;
-$font-weight-400: 400;
-$font-weight-500: 500;
-$font-weight-600: 600;
-$font-weight-700: 700;
-$font-weight-800: 800;
-$font-weight-900: 900;
+$font-weight-regular: 400;
+$font-weight-bold: 700;
 
 $font-weights: (
-  "100": $font-weight-100,
-  "200": $font-weight-200,
-  "300": $font-weight-300,
-  "400": $font-weight-400,
-  "500": $font-weight-500,
-  "600": $font-weight-600,
-  "700": $font-weight-700,
-  "800": $font-weight-800,
-  "900": $font-weight-900,
-  "default": $font-weight-400,
+  "regular": $font-weight-regular,
+  "bold": $font-weight-bold,
+  "default": $font-weight-regular,
 );
 
 @each $key, $value in $font-weights {

@@ -16,6 +16,14 @@
   @include button-background-secondary;
 }
 
+.button-background-tertiary {
+  @include button-background-tertiary;
+}
+
+.button-background-quaternary {
+  @include button-background-quaternary;
+}
+
 .button-wrapper {
   display: flex;
   justify-content: center;

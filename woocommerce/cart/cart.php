@@ -181,18 +181,3 @@ do_action('woocommerce_before_cart'); ?>
 </div>
 
 <?php do_action('woocommerce_after_cart'); ?>
-
-<?php
-$products_query = new WP_Query(array(
-	'post_type' => 'product',
-	'posts_per_page' => 10,
-	'orderby' => 'date',
-	'order' => 'DESC',
-));
-wp_reset_postdata();
-
-get_template_part('partials/woocommerce/products/sliders/products', null, [
-	'products' => $products_query->posts,
-	'title' => __('Nos derniers produits', 'theme_base'),
-]);
-?>

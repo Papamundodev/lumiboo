@@ -8,6 +8,8 @@ export default defineConfig({
   base: process.env.NODE_ENV === 'production' ? `${BASE}/dist/` : '/',
   server: {
     cors: true,
+    port: 5173,
+    strictPort: true,
     origin: 'http://localhost:5173',
   },
   build: {

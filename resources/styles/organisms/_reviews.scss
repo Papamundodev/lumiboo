@@ -1,5 +1,5 @@
 @use "../mixins" as *;
-@use "../design-tokens/color" as *;
+@use "../design-tokens/colors" as *;
 @use "../design-tokens/tokens" as *;
 @use "../design-tokens/fonts" as *;
 @use "../utilities/spacer" as *;
@@ -53,7 +53,7 @@
   .reviews-rating {
     @include text-base;
     font-size: $font-size-lg;
-    font-weight: $font-weight-800;
+    font-weight: $font-weight-bold;
     margin: 0;
 
     .reviews-rating-max {

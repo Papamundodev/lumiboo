@@ -6,7 +6,7 @@ use Theme_base\Woocommerce;
 /**
  * Theme constants — change THEME_HANDLE once when cloning this theme for a new site.
  */
-define('THEME_HANDLE', 'drone');
+define('THEME_HANDLE', 'lumiboo');
 define('THEME_VERSION', '0.1.0');
 define('THEME_PATH', get_template_directory());
 define('THEME_URI', get_template_directory_uri());
@@ -83,12 +83,6 @@ $woocommerce->setLoopShopPerPage(9);
  *   - la liste des post_types recherchés
  *   - la stratégie (MODE_DEFAULT | MODE_OPTIMIZED)
  */
-add_filter('search_plugin_post_types', function (array $types): array {
-    if (class_exists(\PrenomsSync\Setup::class)) {
-        $types[] = \PrenomsSync\Setup::CPT_SLUG;
-    }
-    return $types;
-});
 
 add_filter('search_plugin_mode', function (): string {
     return \SearchPlugin\Search::MODE_OPTIMIZED;
@@ -142,12 +136,3 @@ add_filter('search_plugin_mode', function (): string {
  * google_reviews_plugin_config, google_reviews_plugin_display,
  * google_reviews_plugin_data, google_reviews_plugin_reviews.
  */
-
-
-
-function pre_debug($data)
-{
-    echo '<pre class="debug" style="color: #17194a; position: fixed; top: 0; left: 0; width: 100%; max-width: 75vi; height: 75vh; display: block; background-color: white; padding: 100px; z-index: 9999; overflow-y: scroll;">';
-    print_r($data);
-    echo '</pre>';
-}

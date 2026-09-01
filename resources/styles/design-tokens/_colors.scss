@@ -1,0 +1,72 @@
+/* Colors */
+:root {
+  --white-color: #ffffff;
+  --black-color: #101828;
+  --background-color: var(--white-color);
+  --contrast-color: var(--white-color);
+  --default-color: var(--black-color);
+  --gray-color: #fff2fd;
+
+  --primary-color: #7d203f;
+  --primary-tint-color: #d04b7b;
+  --primary-shade-color: #791137;
+
+  --secondary-color: #db6ace;
+  --secondary-tint-color: #ffdff9;
+  --secondary-shade-color: #cf9ac5;
+
+  --tertiary-color: #b4a88d;
+  --tertiary-tint-color: #edd6ae;
+  --tertiary-shade-color: #957e56;
+
+  --button-primary-background-color: #e4cfe4;
+  --button-primary-text-color: #941744;
+  --background-hover-primary-color: #db6ace;
+
+  --button-secondary-background-color: var(--primary-color);
+  --button-secondary-text-color: #e7c5e1;
+  --background-hover-secondary-color: var(--secondary-color);
+
+  --button-tertiary-background-color: var(--gray-color);
+  --button-tertiary-text-color: var(--primary-color);
+  --background-hover-tertiary-color: var(--primary-color);
+
+  --button-quaternary-text-color: var(--primary-color);
+  --button-quaternary-border-color: var(--primary-color);
+  --background-hover-quaternary-color: var(--gray-color);
+
+  --focus-within-color: var(--primary-shade-color);
+  --link-color: var(--primary-color);
+  --link-hover-color: var(--secondary-color);
+}
+
+$black-color: var(--black-color);
+$white-color: var(--white-color);
+$background-color: var(--background-color);
+$contrast-color: var(--contrast-color);
+$default-color: var(--default-color);
+$gray-color: var(--gray-color);
+$primary-color: var(--primary-color);
+$primary-tint-color: var(--primary-tint-color);
+$primary-shade-color: var(--primary-shade-color);
+$secondary-color: var(--secondary-color);
+$secondary-tint-color: var(--secondary-tint-color);
+$secondary-shade-color: var(--secondary-shade-color);
+$tertiary-color: var(--tertiary-color);
+$tertiary-tint-color: var(--tertiary-tint-color);
+$tertiary-shade-color: var(--tertiary-shade-color);
+$button-quaternary-text-color: var(--button-quaternary-text-color);
+$button-quaternary-border-color: var(--button-quaternary-border-color);
+$background-hover-quaternary-color: var(--background-hover-quaternary-color);
+$button-tertiary-background-color: var(--button-tertiary-background-color);
+$button-tertiary-text-color: var(--button-tertiary-text-color);
+$background-hover-tertiary-color: var(--background-hover-tertiary-color);
+$button-primary-background-color: var(--button-primary-background-color);
+$button-primary-text-color: var(--button-primary-text-color);
+$button-secondary-background-color: var(--button-secondary-background-color);
+$button-secondary-text-color: var(--button-secondary-text-color);
+$background-hover-primary-color: var(--background-hover-primary-color);
+$background-hover-secondary-color: var(--background-hover-secondary-color);
+$focus-within-color: var(--focus-within-color);
+$link-color: var(--link-color);
+$link-hover-color: var(--link-hover-color);

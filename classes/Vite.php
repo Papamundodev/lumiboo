@@ -26,7 +26,7 @@ class Vite
         string $assetsPath,
         string $assetsUri,
         string $version = '0.1.0',
-        string $handlePrefix = 'drone'
+        string $handlePrefix = 'lumiboo'
     ) {
         $this->hmrHost = $hmrHost;
         $this->assetsPath = $assetsPath;

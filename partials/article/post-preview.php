@@ -41,10 +41,8 @@ $post_terms = (! $post_terms || is_wp_error($post_terms)) ? [] : $post_terms;
                 <p><?= $content; ?></p>
             </div>
 
-            <div>
-                <div class="button-background-primary">
-                    <a href="<?= get_permalink($post); ?>" class="btn"><?= __('Lire l\'article', 'theme_base'); ?></a>
-                </div>
+            <div class="button-background-primary">
+                <a href="<?= get_permalink($post); ?>" class="btn"><?= __('Lire l\'article', 'theme_base'); ?></a>
             </div>
         </div>
     </div>

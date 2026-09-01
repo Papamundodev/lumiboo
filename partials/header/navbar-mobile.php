@@ -20,17 +20,17 @@ $megamenu = get_field('megamenu', $theme_location) ?? null;
                 <?php foreach ($menu_items as $item): ?>
 
                     <?php if (empty($item['children'])): ?>
-                        <li class="<?= Base::get_active_class($item) ?> nav-item">
+                        <li class="<?= Base::get_parent_active_class($item, $object) ?> nav-item">
                             <a class="nav-link"
                                 href="<?= $item['url'] ?>"
                                 target="<?= $item['target'] ?>"
                                 rel="<?= $item['target'] === '_blank' ? 'noopener' : '' ?>"><?= $item['title'] ?></a>
                         </li>
                     <?php else: ?>
-                        <li class="<?= \Theme_base\Base::get_active_class($item) ?> <?= \Theme_base\Base::get_parent_active_class($item, $object) ?>">
+                        <li class="<?= Base::get_parent_active_class($item, $object) ?> nav-item">
                             <ul class="">
                                 <?php foreach ($item['children'] as $child): ?>
-                                    <li class="<?= \Theme_base\Base::get_active_class($child) ?>">
+                                    <li class="<?= Base::get_parent_active_class($child, $object) ?> nav-item">
                                         <a class="nav-link"
                                             href="<?= $child['url'] ?>"
                                             title="<?= $child['title'] ?>"

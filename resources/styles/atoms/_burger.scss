@@ -1,4 +1,4 @@
-@use "../design-tokens/color" as *;
+@use "../design-tokens/colors" as *;
 @mixin burger-menu($color: $primary-color) {
   .burger-menu {
     --width: 26px;
