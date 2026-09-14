@@ -3,8 +3,6 @@
 
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
-    <title><?php wp_title('|', true, 'right'); ?></title>
-    <meta name="description" content="<?= esc_attr(\Theme_base\Base::get_meta_description()) ?> ">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php wp_head(); ?>
 </head>
@@ -21,9 +19,14 @@
     <header class="main-header">
         <div class="header-container container">
 
-            <a class="logo-container" href="<?= home_url(); ?>">
-                <img src="<?= get_template_directory_uri(); ?>/resources/images/logo.png" alt="Logo">
-            </a>
+            <?php
+            $logo = get_field('logo', 'option');
+            ?>
+            <?php if ($logo) : ?>
+                <a class="logo-container" href="<?= home_url(); ?>">
+                    <img src="<?= $logo['url']; ?>" alt="<?= $logo['alt'] ?? 'Logo'; ?>">
+                </a>
+            <?php endif; ?>
 
             <?php get_template_part('partials/header/navbar-desktop', 'header'); ?>
             <?php get_template_part('partials/header/navbar-mobile', 'header'); ?>

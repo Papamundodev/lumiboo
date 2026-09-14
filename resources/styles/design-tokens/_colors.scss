@@ -10,34 +10,53 @@
   --primary-color: #7d203f;
   --primary-tint-color: #d04b7b;
   --primary-shade-color: #791137;
+  --primary-shade-2-color: #941744;
 
   --secondary-color: #db6ace;
   --secondary-tint-color: #ffdff9;
+  --secondary-tint-2-color: #e7c5e1;
+  --secondary-tint-3-color: #e4cfe4;
   --secondary-shade-color: #cf9ac5;
 
   --tertiary-color: #b4a88d;
   --tertiary-tint-color: #edd6ae;
   --tertiary-shade-color: #957e56;
 
-  --button-primary-background-color: #e4cfe4;
-  --button-primary-text-color: #941744;
-  --background-hover-primary-color: #db6ace;
+  --button-primary-background-color: var(--secondary-tint-2-color);
+  --button-primary-text-color: var(--primary-shade-2-color);
+  --background-hover-primary-color: var(--primary-color);
+  --button-primary-hover-text-color: var(--secondary-tint-2-color);
 
-  --button-secondary-background-color: var(--primary-color);
-  --button-secondary-text-color: #e7c5e1;
-  --background-hover-secondary-color: var(--secondary-color);
+  --button-secondary-background-color: var(--gray-color);
+  --button-secondary-text-color: var(--primary-color);
+  --background-hover-secondary-color: var(--secondary-tint-3-color);
+  --button-secondary-hover-text-color: var(--primary-color);
 
-  --button-tertiary-background-color: var(--gray-color);
-  --button-tertiary-text-color: var(--primary-color);
-  --background-hover-tertiary-color: var(--primary-color);
+  --button-tertiary-background-color: var(--primary-color);
+  --button-tertiary-text-color: var(--secondary-tint-2-color);
+  --background-hover-tertiary-color: var(--gray-color);
+  --button-tertiary-hover-text-color: var(--primary-color);
 
   --button-quaternary-text-color: var(--primary-color);
   --button-quaternary-border-color: var(--primary-color);
   --background-hover-quaternary-color: var(--gray-color);
+  --button-quaternary-hover-text-color: var(--primary-color);
 
   --focus-within-color: var(--primary-shade-color);
   --link-color: var(--primary-color);
   --link-hover-color: var(--secondary-color);
+
+  --button-slider-background-color: var(--background-color);
+  --button-slider-border-color: var(--primary-color);
+  --button-slider-svg-color: var(--primary-color);
+
+  --button-slider-background-hover-color: var(--gray-color);
+  --button-slider-hover-border-color: var(--gray-color);
+  --button-slider-hover-svg-color: var(--primary-color);
+
+  --button-slider-disabled-background-color: var(--secondary-tint-3-color);
+  --button-slider-disabled-border-color: var(--secondary-tint-3-color);
+  --button-slider-disabled-svg-color: var(--background-color);
 }
 
 $black-color: var(--black-color);
@@ -46,27 +65,58 @@ $background-color: var(--background-color);
 $contrast-color: var(--contrast-color);
 $default-color: var(--default-color);
 $gray-color: var(--gray-color);
+
 $primary-color: var(--primary-color);
 $primary-tint-color: var(--primary-tint-color);
 $primary-shade-color: var(--primary-shade-color);
+$primary-shade-2-color: var(--primary-shade-2-color);
+
 $secondary-color: var(--secondary-color);
 $secondary-tint-color: var(--secondary-tint-color);
+$secondary-tint-2-color: var(--secondary-tint-2-color);
 $secondary-shade-color: var(--secondary-shade-color);
+
 $tertiary-color: var(--tertiary-color);
 $tertiary-tint-color: var(--tertiary-tint-color);
 $tertiary-shade-color: var(--tertiary-shade-color);
+
 $button-quaternary-text-color: var(--button-quaternary-text-color);
 $button-quaternary-border-color: var(--button-quaternary-border-color);
 $background-hover-quaternary-color: var(--background-hover-quaternary-color);
+$button-quaternary-hover-text-color: var(--button-quaternary-hover-text-color);
+
 $button-tertiary-background-color: var(--button-tertiary-background-color);
 $button-tertiary-text-color: var(--button-tertiary-text-color);
 $background-hover-tertiary-color: var(--background-hover-tertiary-color);
+$button-tertiary-hover-text-color: var(--button-tertiary-hover-text-color);
+
 $button-primary-background-color: var(--button-primary-background-color);
 $button-primary-text-color: var(--button-primary-text-color);
+$background-hover-primary-color: var(--background-hover-primary-color);
+$button-primary-hover-text-color: var(--button-primary-hover-text-color);
+
 $button-secondary-background-color: var(--button-secondary-background-color);
 $button-secondary-text-color: var(--button-secondary-text-color);
-$background-hover-primary-color: var(--background-hover-primary-color);
 $background-hover-secondary-color: var(--background-hover-secondary-color);
+$button-secondary-hover-text-color: var(--button-secondary-hover-text-color);
+
 $focus-within-color: var(--focus-within-color);
 $link-color: var(--link-color);
 $link-hover-color: var(--link-hover-color);
+
+$button-slider-background-color: var(--button-slider-background-color);
+$button-slider-border-color: var(--button-slider-border-color);
+$button-slider-svg-color: var(--button-slider-svg-color);
+$button-slider-background-hover-color: var(
+  --button-slider-background-hover-color
+);
+$button-slider-hover-border-color: var(--button-slider-hover-border-color);
+$button-slider-hover-svg-color: var(--button-slider-hover-svg-color);
+
+$button-slider-disabled-background-color: var(
+  --button-slider-disabled-background-color
+);
+$button-slider-disabled-border-color: var(
+  --button-slider-disabled-border-color
+);
+$button-slider-disabled-svg-color: var(--button-slider-disabled-svg-color);

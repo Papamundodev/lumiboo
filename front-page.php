@@ -123,6 +123,8 @@ $theme_template_name = basename(__FILE__, ".php");
         <?php endif; ?>
     </div>
 
+    <script defer async src='https://cdn.trustindex.io/loader.js?6d4392670fe3430a2536c8ca1ce'></script>
+
     <?php
     /**
      * La section "chiffres clés" est fournie par le mu-plugin `odometer`.

@@ -8,6 +8,7 @@ $logo-md: 80px;
 $logo-lg: 100px;
 $img-md: 150px;
 $img-lg: 200px;
+$img-xl: 250px;
 $full: 100%;
 $img-default: $icon-md;
 
@@ -19,6 +20,7 @@ $img-sizes: (
   "logo-sm": $logo-sm,
   "logo-md": $logo-md,
   "logo-lg": $logo-lg,
+  "img-xl": $img-xl,
   "full": 100%,
   "default": $img-default,
 );

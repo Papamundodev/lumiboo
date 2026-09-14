@@ -39,13 +39,17 @@ $base->enableSvgInAcfImageFields();
 $base->link_category_to_product();
 $base->change_breadcrumb_delimiter();
 
-$woocommerce = new Woocommerce();
-$woocommerce->loadWooCommerceStylesOnlyWhenNeeded();
-$woocommerce->loadWcBlocksCssOnlyWhenNeeded();
-$woocommerce->deferOrderAttributionOnNonCheckout();
-$woocommerce->fixExpressCheckoutOnClassicCheckout();
-$woocommerce->fixPpcpRecaptchaOnClassicCheckout();
-$woocommerce->setLoopShopPerPage(9);
+// NOTE: ne pas nommer cette variable `$woocommerce` — c'est le nom de la
+// globale WP utilisée par WooCommerce (et par YITH, cf. plugin-fw/includes/
+// class-yit-assets.php ~L225 : `$woocommerce->plugin_url()`). L'écraser
+// provoque un fatal error côté admin.
+$theme_wc = new Woocommerce();
+$theme_wc->loadWooCommerceStylesOnlyWhenNeeded();
+$theme_wc->loadWcBlocksCssOnlyWhenNeeded();
+$theme_wc->deferOrderAttributionOnNonCheckout();
+$theme_wc->fixExpressCheckoutOnClassicCheckout();
+$theme_wc->fixPpcpRecaptchaOnClassicCheckout();
+$theme_wc->setLoopShopPerPage(9);
 
 /**
  * Product attributes / checkout fields — DORMANT PAR DÉFAUT.
@@ -56,7 +60,7 @@ $woocommerce->setLoopShopPerPage(9);
  * 1. registerProductAttribute  (affichage + création optionnelle pa_{slug})
  * 2. addCheckoutField          (classic checkout → meta → admin / customer / emails)
  */
-// $woocommerce->registerProductAttribute([
+// $theme_wc->registerProductAttribute([
 //     'slug'   => 'duree',
 //     'label'  => __('Duration', 'theme_base'),
 //     'icon'   => 'time',
@@ -65,7 +69,7 @@ $woocommerce->setLoopShopPerPage(9);
 //     'create' => false,
 // ]);
 
-// $woocommerce->addCheckoutField([
+// $theme_wc->addCheckoutField([
 //     'id'          => 'training_objectives',
 //     'label'       => __('Expected objectives', 'theme_base'),
 //     'placeholder' => __('Tell us what you expect from this course', 'theme_base'),

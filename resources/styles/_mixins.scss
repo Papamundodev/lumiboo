@@ -12,9 +12,8 @@
 /* ------- TEXT ------- */
 
 @mixin text-base {
-  font-family: $text-font;
+  font-family: $button-font;
   line-height: $line-height-paragraph;
-  font-weight: $font-weight-regular;
   letter-spacing: $letter-spacing-paragraph;
   text-wrap: pretty;
 }
@@ -49,15 +48,9 @@
 }
 
 @mixin text-button {
-  font-size: $font-size-default;
-  font-weight: $font-weight-bold;
-  line-height: $line-height-paragraph;
-  letter-spacing: $letter-spacing-paragraph;
+  font-size: $font-size-button;
+  font-weight: $font-weight-semibold;
   text-box-trim: trim-both;
-
-  @media (width <=$breakpoint-xl) {
-    font-size: $font-size-sm;
-  }
 }
 
 @mixin text-nav {
@@ -77,13 +70,13 @@
   font-family: $heading-font;
   line-height: $line-height-heading;
   letter-spacing: $letter-spacing-heading;
-  font-weight: $font-weight-bold;
   word-break: keep-all;
   text-wrap: balance;
 }
 
 @mixin heading-big {
   font-size: $font-size-big;
+  font-weight: $font-weight-bold;
   @include heading-base;
 
   @media (width <=$breakpoint-md) {
@@ -187,6 +180,15 @@
     outline-offset: $spacer-xs;
     border-radius: $border-radius-sm;
   }
+  &[hidden]:focus-within,
+  &[hidden]:focus-visible,
+  &.disabled:focus-within,
+  &.disabled:focus-visible {
+    outline: none;
+    border: none;
+    cursor: not-allowed;
+    transition: none;
+  }
 }
 
 @mixin btn {
@@ -212,6 +214,7 @@
     padding-inline: $spacer-lg;
     display: inline-block;
     text-decoration: none;
+    transition: color 0.3s ease-in-out;
     @include text-button;
   }
   &:hover {
@@ -221,7 +224,8 @@
     a,
     .btn,
     input[type="submit"] {
-      color: $contrast-color;
+      color: $button-primary-hover-text-color;
+      transition: color 0.3s ease-in-out;
     }
   }
 }
@@ -239,6 +243,7 @@
     padding-inline: $spacer-lg;
     display: inline-block;
     text-decoration: none;
+    transition: color 0.3s ease-in-out;
     @include text-button;
   }
   &:hover {
@@ -248,7 +253,8 @@
     a,
     .btn,
     input[type="submit"] {
-      color: $contrast-color;
+      color: $button-secondary-hover-text-color;
+      transition: color 0.3s ease-in-out;
     }
   }
 }
@@ -266,6 +272,7 @@
     padding-inline: $spacer-lg;
     display: inline-block;
     text-decoration: none;
+    transition: color 0.3s ease-in-out;
     @include text-button;
   }
   &:hover {
@@ -275,7 +282,8 @@
     a,
     .btn,
     input[type="submit"] {
-      color: $button-tertiary-text-color;
+      color: $button-tertiary-hover-text-color;
+      transition: color 0.3s ease-in-out;
     }
   }
 }
@@ -283,7 +291,9 @@
 @mixin button-background-quaternary {
   width: fit-content;
   background-color: $background-color;
-  transition: background-color 0.3s ease-in-out;
+  transition:
+    background-color 0.3s ease-in-out,
+    border-color 0.3s ease-in-out;
   border-radius: $border-radius-pill;
   border: 2px solid $button-quaternary-border-color;
   button,
@@ -297,14 +307,17 @@
     @include text-button;
   }
   &:hover {
-    transition: background-color 0.3s ease-in-out;
-    background-color: $background-color;
+    transition:
+      background-color 0.3s ease-in-out,
+      border-color 0.3s ease-in-out;
+    background-color: $background-hover-quaternary-color;
     border-color: $background-hover-quaternary-color;
     button,
     a,
     .btn,
     input[type="submit"] {
-      color: $button-quaternary-text-color;
+      color: $button-quaternary-hover-text-color;
+      transition: color 0.3s ease-in-out;
     }
   }
 }
@@ -316,13 +329,12 @@
   align-items: center;
   justify-content: center;
   width: $width;
-  height: $height;
 
   svg,
   img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
 }
 
@@ -355,6 +367,53 @@
       svg path {
         stroke: $contrast-color;
         fill: $contrast-color;
+      }
+    }
+  }
+}
+
+@mixin slider-icon-container {
+  .btn {
+    border-radius: $border-radius-circle;
+    padding: $spacer-sm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $button-slider-background-color;
+    border: 1.5px solid $button-slider-border-color;
+    width: $icon-lg;
+    height: $icon-lg;
+    opacity: 1;
+    transition:
+      background-color 0.3s ease-in-out,
+      border-color 0.3s ease-in-out;
+
+    svg {
+      width: 100%;
+      height: 100%;
+
+      path {
+        stroke: $button-slider-svg-color;
+        fill: $button-slider-svg-color;
+        transition:
+          stroke 0.3s ease-in-out,
+          fill 0.3s ease-in-out;
+      }
+    }
+    &:hover {
+      background-color: $button-slider-background-hover-color;
+      border-color: $button-slider-hover-border-color;
+      cursor: pointer;
+      transition:
+        background-color 0.3s ease-in-out,
+        border-color 0.3s ease-in-out;
+
+      svg path {
+        stroke: $button-slider-hover-svg-color;
+        fill: $button-slider-hover-svg-color;
+        transition:
+          stroke 0.3s ease-in-out,
+          fill 0.3s ease-in-out;
       }
     }
   }
@@ -436,7 +495,7 @@
 
   .slide-button-container {
     margin-block: $spacer-md;
-    @include icon-container;
+    @include slider-icon-container;
 
     &:first-child {
       justify-self: start;
@@ -447,21 +506,19 @@
     }
 
     .btn {
-      opacity: 1;
-
       &[hidden],
       &.disabled {
-        opacity: 0.5;
-
-        &:hover {
-          background-color: $primary-color;
-        }
-
-        svg {
-          path {
-            stroke: $default-color;
-            fill: $default-color;
-          }
+        background-color: $button-slider-disabled-background-color;
+        border-color: $button-slider-disabled-border-color;
+        transition:
+          background-color 0.3s ease-in-out,
+          border-color 0.3s ease-in-out;
+        svg path {
+          stroke: $button-slider-disabled-svg-color;
+          fill: $button-slider-disabled-svg-color;
+          transition:
+            stroke 0.3s ease-in-out,
+            fill 0.3s ease-in-out;
         }
       }
     }

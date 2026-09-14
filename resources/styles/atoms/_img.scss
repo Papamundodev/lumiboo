@@ -4,7 +4,7 @@
 @use "../utilities/spacer" as *;
 
 .logo-container {
-  @include img-container;
+  @include img-container($width: $img-lg, $padding: $spacer-xs);
   @include button-focus-within;
 }
 

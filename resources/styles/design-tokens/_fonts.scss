@@ -4,6 +4,14 @@ See post on fluid typo in my blog.
 
 @font-face {
   font-family: "Barlow";
+  src: url("../fonts/Barlow-thin.woff2") format("woff2");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Barlow";
   src: url("../fonts/Barlow-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
@@ -12,8 +20,8 @@ See post on fluid typo in my blog.
 
 @font-face {
   font-family: "Barlow";
-  src: url("../fonts/Barlow-Bold.woff2") format("woff2");
-  font-weight: 700;
+  src: url("../fonts/Barlow-SemiBold.woff2") format("woff2");
+  font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
@@ -44,11 +52,13 @@ $text-font:
   -apple-system,
   "Segoe UI",
   sans-serif;
-$heading-font:
-  "Charis SIL",
-  Georgia,
-  "Times New Roman",
-  serif;
+$heading-font: "Charis SIL", Georgia, "Times New Roman", serif;
+$button-font:
+  "Barlow",
+  system-ui,
+  -apple-system,
+  "Segoe UI",
+  sans-serif;
 $nav-font:
   "Barlow",
   system-ui,
@@ -59,6 +69,7 @@ $fonts: (
   "text": $text-font,
   "heading": $heading-font,
   "nav": $nav-font,
+  "button": $button-font,
 );
 
 @each $key, $value in $fonts {
@@ -74,10 +85,12 @@ $font-size-sm: 1rem;
 $font-size-default: 1.25rem;
 $font-size-md: 1.5rem;
 $font-size-lg: 2rem;
-$font-size-xl: 2.5rem;
+$font-size-xl: 2.25rem;
 $font-size-xxl: 3rem;
 $font-size-bg: 4.5rem;
 $font-size-big: 5rem;
+
+$font-size-button: 1rem;
 
 $font-sizes: (
   "xs": $font-size-xs,
@@ -89,6 +102,7 @@ $font-sizes: (
   "xxl": $font-size-xxl,
   "bg": $font-size-bg,
   "big": $font-size-big,
+  "button": $font-size-button,
 );
 
 @each $key, $value in $font-sizes {
@@ -98,10 +112,14 @@ $font-sizes: (
 }
 
 /* ------- Font Weight Test ------- */
+$font-weight-thin: 100;
 $font-weight-regular: 400;
+$font-weight-semibold: 600;
 $font-weight-bold: 700;
 
 $font-weights: (
+  "thin": $font-weight-thin,
+  "semibold": $font-weight-semibold,
   "regular": $font-weight-regular,
   "bold": $font-weight-bold,
   "default": $font-weight-regular,

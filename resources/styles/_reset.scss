@@ -57,7 +57,7 @@ a:not([class]) {
 
 a:not(.btn) {
   &:focus-visible {
-    outline: 2px solid blue;
+    outline: 2px solid $focus-within-color;
     outline-offset: $spacer-xs;
   }
 }
