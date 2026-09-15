@@ -1,6 +1,11 @@
 <?php
 
+use Theme_base\Account;
+use Theme_base\AccountAdmin;
+use Theme_base\Acf;
+use Theme_base\Checkout;
 use Theme_base\Base;
+use Theme_base\Forms;
 use Theme_base\Woocommerce;
 
 /**
@@ -50,6 +55,50 @@ $theme_wc->deferOrderAttributionOnNonCheckout();
 $theme_wc->fixExpressCheckoutOnClassicCheckout();
 $theme_wc->fixPpcpRecaptchaOnClassicCheckout();
 $theme_wc->setLoopShopPerPage(9);
+
+/**
+ * Espace compte Lumiboo — tableau de bord et personnalisation d'une commande.
+ *
+ * Les groupes ACF (`acf/account.json`) sont enregistrés en local field group :
+ * ils n'écrasent jamais un groupe déjà importé en base, repéré par sa clé.
+ *
+ * Après activation, penser à vider les permaliens une fois pour que
+ * l'endpoint `/my-account/personnalisation/` soit résolu.
+ */
+add_action('acf/init', [Acf::class, 'register']);
+
+(new Account())->register();
+
+/**
+ * Consultation et correction des dossiers depuis l'administration (§12).
+ * Réservé aux administrateurs, conformément à l'arbitrage B06.
+ */
+if (is_admin()) {
+    (new AccountAdmin())->register();
+}
+
+/**
+ * Parcours de réservation : une machine par commande, aucun écran de panier,
+ * facturation seule au checkout.
+ *
+ * Les champs du checkout sont pilotés depuis YITH Checkout Manager ; la
+ * disposition du wireframe est en CSS. Aucun template WooCommerce n'est
+ * surchargé pour cet écran.
+ */
+(new Checkout())->register();
+
+/**
+ * Formulaires publics : contact (§13.2) et demande de devis (§8.5).
+ *
+ * Les deux sont rendus par `partials/form/contact.php` et
+ * `partials/form/devis.php`, et traités par `admin-post.php`. Le destinataire,
+ * les pages d'atterrissage entreprise et les types d'événement se règlent
+ * depuis la page d'options ACF « Formulaires » (`acf/forms.json`).
+ *
+ * Tant que Lumiboo n'a pas fourni l'adresse opérationnelle, les demandes
+ * partent vers l'adresse d'administration du site.
+ */
+(new Forms())->register();
 
 /**
  * Product attributes / checkout fields — DORMANT PAR DÉFAUT.

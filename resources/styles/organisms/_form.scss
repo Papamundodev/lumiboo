@@ -26,3 +26,140 @@
     }
   }
 }
+
+/**
+ * Formulaires publics : contact et demande de devis.
+ *
+ * Les champs occupent toute la largeur disponible et se regroupent par deux
+ * dans un `.form-row`. Sous 600px, la rangée se déplie : conformément à R24,
+ * aucun champ ni aucune action ne disparaît à l'étroit.
+ */
+.lumiboo-form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer-sm;
+  width: 100%;
+
+  .form-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacer-sm;
+
+    .form-group {
+      flex: 1 1 200px;
+    }
+  }
+
+  input,
+  select,
+  textarea {
+    @include text-sm;
+    width: 100%;
+    padding-inline: $spacer-md;
+    padding-block: $spacer-xs;
+    color: $default-color;
+    background-color: $background-color;
+    border: 1px solid $tertiary-shade-color;
+    border-radius: $border-radius-sm;
+
+    &::placeholder {
+      color: $default-color;
+      opacity: 1;
+    }
+
+    &:focus-visible {
+      outline: 1.5px solid $focus-within-color;
+      outline-offset: 1px;
+    }
+
+    // Un champ refusé par le serveur reste identifiable sans dépendre
+    // uniquement de la couleur : le message d'erreur le nomme (R24).
+    &[aria-invalid="true"] {
+      border-color: $primary-color;
+    }
+  }
+
+  textarea {
+    padding-block: $spacer-sm;
+    resize: vertical;
+  }
+
+  select {
+    appearance: none;
+    padding-inline-end: $spacer-xl;
+    cursor: pointer;
+  }
+
+  .form-group--select {
+    position: relative;
+
+    // Flèche du menu déroulant, dessinée en CSS pour éviter une image de plus.
+    &::after {
+      content: "";
+      position: absolute;
+      inset-inline-end: $spacer-md;
+      top: 50%;
+      width: 8px;
+      height: 8px;
+      border-inline-end: 2px solid $default-color;
+      border-block-end: 2px solid $default-color;
+      transform: translateY(-75%) rotate(45deg);
+      pointer-events: none;
+    }
+  }
+
+  .form-group--audience {
+    display: flex;
+    gap: $spacer-lg;
+    padding: 0;
+    border: 0;
+  }
+
+  .form-choice {
+    display: inline-flex;
+    align-items: center;
+    gap: $spacer-xs;
+
+    input {
+      width: auto;
+      accent-color: $primary-color;
+    }
+
+    label {
+      @include text-sm;
+      cursor: pointer;
+    }
+  }
+
+  // Piège à robots : hors du flux et hors de la navigation au clavier.
+  .form-trap {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .form-submit {
+    align-self: flex-start;
+    margin-block-start: $spacer-xs;
+  }
+}
+
+.form-notice {
+  @include text-sm;
+  padding: $spacer-sm $spacer-md;
+  border-radius: $border-radius-sm;
+  border-inline-start: 3px solid $primary-color;
+  background-color: $gray-color;
+
+  &--success {
+    border-inline-start-color: $tertiary-shade-color;
+  }
+
+  .form-notice-errors {
+    margin-block-start: $spacer-xs;
+    padding-inline-start: $spacer-md;
+    list-style: disc;
+  }
+}

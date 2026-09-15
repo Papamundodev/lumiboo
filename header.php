@@ -61,7 +61,17 @@
                         <?= esc_html($cart_count); ?>
                     </span>
                 <?php endif; ?>
-                <a href="<?= esc_url(function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart')); ?>" class="btn" title="<?= __('Voir le panier', 'theme_base'); ?>">
+                <?php
+                /**
+                 * Aucune page panier dans le parcours : l'icône ouvre le
+                 * checkout de la sélection en cours, ou invite à choisir un
+                 * produit lorsqu'aucune sélection n'existe (R01).
+                 */
+                $cart_url = $cart_count > 0
+                    ? wc_get_checkout_url()
+                    : (new Theme_base\Checkout())->productsUrl();
+                ?>
+                <a href="<?= esc_url($cart_url); ?>" class="btn" title="<?= esc_attr($cart_count > 0 ? __('Voir ma réservation', 'theme_base') : __('Choisir un photobooth', 'theme_base')); ?>">
                     <?= Base::inline_svg('cart.svg'); ?>
                 </a>
             </div>

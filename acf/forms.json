@@ -1,0 +1,261 @@
+[
+  {
+    "key": "group_lumiboo_forms",
+    "title": "Formulaires — destinataires et contenus",
+    "location": [
+      [
+        {
+          "param": "options_page",
+          "operator": "==",
+          "value": "lumiboo-forms"
+        }
+      ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Destinataires, pages d’atterrissage entreprise et messages des formulaires de contact et de devis.",
+    "fields": [
+      {
+        "key": "field_lum_form_tab_general",
+        "label": "Général",
+        "name": "",
+        "type": "tab",
+        "placement": "top"
+      },
+      {
+        "key": "field_lum_form_recipient",
+        "label": "Destinataire des demandes",
+        "name": "forms_recipient",
+        "type": "email",
+        "instructions": "Adresse qui reçoit les deux formulaires. Laissée vide, les demandes partent vers l’adresse d’administration du site. L’adresse opérationnelle définitive est à fournir par Lumiboo."
+      },
+      {
+        "key": "field_lum_form_company_pages",
+        "label": "Pages d’atterrissage entreprise",
+        "name": "forms_company_pages",
+        "type": "post_object",
+        "post_type": [
+          "page",
+          "post",
+          "product"
+        ],
+        "multiple": 1,
+        "return_format": "id",
+        "ui": 1,
+        "instructions": "Sur ces pages, et sur leurs sous-pages, le formulaire de contact arrive avec « Entreprise » présélectionné. Partout ailleurs, c’est « Particulier ». Ce choix reste une information de contact : il ne change ni les produits, ni les options, ni le checkout."
+      },
+      {
+        "key": "field_lum_form_event_types",
+        "label": "Types d’événement proposés",
+        "name": "forms_event_types",
+        "type": "repeater",
+        "layout": "table",
+        "button_label": "Ajouter un type d’événement",
+        "min": 0,
+        "instructions": "Liste du menu déroulant des deux formulaires. Vide, les cinq usages des fiches produit sont utilisés : mariage, anniversaire, baby shower, entreprise et événement public.",
+        "sub_fields": [
+          {
+            "key": "field_lum_form_event_label",
+            "label": "Libellé",
+            "name": "label",
+            "type": "text"
+          }
+        ]
+      },
+      {
+        "key": "field_lum_form_tab_contact",
+        "label": "Contact",
+        "name": "",
+        "type": "tab",
+        "placement": "top"
+      },
+      {
+        "key": "field_lum_form_contact_recipient",
+        "label": "Destinataire spécifique",
+        "name": "forms_contact_recipient",
+        "type": "email",
+        "instructions": "Facultatif. Remplace le destinataire général pour les demandes de contact uniquement."
+      },
+      {
+        "key": "field_lum_form_contact_title",
+        "label": "Titre de la section",
+        "name": "forms_contact_title",
+        "type": "text",
+        "default_value": "Une question avant de réserver ?"
+      },
+      {
+        "key": "field_lum_form_contact_submit",
+        "label": "Libellé du bouton",
+        "name": "forms_contact_submit",
+        "type": "text",
+        "default_value": "Envoyer"
+      },
+      {
+        "key": "field_lum_form_contact_success",
+        "label": "Message de confirmation",
+        "name": "forms_contact_success",
+        "type": "textarea",
+        "rows": 2,
+        "default_value": "Merci, votre demande est bien reçue. Nous vous répondons dans les meilleurs délais.",
+        "instructions": "Affiché après l’envoi. Aucune réservation n’est créée : le formulaire de contact n’est pas une commande."
+      },
+      {
+        "key": "field_lum_form_tab_devis",
+        "label": "Devis",
+        "name": "",
+        "type": "tab",
+        "placement": "top"
+      },
+      {
+        "key": "field_lum_form_devis_recipient",
+        "label": "Destinataire spécifique",
+        "name": "forms_devis_recipient",
+        "type": "email",
+        "instructions": "Facultatif. Remplace le destinataire général pour les demandes de devis uniquement."
+      },
+      {
+        "key": "field_lum_form_devis_title",
+        "label": "Titre de la section",
+        "name": "forms_devis_title",
+        "type": "text",
+        "default_value": "Événement de plus de 24 h ?",
+        "instructions": "Texte du bloc qui mène à la demande de devis sur les deux fiches produit."
+      },
+      {
+        "key": "field_lum_form_devis_submit",
+        "label": "Libellé du bouton",
+        "name": "forms_devis_submit",
+        "type": "text",
+        "default_value": "Demander un devis"
+      },
+      {
+        "key": "field_lum_form_devis_success",
+        "label": "Message de confirmation",
+        "name": "forms_devis_success",
+        "type": "textarea",
+        "rows": 2,
+        "default_value": "Merci, votre demande de devis est bien reçue. Notre équipe revient vers vous rapidement.",
+        "instructions": "Accusé de réception du formulaire de plus de 24 heures. L’envoi ne crée ni commande, ni réservation ferme, ni occupation de stock."
+      },
+      {
+        "key": "field_lum_form_tab_envoi",
+        "label": "Envoi & anti-spam",
+        "name": "",
+        "type": "tab",
+        "placement": "top"
+      },
+      {
+        "key": "field_lum_form_from_email",
+        "label": "Adresse expéditrice",
+        "name": "forms_from_email",
+        "type": "email",
+        "instructions": "À renseigner au passage chez l’hébergeur, avec une adresse du domaine autorisée à envoyer (SPF/DKIM) : sans cela les demandes risquent l’indésirable. Laissée vide, WordPress utilise son adresse par défaut. Ce n’est jamais l’adresse du visiteur, qui sert uniquement de « Répondre à »."
+      },
+      {
+        "key": "field_lum_form_from_name",
+        "label": "Nom de l’expéditeur",
+        "name": "forms_from_name",
+        "type": "text",
+        "instructions": "Facultatif, affiché à côté de l’adresse expéditrice."
+      },
+      {
+        "key": "field_lum_form_copy",
+        "label": "Adresses en copie",
+        "name": "forms_copy",
+        "type": "text",
+        "instructions": "Facultatif. Plusieurs adresses séparées par des virgules. Une adresse mal formée est ignorée."
+      },
+      {
+        "key": "field_lum_form_recaptcha_site_key",
+        "label": "reCAPTCHA v3 — clé de site",
+        "name": "forms_recaptcha_site_key",
+        "type": "text",
+        "instructions": "La protection ne s’active que si les deux clés sont remplies. Laissées vides, les formulaires restent protégés par le jeton de sécurité, le champ piège et la limitation d’envoi."
+      },
+      {
+        "key": "field_lum_form_recaptcha_secret",
+        "label": "reCAPTCHA v3 — clé secrète",
+        "name": "forms_recaptcha_secret",
+        "type": "text"
+      },
+      {
+        "key": "field_lum_form_recaptcha_threshold",
+        "label": "reCAPTCHA v3 — score minimal",
+        "name": "forms_recaptcha_threshold",
+        "type": "number",
+        "min": 0,
+        "max": 1,
+        "step": 0.1,
+        "placeholder": "0.5",
+        "instructions": "Entre 0 et 1. Plus la valeur est haute, plus le filtrage est strict. Vide, le seuil est 0.5."
+      },
+      {
+        "key": "field_lum_form_throttle_delay",
+        "label": "Délai entre deux envois (secondes)",
+        "name": "forms_throttle_delay",
+        "type": "number",
+        "min": 0,
+        "step": 1,
+        "placeholder": "30",
+        "instructions": "Temps d’attente imposé après un envoi réussi depuis un même appareil. Vide, 30 secondes."
+      },
+      {
+        "key": "field_lum_form_throttle_max",
+        "label": "Soumissions maximales par heure",
+        "name": "forms_throttle_max",
+        "type": "number",
+        "min": 1,
+        "step": 1,
+        "placeholder": "20",
+        "instructions": "Plafond horaire par appareil, toutes tentatives confondues. Vide, 20. À relever si un réseau d’entreprise partage une même adresse IP."
+      },
+      {
+        "key": "field_lum_form_tab_messages",
+        "label": "Messages d’erreur",
+        "name": "",
+        "type": "tab",
+        "placement": "top"
+      },
+      {
+        "key": "field_lum_form_error_invalid",
+        "label": "Champs à corriger",
+        "name": "forms_error_invalid",
+        "type": "text",
+        "default_value": "Certains champs doivent être corrigés."
+      },
+      {
+        "key": "field_lum_form_error_expired",
+        "label": "Page restée ouverte trop longtemps",
+        "name": "forms_error_expired",
+        "type": "text",
+        "default_value": "Votre session a expiré. Merci de renvoyer le formulaire."
+      },
+      {
+        "key": "field_lum_form_error_throttled",
+        "label": "Envois trop rapprochés",
+        "name": "forms_error_throttled",
+        "type": "text",
+        "default_value": "Une demande vient d’être envoyée depuis cet appareil. Merci de patienter quelques instants."
+      },
+      {
+        "key": "field_lum_form_error_mail",
+        "label": "Échec de l’envoi",
+        "name": "forms_error_mail",
+        "type": "text",
+        "default_value": "L’envoi a échoué. Merci de réessayer ou de nous contacter directement."
+      },
+      {
+        "key": "field_lum_form_error_recaptcha",
+        "label": "Vérification anti-spam refusée",
+        "name": "forms_error_recaptcha",
+        "type": "text",
+        "default_value": "Votre envoi n’a pas pu être vérifié. Merci de réessayer."
+      }
+    ]
+  }
+]

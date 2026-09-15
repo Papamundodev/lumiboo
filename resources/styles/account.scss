@@ -1,0 +1,578 @@
+@use "design-tokens/colors" as *;
+@use "design-tokens/tokens" as *;
+@use "design-tokens/fonts" as *;
+@use "utilities/container" as *;
+@use "utilities/spacer" as *;
+@use "mixins" as *;
+
+/* =======================================================
+   Espace compte Lumiboo — positionnement uniquement.
+   Couleurs, typographies et espacements viennent des
+   design tokens ; aucune valeur brute n'est réintroduite.
+   ======================================================= */
+
+.account {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer-xxl;
+  margin-block-end: $spacer-xxl;
+}
+
+.account-title {
+  @include heading-lg;
+  text-align: center;
+}
+
+.account-section-title,
+.account-orders-title {
+  @include heading-md;
+  margin-block-end: $spacer-lg;
+}
+
+.account-empty {
+  @include text-default;
+  padding-block: $spacer-lg;
+}
+
+/* ------- En-tête et indicateurs ------- */
+
+.account-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacer-lg;
+  padding-block: $spacer-xxl;
+  background-color: $gray-color;
+  border-radius: $border-radius-rounded;
+}
+
+.account-indicators {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: $spacer-xxl;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.account-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacer-xs;
+  text-align: center;
+}
+
+.account-indicator-value {
+  @include heading-xl;
+}
+
+.account-indicator-label {
+  @include text-xs;
+  text-transform: uppercase;
+  max-width: 14ch;
+}
+
+.account-header-action {
+  margin: 0;
+}
+
+/* ------- Cartes ------- */
+
+.account-cards {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer-lg;
+  margin: 0 0 $spacer-xxl;
+  padding: 0;
+  list-style: none;
+}
+
+.account-card {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer-md;
+  padding: $spacer-xl;
+  border: 1px solid $secondary-tint-2-color;
+  border-radius: $border-radius-rounded;
+
+  &.is-locked {
+    border-style: dashed;
+  }
+}
+
+.account-card-title {
+  @include heading-md;
+}
+
+.account-card-meta {
+  display: grid;
+  gap: $spacer-xs;
+  margin: 0;
+}
+
+.account-card-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacer-xs;
+
+  dt {
+    @include text-bold;
+    font-size: $font-size-xs;
+
+    &::after {
+      content: " :";
+    }
+  }
+
+  dd {
+    @include text-xs;
+    margin: 0;
+  }
+}
+
+.account-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $spacer-md;
+}
+
+.account-card-note,
+.account-card-pending {
+  @include text-xs;
+  margin: 0;
+}
+
+.account-card-pending {
+  font-style: italic;
+}
+
+.account-card-documents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacer-lg;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  a {
+    @include link;
+    @include text-xs;
+  }
+}
+
+.account-card-invoice {
+  margin: 0;
+
+  a {
+    @include link;
+    @include text-xs;
+  }
+}
+
+/* Action dont le parcours n'est pas encore spécifié (blocage B04). */
+.button-container.is-disabled {
+  opacity: 0.5;
+
+  button[disabled] {
+    cursor: not-allowed;
+  }
+}
+
+/* ------- Progression ------- */
+
+.account-progress-steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: $spacer-sm;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.account-progress-step {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer-xs;
+}
+
+.account-progress-bar {
+  display: block;
+  block-size: $icon-xs;
+  border-radius: $border-radius-pill;
+  background-color: $secondary-tint-2-color;
+
+  .account-progress-step.is-done & {
+    background-color: $primary-color;
+  }
+}
+
+.account-progress-label {
+  @include text-xs;
+  font-size: $font-size-lead;
+  text-transform: uppercase;
+}
+
+/* ------- Messages ------- */
+
+.account-notice {
+  padding: $spacer-md $spacer-lg;
+  border-inline-start: $border-radius-sm solid $primary-color;
+  background-color: $gray-color;
+  border-radius: $border-radius-sm;
+
+  p {
+    @include text-sm;
+    margin: 0;
+  }
+
+  &--warning {
+    border-inline-start-color: $tertiary-shade-color;
+  }
+
+  &--error {
+    border-inline-start-color: $primary-shade-2-color;
+  }
+}
+
+.account-notice-errors {
+  margin-block-start: $spacer-xs;
+
+  li {
+    @include text-xs;
+  }
+}
+
+.account-locked-notice {
+  @include text-sm;
+  padding: $spacer-md $spacer-lg;
+  background-color: $secondary-tint-color;
+  border-radius: $border-radius-sm;
+
+  a {
+    @include link;
+  }
+}
+
+/* ------- Personnalisation ------- */
+
+.account-perso-header {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer-xs;
+}
+
+.account-perso-reference {
+  @include text-xs;
+  margin: 0;
+}
+
+.account-perso-back {
+  @include link;
+  @include text-xs;
+  width: fit-content;
+}
+
+.account-perso-form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer-xxl;
+}
+
+.account-perso-main {
+  display: grid;
+  gap: $spacer-xxl;
+
+  @media (width >= $breakpoint-lg) {
+    grid-template-columns: 1fr 1fr;
+    align-items: start;
+  }
+}
+
+.account-perso-fields {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer-xl;
+}
+
+.account-perso-illustration {
+  margin: 0;
+
+  img {
+    inline-size: 100%;
+    block-size: auto;
+    border-radius: $border-radius-rounded;
+  }
+
+  &.is-placeholder {
+    aspect-ratio: 1;
+    background-color: $secondary-tint-2-color;
+    border-radius: $border-radius-rounded;
+  }
+}
+
+.account-field {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer-sm;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.account-field-title {
+  @include heading-md;
+  font-size: $font-size-sm;
+  text-transform: uppercase;
+  padding: 0;
+}
+
+.account-field-hint {
+  @include text-xs;
+  font-size: $font-size-lead;
+  margin: 0;
+}
+
+.account-templates {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax($img-md, 1fr));
+  gap: $spacer-md;
+}
+
+.account-template {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer-xs;
+  cursor: pointer;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  input:focus-visible + .account-template-visual {
+    outline: 2px solid $focus-within-color;
+    outline-offset: $spacer-xs;
+  }
+
+  input:checked + .account-template-visual {
+    border-color: $primary-color;
+  }
+}
+
+.account-template-visual {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  border: 2px solid $secondary-tint-2-color;
+  border-radius: $border-radius-md;
+  background-color: $gray-color;
+  overflow: hidden;
+
+  img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+}
+
+.account-template-label {
+  @include text-xs;
+}
+
+.account-choice {
+  display: flex;
+  align-items: center;
+  gap: $spacer-xs;
+  @include text-xs;
+  cursor: pointer;
+}
+
+.account-upload {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer-xs;
+  padding-inline-start: $spacer-lg;
+
+  input[type="text"] {
+    @include text-sm;
+    inline-size: 100%;
+    padding: $spacer-xs $spacer-md;
+    border: 1px solid $secondary-tint-2-color;
+    border-radius: $border-radius-sm;
+  }
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.account-upload-current {
+  display: flex;
+  align-items: center;
+  gap: $spacer-xs;
+  margin: 0;
+  @include text-xs;
+
+  img {
+    inline-size: $icon-lg;
+    block-size: auto;
+    border-radius: $border-radius-sm;
+  }
+}
+
+.account-perso-studio {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer-xl;
+  padding: $spacer-xl;
+  background-color: $gray-color;
+  border-radius: $border-radius-rounded;
+}
+
+.account-perso-studio-row {
+  display: grid;
+  gap: $spacer-lg;
+
+  @media (width >= $breakpoint-md) {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+}
+
+.account-perso-studio-preview {
+  aspect-ratio: 4 / 3;
+  background-color: $secondary-tint-2-color;
+  border-radius: $border-radius-md;
+  overflow: hidden;
+
+  img {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+  }
+}
+
+.account-perso-requests textarea {
+  @include text-sm;
+  inline-size: 100%;
+  padding: $spacer-sm $spacer-md;
+  border: 1px solid $secondary-tint-2-color;
+  border-radius: $border-radius-sm;
+  resize: vertical;
+}
+
+/* ------- Informations personnelles ------- */
+
+.account-profile-grid {
+  display: grid;
+  gap: $spacer-xl;
+
+  @media (width >= $breakpoint-md) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.account-profile-legend {
+  @include text-bold;
+  font-size: $font-size-sm;
+  margin-block-end: $spacer-sm;
+}
+
+.account-profile-field {
+  display: flex;
+  flex-direction: column;
+  gap: $spacer-xs;
+  margin-block-end: $spacer-sm;
+
+  label {
+    @include text-xs;
+    font-size: $font-size-lead;
+  }
+
+  input {
+    @include text-sm;
+    padding: $spacer-xs $spacer-md;
+    border: 1px solid $secondary-tint-2-color;
+    border-radius: $border-radius-sm;
+  }
+
+  input[readonly] {
+    background-color: $gray-color;
+    border-color: transparent;
+  }
+}
+
+.account-profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacer-md;
+  margin-block-start: $spacer-lg;
+
+  [hidden] {
+    display: none;
+  }
+}
+
+.account-profile-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacer-lg;
+  margin-block-start: $spacer-lg;
+
+  a {
+    @include link;
+    @include text-xs;
+  }
+}
+
+/* ------- Confirmation de commande ------- */
+
+.account-thankyou {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: $spacer-md;
+  margin-block: $spacer-xxl;
+  padding: $spacer-xl;
+  background-color: $gray-color;
+  border-radius: $border-radius-rounded;
+}
+
+.account-thankyou-title {
+  @include heading-md;
+}
+
+.account-thankyou-text {
+  @include text-sm;
+  margin: 0;
+  max-width: 60ch;
+}
+
+/* ------- SAV ------- */
+
+.account-sav {
+  @include text-sm;
+  padding: $spacer-md $spacer-lg;
+  background-color: $secondary-tint-color;
+  border-radius: $border-radius-rounded;
+  text-align: center;
+
+  a {
+    @include link;
+  }
+}
+
+/* ------- Accessibilité ------- */
+
+.screen-reader-text {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

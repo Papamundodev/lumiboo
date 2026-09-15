@@ -11,6 +11,7 @@
  */
 
 use Theme_base\Base;
+use Theme_base\Forms;
 use Theme_base\Woocommerce;
 
 if (! defined('ABSPATH')) {
@@ -117,6 +118,37 @@ get_header('shop'); ?>
             comments_template();
         }
         ?>
+
+        <?php
+        /**
+         * Demande de devis au-delà de 24 heures (§8.5).
+         *
+         * R06 recommande une modale contextualisée ; l'ouverture en modale ou
+         * sur une page reste à confirmer par Lumiboo. En attendant, la section
+         * est en clair sur la fiche : le produit courant y est présélectionné.
+         */
+        ?>
+        <section aria-labelledby="section-devis-title" class="section-devis container">
+            <h2 id="section-devis-title" class="section-title">
+                <?= esc_html(Forms::text('devis_title', __('Événement de plus de 24 h ?', 'theme_base'))); ?>
+            </h2>
+            <?php get_template_part('partials/form/devis'); ?>
+        </section>
+
+        <?php
+        /**
+         * « Une question avant de réserver ? » (§13.2).
+         *
+         * Le formulaire n'ouvre aucun parcours de commande : après envoi, une
+         * confirmation s'affiche et aucune carte de réservation n'apparaît.
+         */
+        ?>
+        <section aria-labelledby="section-contact-title" class="section-contact container">
+            <h2 id="section-contact-title" class="section-title">
+                <?= esc_html(Forms::text('contact_title', __('Une question avant de réserver ?', 'theme_base'))); ?>
+            </h2>
+            <?php get_template_part('partials/form/contact'); ?>
+        </section>
 
     </main>
 

@@ -1,0 +1,211 @@
+@use "../design-tokens/colors" as *;
+@use "../design-tokens/tokens" as *;
+@use "../utilities/spacer" as *;
+@use "../mixins" as *;
+
+/**
+ * Checkout — disposition du wireframe sans surcharge de template.
+ *
+ * WooCommerce rend déjà la structure attendue : `#customer_details` contient
+ * la facturation puis la note de commande, `#order_review` contient le
+ * récapitulatif, les moyens de paiement, les CGV et le bouton. Les deux
+ * colonnes sont obtenues ici en grille ; le titre « Votre commande » est
+ * ramené dans la colonne de droite, au-dessus du récapitulatif.
+ */
+
+.woocommerce-checkout {
+  .woocommerce {
+    @include text-container;
+  }
+
+  form.checkout {
+    display: grid;
+    align-items: start;
+    gap: $spacer-xl;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "details"
+      "review-title"
+      "review";
+
+    @media (min-width: 900px) {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 24rem);
+      grid-template-areas:
+        "details review-title"
+        "details review";
+    }
+  }
+
+  #customer_details {
+    display: block;
+    grid-area: details;
+
+    .col-1,
+    .col-2 {
+      float: none;
+      width: 100%;
+    }
+
+    .col-2:empty {
+      display: none;
+    }
+  }
+
+  #order_review_heading {
+    grid-area: review-title;
+    margin: 0;
+    @include heading-md;
+  }
+
+  #order_review {
+    grid-area: review;
+    background-color: $secondary-tint-color;
+    border-radius: $border-radius-rounded;
+    padding: $spacer-lg;
+  }
+}
+
+/* ------- Colonne de gauche : identité, adresse, note ------- */
+
+.woocommerce-billing-fields,
+.woocommerce-additional-fields {
+  h3 {
+    margin-block-end: $spacer-md;
+    @include heading-md;
+  }
+
+  /* Titres « Identité » et « Adresse », créés dans YITH Checkout Manager. */
+  .form-row.lumiboo-heading,
+  .woocommerce-heading {
+    margin-block: $spacer-lg $spacer-sm;
+    @include text-bold;
+  }
+}
+
+.woocommerce-billing-fields__field-wrapper,
+.woocommerce-additional-fields__field-wrapper {
+  display: grid;
+  gap: $spacer-sm;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+
+  .form-row {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  /* WooCommerce garde ces classes pour la largeur des champs. */
+  .form-row-wide,
+  #order_comments_field {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ------- Colonne de droite : récapitulatif et paiement ------- */
+
+.woocommerce-checkout-review-order-table {
+  border-collapse: collapse;
+  margin-block-end: $spacer-lg;
+  width: 100%;
+
+  thead {
+    /* Les en-têtes « Produit / Sous-total » n'existent pas au wireframe :
+       chaque ligne porte déjà son libellé. */
+    display: none;
+  }
+
+  th,
+  td {
+    border: 0;
+    padding-block: $spacer-xs;
+    text-align: start;
+    vertical-align: top;
+    @include text-sm;
+  }
+
+  td:last-child,
+  th:last-child {
+    text-align: end;
+    white-space: nowrap;
+  }
+
+  /* Options de la fiche produit : impressions, mode, date, adresse. */
+  .variation,
+  .wc-item-meta {
+    display: grid;
+    gap: 0 $spacer-xs;
+    grid-template-columns: auto 1fr;
+    list-style: none;
+    margin: $spacer-xs 0 0;
+    padding: 0;
+
+    dt,
+    dd,
+    li {
+      margin: 0;
+      @include text-xs;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .order-total {
+    border-block-start: 1px solid $gray-color;
+
+    th,
+    td {
+      padding-block-start: $spacer-sm;
+      @include text-bold;
+    }
+  }
+}
+
+#payment {
+  background: none;
+  border-radius: 0;
+
+  .wc_payment_methods {
+    display: grid;
+    gap: $spacer-xs;
+    list-style: none;
+    margin: 0 0 $spacer-md;
+    padding: 0;
+  }
+
+  .wc_payment_method > label {
+    background-color: $white-color;
+    border-radius: $border-radius-pill;
+    cursor: pointer;
+    display: block;
+    padding: $spacer-sm $spacer-md;
+    width: 100%;
+    @include text-sm;
+  }
+
+  .payment_box {
+    margin-block-start: $spacer-xs;
+    @include text-xs;
+  }
+
+  .woocommerce-terms-and-conditions-wrapper,
+  .lumiboo-newsletter {
+    margin-block-end: $spacer-xs;
+    @include text-xs;
+  }
+
+  .form-row.place-order {
+    margin-block-start: $spacer-lg;
+  }
+
+  #place_order {
+    @include btn;
+    @include button-background-primary;
+    width: 100%;
+  }
+}

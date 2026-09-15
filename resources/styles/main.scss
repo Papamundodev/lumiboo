@@ -17,6 +17,7 @@
 @use "organisms/aside" as *;
 @use "organisms/popover" as *;
 @use "organisms/form" as *;
+@use "organisms/checkout" as *;
 @use "organisms/reviews" as *;
 @use "utilities/container" as *;
 @use "utilities/spacer" as *;
@@ -24,6 +25,7 @@
 @use "utilities/slider" as *;
 
 @use "sections/valeurs" as *;
+@use "account" as *;
 @use "reset" as *;
 @use "mixins" as *;
 

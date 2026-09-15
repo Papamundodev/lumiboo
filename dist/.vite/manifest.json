@@ -1,11 +1,15 @@
 {
-  "resources/fonts/Barlow-Bold.woff2": {
-    "file": "CewTUPeB.woff2",
-    "src": "resources/fonts/Barlow-Bold.woff2"
-  },
   "resources/fonts/Barlow-Regular.woff2": {
     "file": "Bre0Y4Y4.woff2",
     "src": "resources/fonts/Barlow-Regular.woff2"
+  },
+  "resources/fonts/Barlow-SemiBold.woff2": {
+    "file": "CR2VLHkM.woff2",
+    "src": "resources/fonts/Barlow-SemiBold.woff2"
+  },
+  "resources/fonts/Barlow-Thin.woff2": {
+    "file": "C_R5pQup.woff2",
+    "src": "resources/fonts/Barlow-Thin.woff2"
   },
   "resources/fonts/CharisSIL-Bold.woff2": {
     "file": "C860p6Of.woff2",
@@ -14,6 +18,12 @@
   "resources/fonts/CharisSIL-Regular.woff2": {
     "file": "CdQFMq1B.woff2",
     "src": "resources/fonts/CharisSIL-Regular.woff2"
+  },
+  "resources/scripts/account.js": {
+    "file": "nD3olp_o.js",
+    "name": "account",
+    "src": "resources/scripts/account.js",
+    "isEntry": true
   },
   "resources/scripts/main.js": {
     "file": "DyeI6cnp.js",
@@ -34,7 +44,7 @@
     "isEntry": true
   },
   "resources/styles/main.scss": {
-    "file": "DP4tTyZ1.css",
+    "file": "BHkDBdRd.css",
     "src": "resources/styles/main.scss",
     "isEntry": true
   }
