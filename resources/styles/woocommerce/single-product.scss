@@ -1,0 +1,24 @@
+#main-single-product {
+  .yith-wcbk-form-section-dates-wrapper.yith-wcbk-form-section-wrapper {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .yith-wcbk-form-section.yith-wcbk-form-section-duration.yith-wcbk-form-section-duration--type-customer.yith-wcbk-form-section-duration--no-field {
+    display: flex;
+  }
+
+  .yith-wcbk-booking-form
+    .yith-wcbk-form-section-duration--no-field
+    .yith-wcbk-form-section__content {
+    padding: 0;
+    background-color: transparent;
+    min-height: 0;
+    .yith-wcbk-booking-duration__label {
+      display: none;
+    }
+  }
+  .yith-wcbk-booking-form label.yith-wcbk-booking-form__label {
+    margin-block: 0;
+  }
+}

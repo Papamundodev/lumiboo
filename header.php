@@ -14,6 +14,7 @@
     }
 
     use Theme_base\Base;
+    use Theme_base\Checkout;
     ?>
 
     <header class="main-header">
@@ -61,7 +62,24 @@
                         <?= esc_html($cart_count); ?>
                     </span>
                 <?php endif; ?>
-                <a href="<?= esc_url(function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart')); ?>" class="btn" title="<?= __('Voir le panier', 'theme_base'); ?>">
+                <?php
+                /**
+                 * Sans page panier (R01) : l'icône ouvre le checkout, ou
+                 * invite à choisir un produit. Sinon, URL panier WooCommerce.
+                 */
+                if (Checkout::cartPageIsDisabled()) {
+                    $cart_url = $cart_count > 0
+                        ? wc_get_checkout_url()
+                        : (new Checkout())->productsUrl();
+                    $cart_title = $cart_count > 0
+                        ? __('Voir ma réservation', 'theme_base')
+                        : __('Choisir un photobooth', 'theme_base');
+                } else {
+                    $cart_url = wc_get_cart_url();
+                    $cart_title = __('Voir le panier', 'theme_base');
+                }
+                ?>
+                <a href="<?= esc_url($cart_url); ?>" class="btn" title="<?= esc_attr($cart_title); ?>">
                     <?= Base::inline_svg('cart.svg'); ?>
                 </a>
             </div>

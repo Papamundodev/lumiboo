@@ -6,7 +6,7 @@ $content = get_the_content();
 ?>
 
 <main id="main-<?= $theme_template_name ?>" class="main" role="main">
-    <div class="container">
+    <div class="">
         <h1 class="page-title"><?= $title; ?></h1>
 
         <?php

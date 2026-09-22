@@ -357,4 +357,55 @@ class Woocommerce
 
         return (string) apply_filters('theme_base_related_products_title', $title, $args);
     }
+
+    /**
+     * Fiche produit bookable : deux blocs WYSIWYG ACF autour des add-ons.
+     *
+     *   1. `booking_intro`       → après les dates, dans la section message
+     *      Hook : `yith_wcbk_booking_form_message` (priorité 20, après le
+     *      message natif à 10). Rendu à l'intérieur de `.yith-wcbk-booking-form`.
+     *
+     *   2. `options_description` → après les options WAPO, avant le total.
+     *      Hook : `yith_wapo_after_addons`. Rendu à l'intérieur de
+     *      `#yith-wapo-container`, juste avant `#wapo-total-price-table`.
+     *
+     * Dépendances : YITH Booking + YITH WAPO + ACF. Chaque handler check ses
+     * dépendances et return silencieusement si un composant manque.
+     */
+    public function renderBookingProductAcfBlocks(): void
+    {
+        add_action('yith_wcbk_booking_form_message', [self::class, 'renderBookingIntro'], 20);
+        add_action('yith_wapo_after_addons', [self::class, 'renderOptionsDescription']);
+    }
+
+    public static function renderBookingIntro(): void
+    {
+        if (! function_exists('is_product') || ! is_product() || ! function_exists('get_field')) {
+            return;
+        }
+
+        $intro = get_field('booking_intro');
+        if (! $intro) {
+            return;
+        }
+
+        echo '<div class="lumiboo-booking-intro">' . wp_kses_post($intro) . '</div>';
+    }
+
+    public static function renderOptionsDescription(): void
+    {
+        if (! function_exists('get_field')) {
+            return;
+        }
+
+        global $product;
+        $product_id = $product instanceof \WC_Product ? $product->get_id() : get_the_ID();
+
+        $desc = get_field('option_description', $product_id);
+        if (! $desc) {
+            return;
+        }
+
+        echo '<div class="lumiboo-options-desc">' . wp_kses_post($desc) . '</div>';
+    }
 }

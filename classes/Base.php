@@ -79,6 +79,17 @@ class Base
                 'update_button'   => __('Mise à jour', 'theme_base'),
                 'updated_message' => __('Options mises à jour', 'theme_base'),
             ]);
+
+            acf_add_options_page([
+                'page_title'      => __('Lumiboo', 'theme_base'),
+                'menu_title'      => __('Lumiboo', 'theme_base'),
+                'menu_slug'       => 'lumiboo-settings',
+                'capability'      => 'manage_options',
+                'redirect'        => false,
+                'autoload'        => false,
+                'update_button'   => __('Mise à jour', 'theme_base'),
+                'updated_message' => __('Options mises à jour', 'theme_base'),
+            ]);
         });
     }
 

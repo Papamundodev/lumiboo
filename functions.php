@@ -1,6 +1,12 @@
 <?php
 
+use Theme_base\Account;
 use Theme_base\Base;
+use Theme_base\Checkout;
+use Theme_base\Impressions;
+use Theme_base\Personalisation;
+use Theme_base\PremiumPricing;
+use Theme_base\Studio;
 use Theme_base\Woocommerce;
 
 /**
@@ -52,45 +58,44 @@ $theme_wc->fixPpcpRecaptchaOnClassicCheckout();
 $theme_wc->setLoopShopPerPage(9);
 
 /**
- * Product attributes / checkout fields — DORMANT PAR DÉFAUT.
+ * Parcours de réservation : facturation seule au checkout.
  *
- * Décommenter les 2 blocs pour activer un attribut affiché (cartes + PDP)
- * et/ou un champ checkout persisté en meta commande.
- *
- * 1. registerProductAttribute  (affichage + création optionnelle pa_{slug})
- * 2. addCheckoutField          (classic checkout → meta → admin / customer / emails)
+ * Les champs du checkout sont pilotés depuis YITH Checkout Manager ; la
+ * disposition du wireframe est en CSS. Aucun template WooCommerce n'est
+ * surchargé pour cet écran.
  */
-// $theme_wc->registerProductAttribute([
-//     'slug'   => 'duree',
-//     'label'  => __('Duration', 'theme_base'),
-//     'icon'   => 'time',
-//     'prefix' => __('Duration: ', 'theme_base'),
-//     'type'   => 'select',
-//     'create' => false,
-// ]);
+$checkout = new Checkout();
+$checkout->register();
 
-// $theme_wc->addCheckoutField([
-//     'id'          => 'training_objectives',
-//     'label'       => __('Expected objectives', 'theme_base'),
-//     'placeholder' => __('Tell us what you expect from this course', 'theme_base'),
-//     'required'    => true,
-//     'show_in'     => ['admin', 'customer', 'emails'],
-// ]);
+// Compte client auto-créé au checkout (chunk 4) : registration required
+// + mot de passe généré, mail natif « Nouveau compte » avec lien de
+// définition, filet de sécurité `ensureCustomerAccount` en priorité 10
+// avant Studio/Impressions, carte Lumiboo sur la page de remerciement.
+Account::register();
+Personalisation::register();
 
+// Une machine par commande (G02) : quantité 1, un ajout remplace le précédent.
+// Décommenter la ligne suivante pour réactiver la règle.
+$checkout->enforceSingleProductPerOrder();
 
-/**
- * Search — configuration du mu-plugin `search`.
- *
- * Le plugin (mu-plugins/search/) est autonome : il enregistre lui-même l'AJAX,
- * enqueue son JS/CSS, et rend le bouton (via `theme_toolkit_render`) + le
- * popover (via `wp_footer`). Le thème pilote uniquement :
- *   - la liste des post_types recherchés
- *   - la stratégie (MODE_DEFAULT | MODE_OPTIMIZED)
- */
+// Parcours sans page panier (R01) : add-to-cart → checkout, /cart/ fermée.
+// Décommenter la ligne suivante pour réactiver l'absence de page panier.
+$checkout->disableCartPage();
 
-add_filter('search_plugin_mode', function (): string {
-    return \SearchPlugin\Search::MODE_OPTIMIZED;
-});
+// Fige l'achat de l'option Studio (+150 CHF) sur la commande au checkout.
+// Les commandes manuelles se règlent dans le champ ACF de la commande.
+Studio::register();
+
+// Fige le choix d'impressions Premium (400 / 800 / illimité) au checkout.
+// Sans add-on sélectionné, l'ACF reste vide : l'admin fixe la valeur pour
+// une commande manuelle ou pour un client resté sur le tarif de base 400.
+Impressions::register();
+
+// Multiplie les add-ons WAPO Premium par le nombre de Lumiboo choisi
+// (YITH Booking « person types »). Sans cette classe, deux Lumiboo à 800
+// impressions ne facturent qu'une fois le supplément d'impressions.
+PremiumPricing::register();
+
 
 
 /**
@@ -125,18 +130,7 @@ add_filter('search_plugin_mode', function (): string {
  */
 
 
-/**
- * Google Reviews — fournie par le mu-plugin `google-reviews`.
- *
- * Le plugin est autonome : page d'options ACF `Avis Google`, import Places
- * API à la demande, rendu. Le thème appelle uniquement
- * `do_action('theme_google_reviews_render')` dans front-page.php.
- *
- * L'enregistrement du groupe ACF est commenté dans
- * google-reviews/google-reviews.php (groupe déjà importé en base sur ce
- * site) — à décommenter sur un nouveau site, comme pour odometer.
- *
- * Filtres disponibles : google_reviews_plugin_should_render,
- * google_reviews_plugin_config, google_reviews_plugin_display,
- * google_reviews_plugin_data, google_reviews_plugin_reviews.
- */
+
+// Fiche produit bookable : deux blocs WYSIWYG ACF (booking_intro + option_description)
+// autour des add-ons YITH Booking / WAPO. Voir Woocommerce::renderBookingProductAcfBlocks().
+$theme_wc->renderBookingProductAcfBlocks();

@@ -23,7 +23,9 @@ export default defineConfig({
         'resources/scripts/main.js',
         'resources/scripts/popover.js',
         'resources/scripts/slider.js',
+        'resources/scripts/account.js',
         'resources/styles/main.scss',
+        'resources/styles/account.scss',
       ],
       output: {
         entryFileNames: '[hash].js',

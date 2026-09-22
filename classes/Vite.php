@@ -21,6 +21,26 @@ class Vite
         'slider' => 'resources/scripts/slider.js',
     ];
 
+    /**
+     * Bundles conditionnels (compte client). Non chargés par enqueueAssets :
+     * Personalisation::enqueueForm() les demande via enqueueNamed()
+     * uniquement sur l'endpoint natif `view-order`.
+     *
+     * @var array<string, string>
+     */
+    private array $lazyJsEntries = [
+        'account' => 'resources/scripts/account.js',
+    ];
+
+    /**
+     * @var array<string, string>
+     */
+    private array $lazyCssEntries = [
+        'account' => 'resources/styles/account.scss',
+    ];
+
+    private static ?self $instance = null;
+
     public function __construct(
         string $hmrHost,
         string $assetsPath,
@@ -33,6 +53,12 @@ class Vite
         $this->assetsUri = $assetsUri;
         $this->version = $version;
         $this->handlePrefix = $handlePrefix;
+        self::$instance = $this;
+    }
+
+    public static function instance(): ?self
+    {
+        return self::$instance;
     }
 
     /**
@@ -58,6 +84,19 @@ class Vite
     {
         add_action('wp_enqueue_scripts', [$this, 'enqueueAssets'], 10);
         add_filter('script_loader_tag', [$this, 'addModuleType'], 10, 3);
+    }
+
+    /**
+     * Charge un bundle lazy (JS et/ou CSS du même nom) sur la page courante.
+     */
+    public function enqueueNamed(string $name): void
+    {
+        if ($this->isRunning()) {
+            $this->enqueueNamedDev($name);
+            return;
+        }
+
+        $this->enqueueNamedProduction($name);
     }
 
     public function enqueueAssets(): void
@@ -117,12 +156,70 @@ class Vite
         $module_handles = [
             $this->handlePrefix . '-vite-client',
         ];
-        foreach (array_keys($this->jsEntries) as $name) {
+        foreach (array_merge(array_keys($this->jsEntries), array_keys($this->lazyJsEntries)) as $name) {
             $module_handles[] = $this->scriptHandle($name);
         }
         if (in_array($handle, $module_handles, true)) {
             return str_replace('<script ', '<script type="module" ', $tag);
         }
         return $tag;
+    }
+
+    private function enqueueNamedDev(string $name): void
+    {
+        if (isset($this->lazyJsEntries[$name])) {
+            wp_enqueue_script(
+                $this->scriptHandle($name),
+                $this->hmrHost . '/' . $this->lazyJsEntries[$name],
+                [],
+                null
+            );
+        }
+
+        if (isset($this->lazyCssEntries[$name])) {
+            wp_enqueue_style(
+                $this->scriptHandle($name),
+                $this->hmrHost . '/' . $this->lazyCssEntries[$name],
+                [],
+                null
+            );
+        }
+    }
+
+    private function enqueueNamedProduction(string $name): void
+    {
+        $manifest_path = $this->assetsPath . '/.vite/manifest.json';
+        if (! file_exists($manifest_path)) {
+            return;
+        }
+
+        $manifest = json_decode((string) file_get_contents($manifest_path), true);
+        if (! is_array($manifest)) {
+            return;
+        }
+
+        if (isset($this->lazyJsEntries[$name])) {
+            $js_file = $manifest[$this->lazyJsEntries[$name]]['file'] ?? null;
+            if ($js_file) {
+                wp_enqueue_script(
+                    $this->scriptHandle($name),
+                    $this->assetsUri . '/' . $js_file,
+                    [],
+                    $this->version
+                );
+            }
+        }
+
+        if (isset($this->lazyCssEntries[$name])) {
+            $css_file = $manifest[$this->lazyCssEntries[$name]]['file'] ?? null;
+            if ($css_file) {
+                wp_enqueue_style(
+                    $this->scriptHandle($name),
+                    $this->assetsUri . '/' . $css_file,
+                    [],
+                    $this->version
+                );
+            }
+        }
     }
 }
