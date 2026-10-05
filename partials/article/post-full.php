@@ -69,6 +69,8 @@ $breadcrumbs = Base::get_breadcrumbs();
         </div>
     </section>
 
+    <?php get_template_part('partials/author_preview', null, ['author_id' => (int) $post->post_author]); ?>
+
     <?php if ($category_id) : ?>
         <?php
         $related_products_query = new WP_Query([

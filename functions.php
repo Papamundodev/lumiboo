@@ -2,10 +2,14 @@
 
 use Theme_base\Account;
 use Theme_base\Base;
+use Theme_base\BookingAddonSync;
 use Theme_base\Checkout;
+use Theme_base\Family;
+use Theme_base\Form;
+use Theme_base\Gamme;
 use Theme_base\Impressions;
+use Theme_base\OrderBookings;
 use Theme_base\Personalisation;
-use Theme_base\PremiumPricing;
 use Theme_base\Studio;
 use Theme_base\Woocommerce;
 
@@ -44,6 +48,8 @@ $base->addSVGSupport();
 $base->enableSvgInAcfImageFields();
 $base->link_category_to_product();
 $base->change_breadcrumb_delimiter();
+$base->sidebar_widgets_trustindex_init();
+$base->sidebar_widgets_trustindex_slider_init();
 
 // NOTE: ne pas nommer cette variable `$woocommerce` — c'est le nom de la
 // globale WP utilisée par WooCommerce (et par YITH, cf. plugin-fw/includes/
@@ -82,21 +88,38 @@ $checkout->enforceSingleProductPerOrder();
 // Décommenter la ligne suivante pour réactiver l'absence de page panier.
 $checkout->disableCartPage();
 
-// Fige l'achat de l'option Studio (+150 CHF) sur la commande au checkout.
-// Les commandes manuelles se règlent dans le champ ACF de la commande.
+// Taxonomie `gamme` (premium / studio) sur produit, réservation et
+// ressource. La réservation neuve hérite de la ressource en priorité 5,
+// avant les snapshots Studio / Impressions. Fiche produit : template
+// `woocommerce/single-product-{gamme}.php` s'il existe, sinon natif.
+Gamme::register();
+
+// Fige l'option Studio (+150 CHF) sur la réservation à sa création YITH
+// (checkout et back-office). Contexte ACF : yith_booking_{id}.
 Studio::register();
 
-// Fige le choix d'impressions Premium (400 / 800 / illimité) au checkout.
-// Sans add-on sélectionné, l'ACF reste vide : l'admin fixe la valeur pour
-// une commande manuelle ou pour un client resté sur le tarif de base 400.
+// Fige le choix d'impressions Premium (400 / 800 / illimité) sur la
+// réservation Premium à sa création. Sans add-on, l'ACF n'est pas écrit.
 Impressions::register();
 
-// Multiplie les add-ons WAPO Premium par le nombre de Lumiboo choisi
-// (YITH Booking « person types »). Sans cette classe, deux Lumiboo à 800
-// impressions ne facturent qu'une fois le supplément d'impressions.
-PremiumPricing::register();
+// Sens inverse : quand l'admin change `lumiboo_prints` ou
+// `lumiboo_has_studio_option` sur la réservation depuis la commande, ré-écrit
+// l'add-on WAPO sur l'item et ajuste le total du même montant.
+BookingAddonSync::register();
 
+// Contexte ACF `yith_booking_{id}` → post de la réservation.
+// La localisation Premium / Studio est la règle native `post_taxonomy`.
+Family::register();
 
+// Métabox admin « Lumiboo — Réservations » sur la commande (HPOS + hérité).
+// Liste chaque booking YITH lié : titre, dates, produit, ressource +
+// formulaire ACF inline via `acf_form()` ciblant `yith_booking_{id}`. Le
+// toggle `lumiboo_locked_by_admin` est remonté en tête. Aucune persistance
+// custom : l'écriture passe par `acf_form_head()` sur `admin_init`
+// priorité 1. Voir `classes/OrderBookings.php` pour le détail du contour
+// « form-in-scope » (`<template>` + JS de déplacement).
+OrderBookings::register();
+Form::register();
 
 /**
  * FAQ — fournie par le mu-plugin `faq` (mu-plugins/faq/).

@@ -2,114 +2,99 @@
 
 namespace Theme_base;
 
-/**
- * Détection et snapshot du choix d'impressions Premium (400 / 800 /
- * illimité).
- *
- * SEUL fichier autorisé à lire l'add-on WAPO des impressions
- * (`addon_id == 1` par défaut). Tout le reste passe par le champ ACF
- * `lumiboo_prints` de la commande.
- *
- * Rôle :
- *
- * - au checkout, lire la sélection WAPO d'impressions et figer le
- *   choix sur la commande via ACF (snapshot G20) ;
- * - pour les commandes créées manuellement (hors checkout) ou pour un
- *   client Premium qui n'a rien sélectionné (tarif de base 400
- *   impressions, G05), l'admin coche/décoche `lumiboo_prints` dans le
- *   back-office et cette classe n'écrit rien.
- *
- * L'identifiant d'add-on WAPO à surveiller est filtrable via
- * `lumiboo_impressions_wapo_addon_ids` : si Lumiboo régénère l'add-on,
- * il suffit de mettre à jour ce filtre — aucun autre code ne référence
- * WAPO.
- */
 class Impressions
 {
-    /**
-     * Identifiants d'add-ons WAPO considérés comme « choix
-     * d'impressions Premium » (un seul aujourd'hui : id 1).
-     *
-     * @var array<int, int>
-     */
+
     private const DEFAULT_ADDON_IDS = [1];
 
     public static function register(): void
     {
-        // Fire once, à la validation du panier. Une correction manuelle
-        // par l'admin dans le champ ACF n'est jamais écrasée : ce hook
-        // ne se déclenche plus après la création de la commande.
-        add_action('woocommerce_checkout_order_processed', [self::class, 'snapshot'], 20, 1);
+        add_action('yith_wcbk_new_booking', [self::class, 'snapshot'], 20, 2);
     }
 
-    /**
-     * Écrit le choix d'impressions sur la commande si l'add-on WAPO a
-     * été sélectionné. Sinon, ne fait rien : l'ACF reste à sa valeur
-     * courante et l'admin peut la fixer à la main.
-     */
-    public static function snapshot(int $order_id): void
+    public static function snapshot(int $booking_id, \YITH_WCBK_Booking $booking): void
     {
-        $order = wc_get_order($order_id);
-
-        if (! $order instanceof \WC_Order) {
+        if ($booking_id <= 0 || Family::forBooking($booking) !== 'premium') {
             return;
         }
 
-        $tier = self::detectTier($order);
+        $tier = self::detectTier($booking);
 
         if ($tier === null) {
             return;
         }
 
-        update_field('lumiboo_prints', $tier, 'woo_order_' . $order->get_id());
+        update_field('lumiboo_prints', $tier, 'yith_booking_' . $booking_id);
     }
 
     /**
-     * Retourne la tranche d'impressions détectée dans les add-ons WAPO
-     * de la commande, ou `null` si aucun add-on d'impressions n'a été
-     * sélectionné.
-     *
-     * Valeurs possibles : `'400'`, `'800'`, `'unlimited'`.
+     * Commercial name for a stored prints tier.
+     * Null when the tier is missing or unknown.
      */
-    public static function detectTier(\WC_Order $order): ?string
+    public static function marketingLabel(?string $tier): ?string
     {
+        if ($tier === null || $tier === '') {
+            return null;
+        }
+
+        $map = apply_filters('lumiboo_impressions_marketing_labels', [
+            '400'       => 'Light',
+            '800'       => 'Pro',
+            'unlimited' => 'Ultra',
+        ]);
+
+        if (! is_array($map)) {
+            return null;
+        }
+
+        $label = $map[$tier] ?? null;
+
+        return is_string($label) && $label !== '' ? $label : null;
+    }
+
+    public static function detectTier(\YITH_WCBK_Booking $booking): ?string
+    {
+        if (Family::forBooking($booking) !== 'premium') {
+            return null;
+        }
+
+        $item = self::orderItem($booking);
+
+        if ($item === null) {
+            return null;
+        }
+
         $addon_ids = array_map('intval', (array) apply_filters(
             'lumiboo_impressions_wapo_addon_ids',
             self::DEFAULT_ADDON_IDS
         ));
 
-        foreach ($order->get_items() as $item) {
-            if (! $item instanceof \WC_Order_Item_Product) {
+        $meta = $item->get_meta('_ywapo_meta_data');
+
+        if (! is_array($meta)) {
+            return null;
+        }
+
+        foreach ($meta as $group) {
+            if (! is_array($group)) {
                 continue;
             }
 
-            $meta = $item->get_meta('_ywapo_meta_data');
-
-            if (! is_array($meta)) {
-                continue;
-            }
-
-            foreach ($meta as $group) {
-                if (! is_array($group)) {
+            foreach ($group as $addon) {
+                if (! is_array($addon)) {
                     continue;
                 }
 
-                foreach ($group as $addon) {
-                    if (! is_array($addon)) {
-                        continue;
-                    }
+                $id = (int) ($addon['addon_id'] ?? 0);
 
-                    $id = (int) ($addon['addon_id'] ?? 0);
+                if ($id === 0 || ! in_array($id, $addon_ids, true)) {
+                    continue;
+                }
 
-                    if ($id === 0 || ! in_array($id, $addon_ids, true)) {
-                        continue;
-                    }
+                $tier = self::valueToTier((string) ($addon['addon_value'] ?? ''));
 
-                    $tier = self::valueToTier((string) ($addon['addon_value'] ?? ''));
-
-                    if ($tier !== null) {
-                        return $tier;
-                    }
+                if ($tier !== null) {
+                    return $tier;
                 }
             }
         }
@@ -117,19 +102,11 @@ class Impressions
         return null;
     }
 
-    /**
-     * Traduit le libellé français de l'add-on WAPO en clé stable ACF.
-     *
-     * Utilise des sous-chaînes plutôt que des libellés exacts pour
-     * survivre à un changement de wording (« Jusqu'à 400 impressions »
-     * → « 400 impressions ») ou d'apostrophe (droite/typographique).
-     */
     private static function valueToTier(string $value): ?string
     {
         $needle = mb_strtolower($value);
 
-        // Ordre significatif : chercher les nombres avant « illimit »
-        // au cas où un futur libellé combinerait les deux.
+        // Match 800 before 400, then "illimit", so a combined label cannot hit the wrong tier.
         if (str_contains($needle, '800')) {
             return '800';
         }
@@ -143,5 +120,24 @@ class Impressions
         }
 
         return null;
+    }
+
+    private static function orderItem(\YITH_WCBK_Booking $booking): ?\WC_Order_Item_Product
+    {
+        $item_id = (int) $booking->get_order_item_id();
+
+        if ($item_id <= 0) {
+            return null;
+        }
+
+        $order = wc_get_order((int) $booking->get_order_id());
+
+        if (! $order instanceof \WC_Order) {
+            return null;
+        }
+
+        $item = $order->get_item($item_id);
+
+        return $item instanceof \WC_Order_Item_Product ? $item : null;
     }
 }

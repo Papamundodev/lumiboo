@@ -3,8 +3,9 @@
 /**
  * Barre de progression agrégée d'un dossier (chunk 6).
  *
- * Une barre par carte : toutes les unités concaténées, plus un dernier
- * segment « Personnalisation complétée » dérivé de `Progress::of()['complete']`.
+ * Une barre par réservation. Les étapes viennent de `Progress::ofBooking()`
+ * (template, logo, texte, et welcome/rear si Studio avec option), plus un
+ * dernier segment « Personnalisation complétée ».
  * Les libellés viennent de `Personalisation::progressLabels()`, pas du moteur.
  *
  * @var array $args {
@@ -23,32 +24,20 @@ if (! is_array($dossier)) {
     return;
 }
 
-$progress = Progress::of($dossier);
+$progress = Progress::ofBooking($dossier);
 $labels   = Personalisation::progressLabels();
 $steps    = [];
 
-foreach ((array) ($progress['units'] ?? []) as $unit) {
-    foreach ((array) ($unit['steps'] ?? []) as $step) {
-        $key = (string) ($step['key'] ?? '');
-        if ($key === '') {
-            continue;
-        }
-        $steps[] = [
-            'key'   => $key,
-            'done'  => ! empty($step['done']),
-            'label' => $labels[$key] ?? $key,
-        ];
-    }
-}
+foreach ((array) ($progress['steps'] ?? []) as $key => $done) {
+    $key = (string) $key;
 
-foreach ((array) ($progress['studio'] ?? []) as $step) {
-    $key = (string) ($step['key'] ?? '');
     if ($key === '') {
         continue;
     }
+
     $steps[] = [
         'key'   => $key,
-        'done'  => ! empty($step['done']),
+        'done'  => (bool) $done,
         'label' => $labels[$key] ?? $key,
     ];
 }

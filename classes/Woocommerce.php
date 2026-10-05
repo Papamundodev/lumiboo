@@ -2,32 +2,13 @@
 
 namespace Theme_base;
 
-/**
- * WooCommerce integration.
- *
- * Performance / classic-checkout fixes, plus generic APIs for product
- * attributes and checkout fields (registerProductAttribute / addCheckoutField).
- */
 class Woocommerce
 {
-    /**
-     * Display config for product attributes, keyed by slug.
-     *
-     * @var array<string, array<string, mixed>>
-     */
+
     private static array $product_attributes = [];
 
-    /**
-     * Custom checkout fields, keyed by field id.
-     *
-     * @var array<string, array<string, mixed>>
-     */
     private static array $checkout_fields = [];
 
-    /**
-     * Load WooCommerce styles only on shop-related pages
-     * to reduce render-blocking on other pages.
-     */
     public function loadWooCommerceStylesOnlyWhenNeeded(): void
     {
         add_filter('woocommerce_enqueue_styles', function (array $styles): array {
@@ -38,9 +19,6 @@ class Woocommerce
         });
     }
 
-    /**
-     * Dequeue WC Blocks CSS on pages that don't use WooCommerce blocks.
-     */
     public function loadWcBlocksCssOnlyWhenNeeded(): void
     {
         add_action('wp_enqueue_scripts', function (): void {
@@ -50,11 +28,6 @@ class Woocommerce
         }, 100);
     }
 
-    /**
-     * Dequeue Order Attribution & Sourcebuster on non-checkout/cart pages.
-     * These scripts are only needed on cart/checkout to stamp the form
-     * with attribution data.
-     */
     public function deferOrderAttributionOnNonCheckout(): void
     {
         add_action('wp_enqueue_scripts', function (): void {
@@ -65,12 +38,6 @@ class Woocommerce
         }, 20);
     }
 
-    /**
-     * Fix empty Google Pay / Apple Pay buttons on classic checkout.
-     * When has_block is true, WooCommerce Payments express checkout JS expects
-     * block-based DOM. Classic checkout uses #wcpay-express-checkout-element,
-     * so we force has_block to false.
-     */
     public function fixExpressCheckoutOnClassicCheckout(): void
     {
         add_filter('wcpay_express_checkout_js_params', function (array $params): array {
@@ -82,11 +49,6 @@ class Woocommerce
         }, 10);
     }
 
-    /**
-     * Force PPCP reCAPTCHA to use classic checkout mode (form-based).
-     * Prevents "Cannot read properties of null (reading '_internalSetExtensionData')"
-     * when has_block() is true but the checkout store is not loaded.
-     */
     public function fixPpcpRecaptchaOnClassicCheckout(): void
     {
         add_action('wp_enqueue_scripts', function (): void {
@@ -98,9 +60,6 @@ class Woocommerce
         }, 999);
     }
 
-    /**
-     * Number of products per shop / category archive page.
-     */
     public function setLoopShopPerPage(int $per_page = 9): void
     {
         add_filter('loop_shop_per_page', static function () use ($per_page): int {
@@ -108,16 +67,6 @@ class Woocommerce
         }, 20);
     }
 
-    /**
-     * Register a product attribute for display, and optionally create the
-     * global WooCommerce attribute (pa_{slug}) when it doesn't exist yet.
-     *
-     * Creation runs on admin_init only and is idempotent. A newly created
-     * attribute is queryable on the following request (WC registers pa_*
-     * taxonomies on init priority 5).
-     *
-     * @param array{slug:string, label?:string, icon?:string, prefix?:string, type?:string, create?:bool} $args
-     */
     public function registerProductAttribute(array $args): void
     {
         $slug = isset($args['slug']) ? sanitize_title((string) $args['slug']) : '';
@@ -164,10 +113,6 @@ class Woocommerce
         ]);
     }
 
-    /**
-     * Render one registered attribute for a product.
-     * Returns '' when the slug is not registered or the product has no value.
-     */
     public static function renderAttribute($product, string $slug, bool $echo = true): string
     {
         $config = self::$product_attributes[$slug] ?? null;
@@ -204,17 +149,6 @@ class Woocommerce
         return $html;
     }
 
-    /**
-     * Add a custom checkout field, saved to order meta and optionally shown
-     * in the admin order screen, the customer order view and emails.
-     * Callable any number of times; hooks are attached once.
-     *
-     * Classic checkout only (`woocommerce_checkout_fields`).
-     *
-     * @param array{id:string, section?:string, type?:string, label?:string, placeholder?:string,
-     *              required?:bool, priority?:int, class?:array, meta_key?:string,
-     *              show_in?:array, emails?:array} $args
-     */
     public function addCheckoutField(array $args): void
     {
         $id = isset($args['id']) ? sanitize_key((string) $args['id']) : '';
@@ -270,10 +204,6 @@ class Woocommerce
         return $fields;
     }
 
-    /**
-     * $data comes from WC_Checkout::get_posted_data(): already unslashed and
-     * sanitized per field type, so we never touch $_POST here.
-     */
     public static function saveCheckoutFields(\WC_Order $order, array $data): void
     {
         foreach (self::$checkout_fields as $field) {
@@ -347,10 +277,6 @@ class Woocommerce
         }
     }
 
-    /**
-     * Default title for the related-products slider.
-     * Override per call via $args['title'], or globally via the filter.
-     */
     public static function relatedProductsTitle(array $args = []): string
     {
         $title = $args['title'] ?? __('Our other products', 'theme_base');
@@ -358,20 +284,6 @@ class Woocommerce
         return (string) apply_filters('theme_base_related_products_title', $title, $args);
     }
 
-    /**
-     * Fiche produit bookable : deux blocs WYSIWYG ACF autour des add-ons.
-     *
-     *   1. `booking_intro`       → après les dates, dans la section message
-     *      Hook : `yith_wcbk_booking_form_message` (priorité 20, après le
-     *      message natif à 10). Rendu à l'intérieur de `.yith-wcbk-booking-form`.
-     *
-     *   2. `options_description` → après les options WAPO, avant le total.
-     *      Hook : `yith_wapo_after_addons`. Rendu à l'intérieur de
-     *      `#yith-wapo-container`, juste avant `#wapo-total-price-table`.
-     *
-     * Dépendances : YITH Booking + YITH WAPO + ACF. Chaque handler check ses
-     * dépendances et return silencieusement si un composant manque.
-     */
     public function renderBookingProductAcfBlocks(): void
     {
         add_action('yith_wcbk_booking_form_message', [self::class, 'renderBookingIntro'], 20);

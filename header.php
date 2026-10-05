@@ -32,7 +32,7 @@
             <?php get_template_part('partials/header/navbar-desktop', 'header'); ?>
             <?php get_template_part('partials/header/navbar-mobile', 'header'); ?>
 
-
+            <?php get_template_part('partials/header/nav-cta', 'header'); ?>
 
             <div class="burger-container">
                 <button title="<?= __('Ouvrir le menu', 'theme_base'); ?>" class="burger-container btn" popovertarget="navmenu-header-mobile" id="theme-navbar-toggler">
@@ -52,35 +52,30 @@
         <div class="wrapper-tool-kit">
             <div class="cart-container icon-container">
                 <?php
-                $cart_count = 0;
-                if (function_exists('WC') && WC()->cart) {
-                    $cart_count = (int) WC()->cart->get_cart_contents_count();
-                }
+                $picto_cart = get_field('picto_cart', "option") ?? null;
                 ?>
-                <?php if ($cart_count > 0) : ?>
-                    <span class="cart-count" aria-label="<?= esc_attr(sprintf(_n('%d article dans le panier', '%d articles dans le panier', $cart_count, 'theme_base'), $cart_count)); ?>">
-                        <?= esc_html($cart_count); ?>
-                    </span>
-                <?php endif; ?>
                 <?php
                 /**
                  * Sans page panier (R01) : l'icône ouvre le checkout, ou
                  * invite à choisir un produit. Sinon, URL panier WooCommerce.
                  */
                 if (Checkout::cartPageIsDisabled()) {
-                    $cart_url = $cart_count > 0
-                        ? wc_get_checkout_url()
-                        : (new Checkout())->productsUrl();
-                    $cart_title = $cart_count > 0
-                        ? __('Voir ma réservation', 'theme_base')
-                        : __('Choisir un photobooth', 'theme_base');
+                    $cart_url = wc_get_checkout_url();
                 } else {
                     $cart_url = wc_get_cart_url();
-                    $cart_title = __('Voir le panier', 'theme_base');
                 }
                 ?>
-                <a href="<?= esc_url($cart_url); ?>" class="btn" title="<?= esc_attr($cart_title); ?>">
-                    <?= Base::inline_svg('cart.svg'); ?>
+                <a href="<?= esc_url($cart_url); ?>" class="btn" title="<?= __('Voir le panier', 'theme_base'); ?>">
+                    <?= $picto_cart ? Base::inline_svg_from_attachment($picto_cart) : Base::inline_svg('cart.svg'); ?>
+                </a>
+            </div>
+            <!-- account  -->
+            <div class="account-container icon-container">
+                <?php
+                $picto_account = get_field('picto_account', "option") ?? null;
+                ?>
+                <a href="<?= home_url('/my-account'); ?>" class="btn" title="<?= __('Se connecter', 'theme_base'); ?>">
+                    <?= $picto_account ? Base::inline_svg_from_attachment($picto_account) : Base::inline_svg('account.svg'); ?>
                 </a>
             </div>
         </div>

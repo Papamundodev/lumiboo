@@ -17,3 +17,10 @@
     }
   }
 }
+
+.nav-cta {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: $spacer-sm;
+}

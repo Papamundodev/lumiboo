@@ -369,6 +369,10 @@
         fill: $contrast-color;
       }
     }
+    &:focus-visible,
+    &:focus {
+      border-radius: $border-radius-circle;
+    }
   }
 }
 
@@ -554,7 +558,7 @@
     z-index: 20;
     opacity: 0;
     left: 0;
-    top: calc((#{$header-height} / 2) + #{$spacer-md});
+    top: calc((#{$header-height} / 2) + #{$spacer-lg} * 2);
     visibility: hidden;
     pointer-events: none;
     width: fit-content;

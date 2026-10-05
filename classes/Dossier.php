@@ -2,121 +2,127 @@
 
 namespace Theme_base;
 
-/**
- * Modèle de lecture d'un dossier Lumiboo.
- *
- * Une commande WooCommerce = un dossier = une carte du compte (G02).
- * Cette classe consolide en un seul endroit tout ce que les écrans
- * doivent afficher : produit, quantité, événement, option Studio,
- * personnalisation, liens post-événement.
- *
- * Elle est en LECTURE SEULE : elle ne stocke rien. Les données viennent
- * des sources natives (WooCommerce, YITH Booking via `Booking`, ACF) et
- * les valeurs figées sur la commande (option Studio) sont posées ailleurs.
- *
- * Contrats à connaître :
- *
- * - `fromOrder()` retourne `null` si la commande n'est pas un dossier
- *   Lumiboo (aucun produit YITH Booking détecté).
- * - `findForCurrentUser()` est le SEUL accès autorisé côté public :
- *   il vérifie la propriété et l'éligibilité à chaque appel — connaître
- *   un identifiant ne suffit jamais.
- * - Visibilité (`eligibleStatuses`) ≠ éditabilité (`isPaid`).
- *   `on-hold` (virement) peut apparaître au dashboard ; la
- *   personnalisation (chunks 6–7) ne s'ouvre que si `isPaid()`.
- * - Les statuts visibles par défaut (`processing`, `completed`) sont
- *   filtrables via `lumiboo_dossier_eligible_statuses` (blocage B01).
- */
 class Dossier
 {
-    /** Statuts visibles au compte (surchargeables, ex. `on-hold`). */
-    private const ELIGIBLE_STATUSES = ['processing', 'completed'];
-
-    /** Statuts qui autorisent la personnalisation côté client. */
-    private const PAID_STATUSES = ['processing', 'completed'];
 
     /**
-     * Construit un dossier depuis une commande WooCommerce.
-     *
-     * @return array<string, mixed>|null `null` si ce n'est pas un dossier Lumiboo.
+     * All WC core statuses. Kept as a filter (not "any") so wc_get_orders()
+     * still uses an indexed status IN() and reads stay fast on big shops.
+     * cancelled / refunded / failed stay visible in the account and will
+     * carry a distinct badge later ; UI decides the CTA per status, not this
+     * list.
      */
-    public static function fromOrder(\WC_Order $order): ?array
-    {
-        [$product_key, $quantity, $title] = self::detectProduct($order);
+    private const ELIGIBLE_STATUSES = [
+        'pending',
+        'processing',
+        'on-hold',
+        'completed',
+        'cancelled',
+        'refunded',
+        'failed',
+    ];
 
-        if ($product_key === null) {
+    /**
+     * Build a per-booking dossier dictionary.
+     *
+     * Reads:
+     *  - order-level ACF (shipping_mode, location) via woo_order_{id}
+     *  - booking-level ACF (template, logo, text, requests, prints/has_studio_option,
+     *    welcome/rear, locked_by_admin) via yith_booking_{id}
+     *
+     * The gamme is resolved through Gamme::ofBooking(). Bookings without a gamme
+     * (unmapped resource) are ignored — the caller receives null.
+     */
+    public static function fromBooking(\YITH_WCBK_Booking $booking, \WC_Order $order): ?array
+    {
+        $booking_id = (int) $booking->get_id();
+
+        if ($booking_id <= 0) {
             return null;
         }
 
-        $pid = 'woo_order_' . $order->get_id();
+        $gamme = Gamme::ofBooking($booking);
 
-        return [
-            'id'                => (string) $order->get_id(),
-            'order'             => $order,
-            'reference'         => (string) $order->get_order_number(),
-            'product'           => $product_key,
-            'title'             => $title,
-            'quantity'          => $quantity,
-            'event_date'        => Booking::eventDate($order),
-            'return_date'       => Booking::returnDate($order),
-            'paid'              => self::isPaid($order),
-            'has_studio_option' => (bool) get_field('lumiboo_has_studio_option', $pid),
-            'welcome_mode'      => (string) (get_field('lumiboo_welcome_mode', $pid) ?: 'not_answered'),
-            'welcome'           => (int) (get_field('lumiboo_welcome', $pid) ?: 0),
-            'rear_mode'         => (string) (get_field('lumiboo_rear_mode', $pid) ?: 'not_answered'),
-            'rear'              => (int) (get_field('lumiboo_rear', $pid) ?: 0),
-            'prints'            => (string) (get_field('lumiboo_prints', $pid) ?: ''),
-            'shipping_mode'     => (string) (get_field('lumiboo_shipping_mode', $pid) ?: ''),
-            'location'          => (string) (get_field('lumiboo_location', $pid) ?: ''),
-            'units'             => self::readUnits($pid, $quantity),
-            'gallery_url'       => (string) (get_field('lumiboo_gallery_url', $pid) ?: ''),
-            'invoice_url'       => (string) (get_field('lumiboo_invoice_url', $pid) ?: ''),
-            'emails_url'        => (string) (get_field('lumiboo_emails_url', $pid) ?: ''),
-            'report_url'        => (string) (get_field('lumiboo_report_url', $pid) ?: ''),
+        if ($gamme === null) {
+            return null;
+        }
+
+        $bpid = 'yith_booking_' . $booking_id;
+        $opid = 'woo_order_' . $order->get_id();
+
+        $event  = self::timestampToDate((int) $booking->get_from());
+        $return = self::timestampToDate((int) $booking->get_to());
+
+        $locked_by_admin = (bool) get_field('lumiboo_locked_by_admin', $bpid);
+
+        $data = [
+            'id'                    => (string) $booking_id,
+            'order'                 => $order,
+            'order_id'              => (string) $order->get_id(),
+            'reference'             => (string) $order->get_order_number(),
+            'gamme'                 => $gamme,
+            'title'                 => (string) get_the_title($booking_id),
+            'event_date'            => $event,
+            'return_date'           => $return,
+            'shipping_mode'         => (string) (get_field('lumiboo_shipping_mode', $opid) ?: ''),
+            'location'              => (string) (get_field('lumiboo_location', $opid) ?: ''),
+            'order_total_formatted' => self::formattedOrderTotal($order),
+            'template'              => (string) (get_field('lumiboo_template', $bpid) ?: ''),
+            'logo_mode'             => (string) (get_field('lumiboo_logo_mode', $bpid) ?: Progress::MODE_NOT_ANSWERED),
+            'logo'                  => (int) (get_field('lumiboo_logo', $bpid) ?: 0),
+            'text_mode'             => (string) (get_field('lumiboo_text_mode', $bpid) ?: Progress::MODE_NOT_ANSWERED),
+            'text'                  => (string) (get_field('lumiboo_text', $bpid) ?: ''),
+            'requests'              => (string) (get_field('lumiboo_requests', $bpid) ?: ''),
+            'locked_by_admin'       => $locked_by_admin,
         ];
+
+        if ($gamme === Gamme::PREMIUM) {
+            $data['prints'] = (string) (get_field('lumiboo_prints', $bpid) ?: '');
+        }
+
+        if ($gamme === Gamme::STUDIO) {
+            $has_option = (bool) get_field('lumiboo_has_studio_option', $bpid);
+            $data['has_studio_option'] = $has_option;
+
+            if ($has_option) {
+                $data['welcome_mode'] = (string) (get_field('lumiboo_welcome_mode', $bpid) ?: Progress::MODE_NOT_ANSWERED);
+                $data['welcome']      = (int) (get_field('lumiboo_welcome', $bpid) ?: 0);
+                $data['rear_mode']    = (string) (get_field('lumiboo_rear_mode', $bpid) ?: Progress::MODE_NOT_ANSWERED);
+                $data['rear']         = (int) (get_field('lumiboo_rear', $bpid) ?: 0);
+            }
+        }
+
+        // Composite lock : J-7 or admin-forced.
+        $data['is_locked'] = $locked_by_admin || Deadline::isLocked($data);
+        $data['is_past']   = Deadline::isPast($data);
+
+        return $data;
     }
 
     /**
-     * Recherche un dossier appartenant au client connecté.
+     * Flat list of per-booking dossiers for the current customer.
      *
-     * Vérifie la propriété et l'éligibilité de la commande. Retourne
-     * `null` sans révéler la cause : commande inexistante, appartenant
-     * à un autre client, ou dont le statut n'ouvre pas d'accès (§10.2).
-     */
-    public static function findForCurrentUser(string $id): ?array
-    {
-        if ($id === '' || ! is_user_logged_in()) {
-            return null;
-        }
-
-        $order = wc_get_order((int) $id);
-
-        if (! $order instanceof \WC_Order) {
-            return null;
-        }
-
-        if ((int) $order->get_user_id() !== get_current_user_id()) {
-            return null;
-        }
-
-        if (! in_array($order->get_status(), self::eligibleStatuses(), true)) {
-            return null;
-        }
-
-        return self::fromOrder($order);
-    }
-
-    /**
-     * Tous les dossiers du client connecté (non triés, non partitionnés).
-     * Le tri en cours/passé viendra avec le moteur de deadline (étape 7).
+     * Iterates wc_get_orders(customer_id=...) filtered on eligible statuses,
+     * pulls every YITH booking attached to each order, and returns a flat
+     * array [booking_id => dossier] ready to sort and group.
      *
-     * @return array<int, array<string, mixed>>
+     * Orders without any YITH booking are skipped silently.
      */
-    public static function dossiersForCurrentUser(): array
+    public static function bookingsForCurrentUser(): array
     {
         $user_id = get_current_user_id();
 
         if (! $user_id) {
+            return [];
+        }
+
+        if (! function_exists('yith_wcbk')) {
+            return [];
+        }
+
+        $yith = yith_wcbk();
+
+        if (! isset($yith->booking_helper) || ! method_exists($yith->booking_helper, 'get_bookings_by_order')) {
             return [];
         }
 
@@ -133,10 +139,24 @@ class Dossier
                 continue;
             }
 
-            $dossier = self::fromOrder($order);
+            $bookings = (array) $yith->booking_helper->get_bookings_by_order($order->get_id());
 
-            if ($dossier !== null) {
-                $dossiers[] = $dossier;
+            if (! $bookings) {
+                continue;
+            }
+
+            foreach ($bookings as $booking) {
+                if (! $booking instanceof \YITH_WCBK_Booking) {
+                    continue;
+                }
+
+                $dossier = self::fromBooking($booking, $order);
+
+                if ($dossier === null) {
+                    continue;
+                }
+
+                $dossiers[(int) $booking->get_id()] = $dossier;
             }
         }
 
@@ -144,8 +164,46 @@ class Dossier
     }
 
     /**
-     * @return array<int, string>
+     * Resolve one booking dossier for the current customer.
+     *
+     * Guards: user is logged in, booking exists, its parent order belongs to
+     * the current customer, order status is in eligibleStatuses().
      */
+    public static function findBookingForCurrentUser(string $booking_id): ?array
+    {
+        if ($booking_id === '' || ! ctype_digit($booking_id) || ! is_user_logged_in()) {
+            return null;
+        }
+
+        $booking = Booking::forPost((int) $booking_id);
+
+        if ($booking === null) {
+            return null;
+        }
+
+        $order_id = (int) $booking->get_order_id();
+
+        if ($order_id <= 0) {
+            return null;
+        }
+
+        $order = wc_get_order($order_id);
+
+        if (! $order instanceof \WC_Order) {
+            return null;
+        }
+
+        if ((int) $order->get_user_id() !== get_current_user_id()) {
+            return null;
+        }
+
+        if (! in_array($order->get_status(), self::eligibleStatuses(), true)) {
+            return null;
+        }
+
+        return self::fromBooking($booking, $order);
+    }
+
     public static function eligibleStatuses(): array
     {
         return (array) apply_filters(
@@ -154,111 +212,19 @@ class Dossier
         );
     }
 
-    /**
-     * Le client peut-il modifier la personnalisation ?
-     *
-     * Distinct de la visibilité : un virement en `on-hold` a droit à
-     * une carte en lecture seule ; le CTA / formulaire perso (chunks
-     * 6–7) ne s'active que sur `processing` / `completed`.
-     */
-    public static function isPaid(\WC_Order $order): bool
+    private static function timestampToDate(int $timestamp): ?\DateTimeImmutable
     {
-        return in_array($order->get_status(), self::paidStatuses(), true);
-    }
-
-    /**
-     * @return array<int, string>
-     */
-    public static function paidStatuses(): array
-    {
-        return (array) apply_filters('lumiboo_dossier_paid_statuses', self::PAID_STATUSES);
-    }
-
-    /**
-     * Identifie le produit Lumiboo de la commande.
-     *
-     * Repère la première ligne dont le produit est de type YITH Booking
-     * (les fiches Premium et Studio étant les seuls produits réservables
-     * du site) et déduit la famille par présence de « studio » dans le
-     * nom. Le nom du produit est stable, contrairement à l'ID, qui
-     * change si la fiche est recréée.
-     *
-     * @return array{0: 'premium'|'studio'|null, 1: int, 2: string}
-     */
-    private static function detectProduct(\WC_Order $order): array
-    {
-        foreach ($order->get_items() as $item) {
-            if (! $item instanceof \WC_Order_Item_Product) {
-                continue;
-            }
-
-            $product = $item->get_product();
-
-            if (! $product instanceof \WC_Product || $product->get_type() !== 'booking') {
-                continue;
-            }
-
-            $name = (string) $product->get_name();
-            $key  = stripos($name, 'studio') !== false ? 'studio' : 'premium';
-            $quantity = $key === 'premium' ? Booking::machines($order) : 1;
-
-            return [$key, $quantity, $name];
+        if ($timestamp <= 0) {
+            return null;
         }
 
-        return [null, 0, ''];
+        return (new \DateTimeImmutable('@' . $timestamp))->setTimezone(wp_timezone());
     }
 
-    /**
-     * Lit les unités de personnalisation depuis le repeater ACF
-     * `lumiboo_units` et aligne systématiquement leur nombre sur la
-     * quantité commandée. Une unité vide reçoit les défauts tri-état.
-     *
-     * Cet alignement garantit qu'un dossier expose toujours autant
-     * d'unités que le client a commandé de Lumiboo, même si le repeater
-     * n'a jamais été sauvegardé ou si la quantité a été modifiée après
-     * coup.
-     *
-     * @return array<int, array<string, mixed>>
-     */
-    private static function readUnits(string $pid, int $quantity): array
+    private static function formattedOrderTotal(\WC_Order $order): string
     {
-        $rows  = (array) (get_field('lumiboo_units', $pid) ?: []);
-        $units = [];
+        $html = (string) $order->get_formatted_order_total();
 
-        foreach ($rows as $row) {
-            $units[] = self::normaliseUnit((array) $row);
-        }
-
-        while (count($units) < $quantity) {
-            $units[] = self::normaliseUnit([]);
-        }
-
-        if (count($units) > $quantity && $quantity > 0) {
-            $units = array_slice($units, 0, $quantity);
-        }
-
-        return $units;
-    }
-
-    /**
-     * Ramène une ligne de repeater à des types prévisibles, avec les
-     * défauts tri-état pour les modes non renseignés.
-     *
-     * Les sous-champs ACF gardent le préfixe `lumiboo_` : ce sont les
-     * clés reçues du repeater.
-     *
-     * @param array<string, mixed> $row
-     * @return array<string, mixed>
-     */
-    private static function normaliseUnit(array $row): array
-    {
-        return [
-            'template'     => (string) ($row['lumiboo_template'] ?? ''),
-            'logo_mode'    => (string) ($row['lumiboo_logo_mode'] ?? 'not_answered'),
-            'logo'         => (int) ($row['lumiboo_logo'] ?? 0),
-            'text_mode'    => (string) ($row['lumiboo_text_mode'] ?? 'not_answered'),
-            'text'         => (string) ($row['lumiboo_text'] ?? ''),
-            'requests'     => (string) ($row['lumiboo_requests'] ?? ''),
-        ];
+        return trim(wp_strip_all_tags(html_entity_decode($html, ENT_QUOTES, 'UTF-8')));
     }
 }

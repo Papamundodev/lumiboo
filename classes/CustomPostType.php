@@ -83,12 +83,10 @@ class CustomPostType
         );
     }
 
-
     public function register(): void
     {
         register_post_type($this->getSlug(), $this->getArgs());
     }
-
 
     public function getSlug(): string
     {
@@ -97,10 +95,9 @@ class CustomPostType
 
     public function updateArgs(array $argsToUpdate): void
     {
-        // Fusionner les nouveaux arguments avec les arguments existants
+
         $this->args = array_merge($this->args, $argsToUpdate);
 
-        // Réenregistrer le type de publication personnalisée avec les nouveaux arguments
         add_action('init', function () {
             register_post_type($this->getSlug(), $this->args);
         });

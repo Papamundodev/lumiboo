@@ -24,6 +24,7 @@ export default defineConfig({
         'resources/scripts/popover.js',
         'resources/scripts/slider.js',
         'resources/scripts/account.js',
+        'resources/scripts/contact-form.js',
         'resources/styles/main.scss',
         'resources/styles/account.scss',
       ],

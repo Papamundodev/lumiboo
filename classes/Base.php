@@ -16,30 +16,25 @@ class Base
     public function themeSupports(): void
     {
         add_action('after_setup_theme', function () {
-            // Menus
+
             add_theme_support('menus');
             add_theme_support('post-thumbnails');
             add_theme_support('title-tag');
             add_post_type_support('page', 'excerpt');
-            // Enables post and comment RSS feed links to head
+
             add_theme_support('automatic-feed-links');
-            // I18N
+
             load_theme_textdomain('theme_base', get_template_directory() . '/languages');
-            // Activer le lazy loading natif
+
             add_theme_support('lazy-loading-images');
-            // Ajouter des tailles d'images optimisées
+
             add_image_size('logo', 60, 60, true);
             add_image_size('post-preview-image', 400, 350, true);
 
-            // WooCommerce
             add_theme_support('woocommerce');
         }, 99);
     }
 
-    /**
-     * Register ACF options pages (Footer + Theme).
-     * Requires ACF PRO. Values are stored in wp_options (post_id = 'options').
-     */
     public function registerOptionsPages(): void
     {
         add_action('acf/init', function () {
@@ -81,6 +76,17 @@ class Base
             ]);
 
             acf_add_options_page([
+                'page_title'      => __('Formulaire', 'theme_base'),
+                'menu_title'      => __('Formulaire', 'theme_base'),
+                'menu_slug'       => 'form',
+                'capability'      => 'edit_posts',
+                'redirect'        => false,
+                'autoload'        => false,
+                'update_button'   => __('Mise à jour', 'theme_base'),
+                'updated_message' => __('Options mises à jour', 'theme_base'),
+            ]);
+
+            acf_add_options_page([
                 'page_title'      => __('Lumiboo', 'theme_base'),
                 'menu_title'      => __('Lumiboo', 'theme_base'),
                 'menu_slug'       => 'lumiboo-settings',
@@ -93,14 +99,6 @@ class Base
         });
     }
 
-    /**
-     * Share WordPress post categories ("category" taxonomy) with WooCommerce products.
-     * This makes the "Categories" metabox available on the product edit screen
-     * and lets posts/products reference the same term tree.
-     *
-     * @param bool $rename_admin_labels Rename admin labels to disambiguate
-     *                                  "Post categories" vs "Product categories".
-     */
     public function link_category_to_product(bool $rename_admin_labels = true): void
     {
         add_action('init', function () use ($rename_admin_labels) {
@@ -126,12 +124,6 @@ class Base
         }, 100);
     }
 
-    /**
-     * Customize the WooCommerce breadcrumb wrapper and separator.
-     * Requires two SVGs (looked up via inline_svg()):
-     *   - home.svg
-     *   - simple-chevron-right.svg
-     */
     public function change_breadcrumb_delimiter(): void
     {
         add_filter('woocommerce_breadcrumb_defaults', function ($defaults) {
@@ -146,10 +138,6 @@ class Base
         });
     }
 
-    /**
-     * Safely inline an SVG from the theme's resources/images/ folder.
-     * Returns an empty string if the file is missing.
-     */
     public static function inline_svg(string $filename): string
     {
         $filename = ltrim($filename, '/');
@@ -162,10 +150,6 @@ class Base
         return '';
     }
 
-    /**
-     * Inline an SVG from a media library attachment (ACF image field: ID or array).
-     * Returns an empty string if the attachment is missing or not an SVG.
-     */
     public static function inline_svg_from_attachment($attachment): string
     {
         $id = is_array($attachment) ? (int) ($attachment['ID'] ?? 0) : (int) $attachment;
@@ -187,11 +171,6 @@ class Base
         return wp_kses($svg, self::svg_allowed_tags());
     }
 
-    /**
-     * Whitelist of SVG tags/attributes for wp_kses sanitization.
-     *
-     * @return array<string, array<string, bool>>
-     */
     private static function svg_allowed_tags(): array
     {
         return [
@@ -216,7 +195,8 @@ class Base
         register_nav_menus([
             'header' => __('Header', 'theme_base'),
             'footer' => __('Footer', 'theme_base'),
-            'policy' => __('Policy', 'theme_base'),
+            'footer-contact' => __('Footer Contact', 'theme_base'),
+            'footer-copyright' => __('Footer Copyright', 'theme_base'),
         ]);
     }
 
@@ -254,10 +234,6 @@ class Base
         });
     }
 
-    /**
-     * Detect if the current ACF validation context targets an SVG file.
-     * Handles the three contexts used by ACF: upload, prepare, basic_upload.
-     */
     private static function isSvgAttachmentContext(array $attachment): bool
     {
         $ext_matches = static function (string $filename): bool {
@@ -278,13 +254,6 @@ class Base
         return $mime === 'image/svg+xml';
     }
 
-    /**
-     * Allow SVG files inside ACF image (and gallery) fields.
-     * ACF 6.8.7+ hardened image field validation which rejects SVGs even when
-     * WordPress core accepts them. We selectively bypass the three ACF checks
-     * (`upload`, `prepare`, `basic_upload`) and the field-level `validate_value`
-     * only when the underlying file is a real SVG.
-     */
     public function enableSvgInAcfImageFields(): void
     {
         add_filter('acf/validate_is_image_attachment', function ($errors, $file, $attachment, $field, $context) {
@@ -310,7 +279,6 @@ class Base
         add_filter('acf/validate_value/type=image', $bypass_svg, 20, 4);
         add_filter('acf/validate_value/type=gallery', $bypass_svg, 20, 4);
     }
-
 
     public static function get_meta_description()
     {
@@ -347,26 +315,20 @@ class Base
         return $links;
     }
 
-    /**
-     * Get nav menu items by location
-     *
-     * @param string|null $location The menu location id
-     */
     public static function  wp_get_menu_array(?string $location = null, $args = []): array
     {
-        // Get all locations
+
         $locations = get_nav_menu_locations();
 
         if ($location === null || !array_key_exists($location, $locations)) {
             return [];
         }
 
-        // Get object id by location
         $object = wp_get_nav_menu_object($locations[$location]);
-        // Get menu items by menu name
+
         $menu_items = wp_get_nav_menu_items($object->name, array('update_post_term_cache' => false));
         _wp_menu_item_classes_by_context($menu_items);
-        // Return menu post objects
+
         $menu = [];
 
         foreach ($menu_items as $k => $m) {
@@ -392,11 +354,6 @@ class Base
         return $menu;
     }
 
-    /**
-     * Populate children
-     *
-     */
-
     public static function populate_children(?array $menu_array = null, ?\WP_Post $menu_item = null): array
     {
         if (!$menu_item instanceof \WP_Post) {
@@ -417,7 +374,7 @@ class Base
                     $children[$m->ID]['parent'] = intval($menu_item->ID);
                     $children[$m->ID]['target'] = $m->target;
                     $children[$m->ID]['object_id'] = intval($m->object_id);
-                    // Get the object based on the menu item type
+
                     if ($m->type === 'post_type') {
                         $children[$m->ID]['object'] = get_post($m->object_id);
                     } elseif ($m->type === 'taxonomy') {
@@ -439,11 +396,6 @@ class Base
         return '';
     }
 
-    /**
-     * Check if an object is a WP_Post or WP_Term
-     * @param mixed $object The object to check
-     * @return string 'post'|'term'|'unknown'
-     */
     public static function get_object_type($object): string
     {
         if ($object instanceof \WP_Post) {
@@ -454,14 +406,6 @@ class Base
         return 'unknown';
     }
 
-    /**
-     * Return 'active' when a menu item (or any descendant) matches the current page.
-     * Works for Custom Link dropdown parents that never receive WP's native
-     * current-menu-parent / current-menu-ancestor classes (e.g. product children).
-     *
-     * @param array $item   Menu item array as produced by wp_get_menu_array()
-     * @param mixed $object Current queried object (WP_Post|WP_Term|null)
-     */
     public static function get_parent_active_class($item, $object = null): string
     {
         if (! is_array($item)) {
@@ -515,25 +459,36 @@ class Base
         return '';
     }
 
-    /**
-     * Register sidebars and widgetized areas.
-     *
-     * search
-     *
-     */
-    public function registerWidgets(): void
+    public function sidebar_widgets_trustindex_init(): void
     {
         add_action('widgets_init', function () {
-
-            //add sidebars and widgets here
-
+            register_sidebar(array(
+                'name'          => __('Trustindex', 'theme_base'),
+                'id'            => 'trustindex',
+                'description'   => __('Zone pour le widget Trustindex (avis Google).', 'theme_base'),
+                'before_widget' => '<div class="trustindex-widget">',
+                'after_widget'  => '</div>',
+                'before_title'  => '<h2 class="trustindex-widget-title">',
+                'after_title'   => '</h2>',
+            ));
         });
     }
 
-    /**
-     * @return void
-     * add widget for language selector if wpml is active
-     */
+    public function sidebar_widgets_trustindex_slider_init(): void
+    {
+        add_action('widgets_init', function () {
+            register_sidebar(array(
+                'name'          => __('Trustindex Slider', 'theme_base'),
+                'id'            => 'trustindex_slider',
+                'description'   => __('Zone pour le widget Trustindex Slider (avis Google).', 'theme_base'),
+                'before_widget' => '<div class="trustindex-slider-widget">',
+                'after_widget'  => '</div>',
+                'before_title'  => '<h2 class="trustindex-slider-widget-title">',
+                'after_title'   => '</h2>',
+            ));
+        });
+    }
+
     public function sidebar_widgets_language_selector_init(): void
     {
         add_action('widgets_init',  function () {
@@ -548,30 +503,20 @@ class Base
         });
     }
 
-
-    /**
-     * Calcule le temps de lecture estimé d'un contenu
-     * @param string $content Le contenu du post
-     * @return string Le temps de lecture formaté
-     */
     public static function get_reading_time(string $content = ''): string
     {
-        // Si pas de contenu, utiliser le contenu du post courant
+
         if (empty($content)) {
             $content = get_the_content();
         }
 
-        // Nettoyer le contenu des balises HTML
         $clean_content = strip_tags($content);
 
-        // Nombre de caractères par minute (vitesse moyenne de lecture)
         $chars_per_minute = 1500;
 
-        // Calculer le temps en minutes
         $chars_count = strlen($clean_content);
         $minutes = ceil($chars_count / $chars_per_minute);
 
-        // Formater le résultat
         if ($minutes <= 1) {
             return __('1 min read', 'theme_base');
         } else {
@@ -579,12 +524,6 @@ class Base
         }
     }
 
-
-    /**
-     * Generate pagination for a query
-     * @param \WP_Query $query The query to generate pagination for
-     * @return array The pagination array
-     */
     public static function pagination(?\WP_Query $query = null): array
     {
         $query = $query ?? ($GLOBALS['wp_query'] ?? null);
@@ -603,13 +542,6 @@ class Base
         }, $pages);
     }
 
-    /**
-     * Cat_has_no_parent_category
-     *
-     * check if category has a parent
-     * used in category.php
-     */
-
     public static function cat_has_no_parent_category(?\WP_Term $cat = null): bool
     {
         if (!$cat instanceof \WP_Term) {
@@ -618,13 +550,6 @@ class Base
 
         return $cat->parent === 0;
     }
-
-    /**
-     * Cat_middle_category
-     *
-     * check if category has a parent and a child
-     * used in category.php
-     */
 
     public static function cat_middle_category(?\WP_Term $cat = null): bool
     {
@@ -636,13 +561,6 @@ class Base
 
         return ($cat->parent > 0) && !empty($children);
     }
-
-    /**
-     * Cat_child_category
-     *
-     * check if category has a parent and no child
-     * used in category.php
-     */
 
     public static function cat_child_category(?\WP_Term $cat = null): bool
     {
@@ -714,7 +632,6 @@ class Base
         ];
     }
 
-
     public static function get_post_primary_term($object = null, $taxonomy = 'category'): int
     {
         $term_id = 0;
@@ -733,8 +650,6 @@ class Base
 
         return (int) $term_id;
     }
-
-
 
     public static function pre_debug($data)
     {

@@ -1,6 +1,7 @@
 @use "../utilities/_container" as *;
 @use "../design-tokens/tokens" as *;
 @use "../design-tokens/colors" as *;
+@use "../utilities/spacer" as *;
 
 /* HEADER ----- */
 
@@ -9,6 +10,7 @@
   top: 0;
   z-index: 1000;
   background-color: $background-color;
+  padding-block-end: $spacer-sm;
 }
 
 .header-container {
@@ -31,23 +33,26 @@
   .navmenu-mobile {
     top: $header-height;
   }
+  .nav-cta {
+    grid-area: nav-cta;
+  }
 
   @media (width <=$breakpoint-sm) {
     display: grid;
-    grid-template-areas: "logo burger";
-    grid-template-columns: auto 1fr;
+    grid-template-areas: "logo burger nav-cta";
+    grid-template-columns: auto 1fr 1fr;
     grid-template-rows: $header-height;
   }
 
   @media (width >=$breakpoint-sm) {
     display: grid;
-    grid-template-areas: "logo burger";
-    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "logo burger nav-cta";
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: $header-height;
   }
 
   @media (width >=$breakpoint-navbar) {
-    grid-template-columns: minmax(100px, 250px) 1fr 0;
+    grid-template-columns: minmax(100px, 250px) 1fr 1fr;
     grid-template-rows: $header-height;
 
     .burger-container {

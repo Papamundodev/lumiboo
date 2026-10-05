@@ -1,0 +1,5 @@
+@use "../design-tokens/colors" as *;
+
+.section-hero {
+  background-color: $primary-color;
+}

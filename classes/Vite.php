@@ -10,31 +10,17 @@ class Vite
     private string $version;
     private string $handlePrefix;
 
-    /**
-     * JS entry points (Vite input keys → handle suffix).
-     *
-     * @var array<string, string>
-     */
     private array $jsEntries = [
         'main' => 'resources/scripts/main.js',
         'popover' => 'resources/scripts/popover.js',
         'slider' => 'resources/scripts/slider.js',
     ];
 
-    /**
-     * Bundles conditionnels (compte client). Non chargés par enqueueAssets :
-     * Personalisation::enqueueForm() les demande via enqueueNamed()
-     * uniquement sur l'endpoint natif `view-order`.
-     *
-     * @var array<string, string>
-     */
     private array $lazyJsEntries = [
         'account' => 'resources/scripts/account.js',
+        'contact-form' => 'resources/scripts/contact-form.js',
     ];
 
-    /**
-     * @var array<string, string>
-     */
     private array $lazyCssEntries = [
         'account' => 'resources/styles/account.scss',
     ];
@@ -61,9 +47,6 @@ class Vite
         return self::$instance;
     }
 
-    /**
-     * Handle of the main JS/CSS bundle, e.g. for wp_localize_script().
-     */
     public function mainHandle(): string
     {
         return $this->scriptHandle('main');
@@ -86,9 +69,6 @@ class Vite
         add_filter('script_loader_tag', [$this, 'addModuleType'], 10, 3);
     }
 
-    /**
-     * Charge un bundle lazy (JS et/ou CSS du même nom) sur la page courante.
-     */
     public function enqueueNamed(string $name): void
     {
         if ($this->isRunning()) {

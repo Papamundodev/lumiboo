@@ -52,7 +52,6 @@ class Taxonomy
         );
     }
 
-
     public function associateToCustomPostType(array $cpt_slug = array('post')): void
     {
         add_action('init', function () use ($cpt_slug) {

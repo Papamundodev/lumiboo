@@ -15,7 +15,7 @@ if (empty($excerpt)) {
 $content = wp_trim_words($excerpt, 15, '...');
 $featured_image = get_the_post_thumbnail_url($post, 'post-preview-image');
 $alt_text = get_post_meta(get_post_thumbnail_id($post), '_wp_attachment_image_alt', true);
-$post_terms = get_the_terms($post, 'category');
+$post_terms = get_the_terms($post, 'post_tag');
 $post_terms = (! $post_terms || is_wp_error($post_terms)) ? [] : $post_terms;
 ?>
 

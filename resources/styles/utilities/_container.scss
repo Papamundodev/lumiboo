@@ -29,10 +29,10 @@ $breakpoints: (
       width: 100%;
     }
     @media (width >=$value) and (width < $breakpoint-xl) {
-      width: calc($value - 22vw);
+      width: calc($value - 18vw);
     }
     @media (width >=$value) and (width >=$breakpoint-xl) {
-      width: calc($value - 18vw);
+      width: calc($value - 16vw);
     }
   }
 }
