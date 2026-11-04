@@ -1,5 +1,6 @@
 @use "utilities/spacer" as *;
 @use "design-tokens/colors" as *;
+@use "design-tokens/fonts" as *;
 
 @view-transition {
   navigation: auto;
@@ -50,16 +51,13 @@ dd {
   margin: 0;
 }
 
+strong {
+  font-weight: $font-weight-bold;
+}
+
 /* A elements that don't have a class get default styles */
 a:not([class]) {
   text-decoration-skip-ink: auto;
-}
-
-a:not(.btn) {
-  &:focus-visible {
-    outline: 2px solid $focus-within-color;
-    outline-offset: $spacer-xs;
-  }
 }
 
 /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */

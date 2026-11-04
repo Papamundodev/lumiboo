@@ -2,11 +2,11 @@
 $icon-xs: 8px;
 $icon-sm: 22px;
 $icon-md: 28px;
-$icon-lg: 38px;
+$icon-lg: 42px;
+$icon-xl: 90px;
 $logo-sm: 60px;
 $logo-md: 80px;
 $logo-lg: 100px;
-$img-md: 150px;
 $img-lg: 200px;
 $img-xl: 250px;
 $full: 100%;
@@ -28,9 +28,10 @@ $img-sizes: (
 /* ------- border-radius ------- */
 
 $border-radius-sharp: 0.02em;
-$border-radius-sm: 3px;
-$border-radius-md: 5px;
-$border-radius-rounded: 10px;
+$border-radius-sm: 5px;
+$border-radius-md: 10px;
+$border-radius-rounded: 20px;
+$border-radius-lg: 80px;
 $border-radius-pill: 999px;
 $border-radius-circle: 50%;
 $border-radius-retro: 10px 20px 30px 40px;
@@ -40,6 +41,7 @@ $border-radius: (
   "sharp": $border-radius-sharp,
   "sm": $border-radius-sm,
   "md": $border-radius-md,
+  "lg": $border-radius-lg,
   "rounded": $border-radius-rounded,
   "pill": $border-radius-pill,
   "circle": $border-radius-circle,

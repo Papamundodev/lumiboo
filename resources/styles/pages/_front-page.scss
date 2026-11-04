@@ -1,5 +1,764 @@
 @use "../design-tokens/colors" as *;
+@use "../design-tokens/fonts" as *;
+@use "../design-tokens/tokens" as *;
+@use "../atoms/text" as *;
+@use "../utilities/spacer" as *;
+@use "../utilities/container" as *;
+@use "../mixins" as *;
 
 .section-hero {
-  background-color: $primary-color;
+  @media (width >= $breakpoint-md) {
+    margin-block: $spacer-xxl $spacer-xl;
+  }
+
+  .section-hero-container {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+    gap: $spacer-xxl;
+    @media (width >= $breakpoint-xl) {
+      display: grid;
+      grid-template-columns: auto 45%;
+      grid-template-rows: 1fr;
+      align-items: end;
+    }
+
+    .section-hero-image-container {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      justify-content: end;
+      .section-hero-image {
+        overflow: hidden;
+        max-width: 350px;
+        max-height: 500px;
+        border-radius: $border-radius-lg;
+        @supports (corner-shape: squircle) {
+          border-radius: 250px;
+          corner-shape: squircle;
+        }
+        & > img {
+          width: clamp(100%, 30%, 600px);
+          aspect-ratio: 1/1.5;
+          object-fit: cover;
+          object-position: bottom;
+        }
+      }
+      .badge-swiss {
+        position: absolute;
+        left: calc($spacer-xxl * -0.5);
+        bottom: $spacer-xl;
+        max-width: 100px;
+        img {
+          backdrop-filter: blur(10px) brightness(1.2);
+          border-radius: $border-radius-circle;
+        }
+        @media (width >= $breakpoint-xl) {
+          max-width: 140px;
+          left: $spacer-big;
+          bottom: calc($spacer-lg * -1);
+        }
+      }
+    }
+    .section-hero-actions {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: $spacer-xl;
+      margin-block-end: $spacer-xxl;
+      #trustindex {
+        .trustindex-widget {
+          .ti-header {
+            padding-block: 0;
+          }
+          .ti-name {
+            display: none;
+          }
+          .ti-profile-img {
+            display: none;
+          }
+          .ti-profile-details {
+            display: flex;
+            flex-direction: row;
+            gap: $spacer-md !important;
+          }
+          &:hover .ti-rating-text {
+            color: $primary-color;
+          }
+        }
+      }
+    }
+  }
+}
+
+#section-banner {
+  background-color: $white-color;
+  margin-block: $spacer-xxl;
+}
+
+.section-values {
+  @media (width >= $breakpoint-lg) {
+    .section-values-content-container {
+      align-items: start;
+      .section-title {
+        text-align: left;
+        &:after {
+          margin-inline: 0;
+        }
+      }
+    }
+  }
+  .section-values-container {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: $spacer-xxl;
+    justify-content: center;
+    margin-block-end: $spacer-big;
+    @media (width >= $breakpoint-xl) {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: 1fr;
+      align-items: end;
+    }
+    @media (width >= $breakpoint-lg) and (width < $breakpoint-xl) {
+      max-width: fit-content;
+      margin-inline: auto;
+    }
+    .section-values-images {
+      display: flex;
+      flex-direction: row;
+      align-items: end;
+      gap: $spacer-xl;
+      .image-right {
+        overflow: hidden;
+        border-radius: 85px;
+        width: 160px;
+        height: 270px;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: bottom;
+        }
+      }
+      .image-left {
+        overflow: hidden;
+        border-radius: 140px;
+        width: 275px;
+        height: 470px;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: bottom;
+        }
+      }
+    }
+  }
+  .first-row {
+    .section-values-first-row-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: $spacer-xxl;
+      margin-block-end: $spacer-xxl;
+      &:last-child {
+        margin-block-end: 0;
+      }
+      .title {
+        @include heading-lg;
+        font-weight: $font-weight-semibold;
+        color: $primary-color;
+        margin-block-end: $spacer-xs;
+      }
+    }
+  }
+  .second-row {
+    background-color: $white-color;
+    border-radius: $border-radius-rounded;
+    padding-block: $spacer-xl;
+    margin-block: $spacer-xxl $spacer-xxl;
+    padding-inline: $spacer-lg;
+    @media (width >= $breakpoint-xl) {
+      padding-inline: $spacer-xxl;
+    }
+    .section-values-second-row-container {
+      display: flex;
+      flex-direction: column;
+      max-width: 400px;
+      margin-inline: auto;
+      @media (width >= $breakpoint-xl) {
+        flex-direction: row;
+        gap: $spacer-xxl;
+        justify-content: center;
+        align-items: center;
+        max-width: 100%;
+        margin-inline: 0;
+      }
+      .section-values-second-row-item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: $spacer-xl;
+        .title {
+          @include text-md;
+          font-weight: $font-weight-semibold;
+          color: $primary-color;
+          margin-block-end: $spacer-xs;
+        }
+      }
+    }
+  }
+  .button-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: $spacer-xl;
+  }
+}
+
+.section-step-enum {
+  .items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $spacer-xxl;
+    @media (width >= $breakpoint-xl) {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(250px, 1fr));
+      gap: $spacer-xl;
+    }
+    .item {
+      display: grid;
+      grid-row: span 3;
+      grid-template-rows: subgrid;
+      place-items: start center;
+      counter-increment: methode;
+      gap: $spacer-sm;
+      margin-block-end: $spacer-xxl;
+      &:nth-child(1) .icon-container-tertiary-xl,
+      &:nth-child(5) .icon-container-tertiary-xl {
+        .count {
+          left: calc($spacer-xxl * -1);
+          top: calc($spacer-xl * -0.75);
+        }
+        &.whimsy .deco:nth-child(1 of .deco) {
+          --distance: 18%;
+          --gap: -30px;
+          --size: 7px;
+          --rotate: 0deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $primary-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $primary-color;
+            }
+          }
+        }
+        &.whimsy .deco:nth-child(2 of .deco) {
+          --distance: 20%;
+          --gap: -10px;
+          --size: 12px;
+          --rotate: -10deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $secondary-shade-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $secondary-shade-color;
+            }
+          }
+        }
+        &.whimsy .deco:nth-child(3 of .deco) {
+          --distance: 10%;
+          --gap: -10px;
+          --size: 15px;
+          --rotate: 10deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $tertiary-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $tertiary-color;
+            }
+          }
+        }
+        &.whimsy .deco:nth-child(4 of .deco) {
+          --distance: 60%;
+          --gap: -8px;
+          --size: 6px;
+          --rotate: -10deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $primary-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $primary-color;
+            }
+          }
+        }
+        &.whimsy .deco:nth-child(5 of .deco) {
+          --distance: 67%;
+          --gap: -25px;
+          --size: 12px;
+          --rotate: 20deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $secondary-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $secondary-color;
+            }
+          }
+        }
+        &.whimsy .deco:nth-child(6 of .deco) {
+          --distance: 70%;
+          --gap: -10px;
+          --size: 15px;
+          --rotate: -10deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $tertiary-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $tertiary-color;
+            }
+          }
+        }
+      }
+
+      &:nth-child(2) .icon-container-tertiary-xl {
+        .count {
+          left: calc($spacer-xxl * -1);
+          bottom: calc($spacer-xl * -1);
+        }
+        &.whimsy .deco:nth-child(1 of .deco) {
+          --distance: 18%;
+          --gap: -30px;
+          --size: 7px;
+          --rotate: 0deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $primary-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $primary-color;
+            }
+          }
+        }
+        &.whimsy .deco:nth-child(2 of .deco) {
+          --distance: 18%;
+          --gap: -6px;
+          --size: 12px;
+          --rotate: -10deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $secondary-shade-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $secondary-shade-color;
+            }
+          }
+        }
+        &.whimsy .deco:nth-child(3 of .deco) {
+          --distance: 10%;
+          --gap: -5px;
+          --size: 15px;
+          --rotate: 10deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $tertiary-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $tertiary-color;
+            }
+          }
+        }
+        &.whimsy .deco:nth-child(4 of .deco) {
+          --distance: 78%;
+          --gap: 0px;
+          --size: 6px;
+          --rotate: -10deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $primary-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $primary-color;
+            }
+          }
+        }
+        &.whimsy .deco:nth-child(5 of .deco) {
+          --distance: 85%;
+          --gap: -10px;
+          --size: 12px;
+          --rotate: 20deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $secondary-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $secondary-color;
+            }
+          }
+        }
+        &.whimsy .deco:nth-child(6 of .deco) {
+          --distance: 88%;
+          --gap: 15px;
+          --size: 15px;
+          --rotate: -10deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $tertiary-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $tertiary-color;
+            }
+          }
+        }
+      }
+
+      &:nth-child(3) .icon-container-tertiary-xl,
+      &:nth-child(6) .icon-container-tertiary-xl {
+        .count {
+          top: calc($spacer-xl * -1);
+          right: calc($spacer-xxl * -1);
+        }
+        &.whimsy .deco:nth-child(1 of .deco) {
+          --distance: 37%;
+          --gap: -20px;
+          --size: 7px;
+          --rotate: 0deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $primary-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $primary-color;
+            }
+          }
+        }
+        &.whimsy .deco:nth-child(2 of .deco) {
+          --distance: 40%;
+          --gap: -10px;
+          --size: 12px;
+          --rotate: -10deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $secondary-shade-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $secondary-shade-color;
+            }
+          }
+        }
+        &.whimsy .deco:nth-child(3 of .deco) {
+          --distance: 30%;
+          --gap: 0px;
+          --size: 15px;
+          --rotate: 10deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $tertiary-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $tertiary-color;
+            }
+          }
+        }
+        &.whimsy .deco:nth-child(4 of .deco) {
+          --distance: 78%;
+          --gap: 0px;
+          --size: 6px;
+          --rotate: -10deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $primary-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $primary-color;
+            }
+          }
+        }
+        &.whimsy .deco:nth-child(5 of .deco) {
+          --distance: 85%;
+          --gap: -20px;
+          --size: 12px;
+          --rotate: 20deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $secondary-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $secondary-color;
+            }
+          }
+        }
+        &.whimsy .deco:nth-child(6 of .deco) {
+          --distance: 88%;
+          --gap: 0px;
+          --size: 15px;
+          --rotate: -10deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $tertiary-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $tertiary-color;
+            }
+          }
+        }
+      }
+      &:nth-child(4) .icon-container-tertiary-xl {
+        .count {
+          left: calc($spacer-xxl * -1);
+          bottom: $spacer-lg;
+        }
+        &.whimsy .deco:nth-child(1 of .deco) {
+          --distance: 18%;
+          --gap: -30px;
+          --size: 7px;
+          --rotate: 0deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $primary-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $primary-color;
+            }
+          }
+        }
+        &.whimsy .deco:nth-child(2 of .deco) {
+          --distance: 18%;
+          --gap: -6px;
+          --size: 12px;
+          --rotate: -10deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $secondary-shade-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $secondary-shade-color;
+            }
+          }
+        }
+        &.whimsy .deco:nth-child(3 of .deco) {
+          --distance: 10%;
+          --gap: -5px;
+          --size: 15px;
+          --rotate: 10deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $tertiary-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $tertiary-color;
+            }
+          }
+        }
+        &.whimsy .deco:nth-child(4 of .deco) {
+          --distance: 85%;
+          --gap: -3px;
+          --size: 6px;
+          --rotate: -10deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $primary-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $primary-color;
+            }
+          }
+        }
+        &.whimsy .deco:nth-child(5 of .deco) {
+          --distance: 90%;
+          --gap: -21px;
+          --size: 12px;
+          --rotate: 20deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $secondary-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $secondary-color;
+            }
+          }
+        }
+        &.whimsy .deco:nth-child(6 of .deco) {
+          --distance: 92%;
+          --gap: -5px;
+          --size: 15px;
+          --rotate: -10deg;
+          svg {
+            [fill]:not([fill="none"]) {
+              fill: $tertiary-color;
+            }
+            [stroke]:not([stroke="none"]) {
+              stroke: $tertiary-color;
+            }
+          }
+        }
+      }
+
+      .count {
+        position: absolute;
+        width: fit-content;
+        display: inline;
+        align-items: center;
+        justify-content: center;
+        &::before {
+          content: counter(methode, decimal);
+          color: $secondary-shade-color;
+          font-size: $font-size-big;
+          font-weight: $font-weight-bold;
+          line-height: 1;
+          font-family: $heading-font;
+        }
+      }
+      .icon-container-tertiary-xl {
+        position: relative;
+        margin-block-end: $spacer-lg;
+        .icon {
+          padding: $spacer-lg;
+          width: 140px;
+          height: 140px;
+        }
+        &.whimsy {
+          .deco {
+            --size: 10px;
+            --distance: 0%;
+            --gap: 0px; // negative = outside the border, positive = inside
+            position: absolute;
+            offset-path: inset(var(--gap) round 50%);
+            offset-distance: var(--distance);
+            offset-rotate: var(--rotate);
+            width: var(--size);
+            aspect-ratio: 1;
+            &:nth-child(1 of .deco) {
+              --distance: 18%;
+              --gap: -30px;
+              --size: 7px;
+              --rotate: 0deg;
+              svg {
+                [fill]:not([fill="none"]) {
+                  fill: $primary-color;
+                }
+                [stroke]:not([stroke="none"]) {
+                  stroke: $primary-color;
+                }
+              }
+            }
+            &:nth-child(2 of .deco) {
+              --distance: 20%;
+              --gap: -10px;
+              --size: 12px;
+              --rotate: -10deg;
+              svg {
+                [fill]:not([fill="none"]) {
+                  fill: $secondary-shade-color;
+                }
+                [stroke]:not([stroke="none"]) {
+                  stroke: $secondary-shade-color;
+                }
+              }
+            }
+            &:nth-child(3 of .deco) {
+              --distance: 10%;
+              --gap: -10px;
+              --size: 15px;
+              --rotate: 10deg;
+              svg {
+                [fill]:not([fill="none"]) {
+                  fill: $tertiary-color;
+                }
+                [stroke]:not([stroke="none"]) {
+                  stroke: $tertiary-color;
+                }
+              }
+            }
+            &:nth-child(4 of .deco) {
+              --distance: 60%;
+              --gap: -8px;
+              --size: 6px;
+              --rotate: -10deg;
+              svg {
+                [fill]:not([fill="none"]) {
+                  fill: $primary-color;
+                }
+                [stroke]:not([stroke="none"]) {
+                  stroke: $primary-color;
+                }
+              }
+            }
+            &:nth-child(5 of .deco) {
+              --distance: 67%;
+              --gap: -25px;
+              --size: 12px;
+              --rotate: 20deg;
+              svg {
+                [fill]:not([fill="none"]) {
+                  fill: $secondary-color;
+                }
+                [stroke]:not([stroke="none"]) {
+                  stroke: $secondary-color;
+                }
+              }
+            }
+            &:nth-child(6 of .deco) {
+              --distance: 70%;
+              --gap: -10px;
+              --size: 15px;
+              --rotate: -10deg;
+              svg {
+                [fill]:not([fill="none"]) {
+                  fill: $tertiary-color;
+                }
+                [stroke]:not([stroke="none"]) {
+                  stroke: $tertiary-color;
+                }
+              }
+            }
+            svg {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              object-position: center;
+              [fill]:not([fill="none"]) {
+                transition: fill 0.3s ease-in-out;
+              }
+              [stroke]:not([stroke="none"]) {
+                transition: stroke 0.3s ease-in-out;
+              }
+            }
+          }
+        }
+      }
+
+      .title {
+        @include heading-xl;
+        color: $primary-color;
+        width: fit-content;
+        font-weight: $font-weight-bold;
+        text-align: center;
+      }
+      .content-wysiwyg {
+        max-width: 35ch;
+        text-align: center;
+      }
+    }
+  }
+  .button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.section-reviews {
+  background-color: $white-color;
+  padding-block: $spacer-xxl;
 }

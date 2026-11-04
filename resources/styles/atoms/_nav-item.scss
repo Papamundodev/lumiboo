@@ -6,14 +6,17 @@
   border-radius: $border-radius-md;
   padding: $spacer-xs $spacer-lg;
   display: inline-block;
-  color: $primary-color;
+  color: $default-color;
+  &:hover:not(.nav-dropdown .dropdown-title) {
+    color: $primary-color;
+  }
 }
 
 .nav-item {
   &.active {
     & > .nav-link,
     & .dropdown-title {
-      color: $secondary-color;
+      color: $tertiary-color;
     }
   }
 }

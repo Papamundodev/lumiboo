@@ -23,21 +23,44 @@ $breakpoints: (
 @mixin container() {
   width: 100%;
   padding-inline: 2rem;
+  margin-inline: auto;
+
+  @each $key, $value in $breakpoints {
+    @media (width >=$value) and (width < $breakpoint-sm) {
+      width: 100%;
+    }
+    @media (width >=$value) and (width < $breakpoint-xxl) {
+      width: calc($value - 2vw);
+    }
+
+    @media (width >=$value) and (width >=$breakpoint-xxl) {
+      max-width: 1250px;
+    }
+  }
+}
+
+@mixin container-small() {
+  width: 100%;
+  padding-inline: 2rem;
 
   @each $key, $value in $breakpoints {
     @media (width >=$value) and (width < $breakpoint-sm) {
       width: 100%;
     }
     @media (width >=$value) and (width < $breakpoint-xl) {
-      width: calc($value - 18vw);
+      width: calc($value - 4rem);
     }
     @media (width >=$value) and (width >=$breakpoint-xl) {
-      width: calc($value - 16vw);
+      width: calc($value - 8rem);
+      max-width: $breakpoint-big;
     }
   }
 }
 
 .container {
-  margin-inline: auto;
   @include container;
+}
+
+.container-small {
+  @include container-small;
 }

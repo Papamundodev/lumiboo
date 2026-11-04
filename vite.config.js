@@ -4,8 +4,8 @@ import { defineConfig } from 'vite';
 const ROOT = path.resolve(__dirname, '../../..');
 const BASE = __dirname.replace(ROOT, '').replace(/\\/g, '/');
 
-export default defineConfig({
-  base: process.env.NODE_ENV === 'production' ? `${BASE}/dist/` : '/',
+export default defineConfig(({ command }) => ({
+  base: command === 'build' ? `${BASE}/dist/` : '/',
   server: {
     cors: true,
     port: 5173,
@@ -48,4 +48,4 @@ export default defineConfig({
       },
     },
   ],
-});
+}));

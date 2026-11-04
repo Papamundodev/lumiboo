@@ -1,35 +1,35 @@
 /* Colors */
 :root {
   --white-color: #ffffff;
-  --black-color: #101828;
-  --background-color: var(--white-color);
+  --black-color: #17194a;
+  --background-color: #fff9f6;
   --contrast-color: var(--white-color);
   --default-color: var(--black-color);
-  --gray-color: #fff2fd;
+  --gray-color: #726c7d;
 
-  --primary-color: #7d203f;
+  --primary-color: #95003f;
   --primary-tint-color: #d04b7b;
-  --primary-shade-color: #791137;
-  --primary-shade-2-color: #941744;
+  --primary-shade-color: #7d203f;
+  --primary-shade-2-color: #7d203f;
 
-  --secondary-color: #db6ace;
-  --secondary-tint-color: #ffdff9;
-  --secondary-tint-2-color: #e7c5e1;
-  --secondary-tint-3-color: #e4cfe4;
-  --secondary-shade-color: #cf9ac5;
+  --secondary-color: #ffebc8;
+  --secondary-tint-color: #fff9f6;
+  --secondary-tint-2-color: #fff9f6;
+  --secondary-tint-3-color: #fff9f6;
+  --secondary-shade-color: #edd6ae;
 
-  --tertiary-color: #b4a88d;
-  --tertiary-tint-color: #edd6ae;
-  --tertiary-shade-color: #957e56;
+  --tertiary-color: #cf9ac5;
+  --tertiary-tint-color: #e9dde9;
+  --tertiary-shade-color: #e9dde9;
 
-  --button-primary-background-color: var(--secondary-tint-2-color);
-  --button-primary-text-color: var(--primary-shade-2-color);
-  --background-hover-primary-color: var(--primary-color);
-  --button-primary-hover-text-color: var(--secondary-tint-2-color);
+  --button-primary-background-color: var(--primary-color);
+  --button-primary-text-color: var(--white-color);
+  --background-hover-primary-color: var(--tertiary-shade-color);
+  --button-primary-hover-text-color: var(--primary-color);
 
-  --button-secondary-background-color: var(--gray-color);
+  --button-secondary-background-color: var(--secondary-shade-color);
   --button-secondary-text-color: var(--primary-color);
-  --background-hover-secondary-color: var(--secondary-tint-3-color);
+  --background-hover-secondary-color: var(--tertiary-shade-color);
   --button-secondary-hover-text-color: var(--primary-color);
 
   --button-tertiary-background-color: var(--primary-color);
@@ -44,7 +44,7 @@
 
   --focus-within-color: var(--primary-shade-color);
   --link-color: var(--primary-color);
-  --link-hover-color: var(--secondary-color);
+  --link-hover-color: var(--tertiary-color);
 
   --button-slider-background-color: var(--background-color);
   --button-slider-border-color: var(--primary-color);

@@ -12,45 +12,52 @@ $megamenu = get_field('megamenu', $theme_location) ?? null;
 
 <?php if (is_array($menu_items) && count($menu_items) > 0): ?>
     <nav id="navmenu-<?= $theme_location ?>" class="navmenu navmenu-desktop">
-        <?php if ($megamenu): ?>
-            <h1>Megamenu</h1>
-        <?php else: ?>
-            <ul class="">
-                <?php foreach ($menu_items as $item): ?>
-
-                    <?php if (empty($item['children'])): ?>
-                        <li class=" <?= Base::get_parent_active_class($item, $object) ?> nav-item">
-                            <a class="nav-link"
-                                href="<?= $item['url'] ?>"
-                                target="<?= $item['target'] ?>"
-                                rel="<?= $item['target'] === '_blank' ? 'noopener' : '' ?>"><?= $item['title'] ?></a>
-                        </li>
-                    <?php else: ?>
-                        <li class="<?= \Theme_base\Base::get_parent_active_class($item, $object) ?> nav-item">
-                            <nav aria-label="navigation" tabindex="0" class="dropdown-hover dropdown dropdown-nav">
-                                <div class="dropdown-link ">
-                                    <div class="dropdown-title btn nav-link"><?= $item['title'] ?></div>
-                                    <div class="dropdown-menu">
-                                        <ul class="">
-                                            <?php foreach ($item['children'] as $child): ?>
-                                                <li class="<?= Base::get_parent_active_class($child, $object) ?> nav-item">
-                                                    <a class="nav-link"
-                                                        href="<?= $child['url'] ?>"
-                                                        title="<?= $child['title'] ?>"
-                                                        target="<?= $child['target'] ?>"
-                                                        rel="<?= $child['target'] === '_blank' ? 'noopener' : '' ?>"><?= $child['title'] ?></a>
-                                                </li>
-                                            <?php endforeach; ?>
-                                        </ul>
-                                    </div>
+        <ul class="">
+            <?php foreach ($menu_items as $item): ?>
+                <?php if (empty($item['children'])): ?>
+                    <li class=" <?= Base::get_parent_active_class($item, $object) ?> nav-item">
+                        <a class="nav-link"
+                            href="<?= $item['url'] ?>"
+                            target="<?= $item['target'] ?>"
+                            rel="<?= $item['target'] === '_blank' ? 'noopener' : '' ?>"><?= $item['title'] ?></a>
+                    </li>
+                <?php else: ?>
+                    <li class="<?= \Theme_base\Base::get_parent_active_class($item, $object) ?> nav-item nav-dropdown">
+                        <nav aria-label="navigation" tabindex="0" class="dropdown-hover dropdown dropdown-nav">
+                            <div class="dropdown-link ">
+                                <div class="dropdown-title btn nav-link"><?= $item['title'] ?></div>
+                                <div class="dropdown-menu">
+                                    <ul class="">
+                                        <?php foreach ($item['children'] as $child): ?>
+                                            <li class="<?= Base::get_parent_active_class($child, $object) ?> nav-item">
+                                                <a class="nav-link"
+                                                    href="<?= $child['url'] ?>"
+                                                    title="<?= $child['title'] ?>"
+                                                    target="<?= $child['target'] ?>"
+                                                    rel="<?= $child['target'] === '_blank' ? 'noopener' : '' ?>"><?= $child['title'] ?></a>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
                                 </div>
-                            </nav>
-                        </li>
-                    <?php endif; ?>
+                            </div>
+                        </nav>
+                    </li>
+                <?php endif; ?>
+            <?php endforeach; ?>
+            <li class="nav-item nav-dropdown">
+                <nav aria-label="navigation" tabindex="0" class="dropdown-hover dropdown dropdown-nav">
+                    <div class="dropdown-link ">
+                        <div class="dropdown-title btn nav-link"><?= __('Contact', 'theme_base') ?></div>
+                        <div class="dropdown-menu">
+                            <ul class="">
+                                <li class="nav-item ">
 
-                <?php endforeach; ?>
-            </ul>
-
-        <?php endif; ?>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </li>
+        </ul>
     </nav>
 <?php endif; ?>

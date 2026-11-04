@@ -12,7 +12,7 @@
 /* ------- TEXT ------- */
 
 @mixin text-base {
-  font-family: $button-font;
+  font-family: $text-font;
   line-height: $line-height-paragraph;
   letter-spacing: $letter-spacing-paragraph;
   text-wrap: pretty;
@@ -25,6 +25,11 @@
   @media (width <=$breakpoint-xl) {
     font-size: $font-size-sm;
   }
+}
+
+@mixin text-md {
+  font-size: $font-size-md;
+  @include text-base;
 }
 
 @mixin text-sm {
@@ -48,6 +53,7 @@
 }
 
 @mixin text-button {
+  font-family: $button-font;
   font-size: $font-size-button;
   font-weight: $font-weight-semibold;
   text-box-trim: trim-both;
@@ -63,6 +69,26 @@
 
   @media (width <=$breakpoint-xxl) {
     font-size: $font-size-xs;
+  }
+}
+
+@mixin bullet-list {
+  @include text-md;
+  list-style: none;
+  padding-left: 0;
+
+  li {
+    position: relative;
+    margin-block-end: $spacer-sm;
+    padding-inline-start: $spacer-xl; // controls marker-to-text spacing
+  }
+
+  li::before {
+    content: "✓";
+    position: absolute;
+    inset-inline-start: 0;
+    font-weight: $font-weight-bold;
+    color: $secondary-shade-color;
   }
 }
 
@@ -84,15 +110,29 @@
   }
 }
 
+@mixin heading-bg {
+  font-size: $font-size-bg;
+  font-weight: $font-weight-regular;
+  @include heading-base;
+
+  @media (width <=$breakpoint-md) {
+    font-size: 2.3rem;
+  }
+}
+
 @mixin heading-xxl {
   font-size: $font-size-xxl;
-  font-weight: $font-weight-bold;
+  font-weight: $font-weight-regular;
   @include heading-base;
+
+  @media (width <=$breakpoint-md) {
+    font-size: $font-size-xl;
+  }
 }
 
 @mixin heading-xl {
   font-size: $font-size-xl;
-  font-weight: $font-weight-bold;
+  font-weight: $font-weight-regular;
   @include heading-base;
 
   @media (width <=$breakpoint-md) {
@@ -102,7 +142,7 @@
 
 @mixin heading-lg {
   font-size: $font-size-lg;
-  font-weight: $font-weight-bold;
+  font-weight: $font-weight-regular;
   @include heading-base;
 
   @media (width <=$breakpoint-md) {
@@ -180,6 +220,9 @@
     outline-offset: $spacer-xs;
     border-radius: $border-radius-sm;
   }
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
   &[hidden]:focus-within,
   &[hidden]:focus-visible,
   &.disabled:focus-within,
@@ -201,6 +244,18 @@
   @include button-focus-within;
 }
 
+@mixin button-shadow($color: $primary-color, $inset-color: $default-color) {
+  box-shadow:
+    inset 0 -2px 0 $inset-color,
+    0 1px 2px $inset-color,
+    0 5px 12px -3px color-mix(in srgb, $color 60%, transparent);
+
+  &:active {
+    translate: 0 1px;
+    box-shadow: inset 0 2px 4px $inset-color;
+  }
+}
+
 @mixin button-background-primary {
   width: fit-content;
   background-color: $button-primary-background-color;
@@ -210,7 +265,7 @@
   a,
   input[type="submit"] {
     color: $button-primary-text-color;
-    padding-block: $spacer-sm;
+    padding-block: $spacer-md;
     padding-inline: $spacer-lg;
     display: inline-block;
     text-decoration: none;
@@ -239,7 +294,7 @@
   a,
   input[type="submit"] {
     color: $button-secondary-text-color;
-    padding-block: $spacer-sm;
+    padding-block: $spacer-md;
     padding-inline: $spacer-lg;
     display: inline-block;
     text-decoration: none;
@@ -268,7 +323,7 @@
   a,
   input[type="submit"] {
     color: $button-tertiary-text-color;
-    padding-block: $spacer-sm;
+    padding-block: $spacer-md;
     padding-inline: $spacer-lg;
     display: inline-block;
     text-decoration: none;
@@ -300,7 +355,7 @@
   a,
   input[type="submit"] {
     color: $button-quaternary-text-color;
-    padding-block: $spacer-sm;
+    padding-block: $spacer-md;
     padding-inline: $spacer-lg;
     display: inline-block;
     text-decoration: none;
@@ -338,40 +393,154 @@
   }
 }
 
-@mixin icon-container {
+@mixin icon-container-lg(
+  $background-color: $primary-color,
+  $color: $contrast-color,
+  $hover-background-color: $secondary-color,
+  $hover-color: $primary-color
+) {
+  width: fit-content;
+  .icon,
   .btn {
+    > svg {
+      width: 100%;
+      height: 100%;
+      [fill]:not([fill="none"]) {
+        fill: $color;
+        transition: fill 0.3s ease-in-out;
+      }
+      [stroke]:not([stroke="none"]) {
+        stroke: $color;
+        transition: stroke 0.3s ease-in-out;
+      }
+    }
+  }
+  .icon {
+    width: $icon-lg;
+    height: $icon-lg;
     border-radius: $border-radius-circle;
-    padding: $spacer-sm;
+    padding: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: $primary-color;
+    background-color: $background-color;
+  }
+  .btn {
+    border-radius: $border-radius-circle;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $background-color;
     width: $icon-lg;
     height: $icon-lg;
     opacity: 1;
     transition: background-color 0.3s ease-in-out;
-    svg {
-      width: 100%;
-      height: 100%;
-
-      path {
-        stroke: $contrast-color;
-        fill: $contrast-color;
-      }
-    }
     &:hover {
-      background-color: $secondary-color;
+      background-color: $hover-background-color;
       cursor: pointer;
       transition: background-color 0.3s ease-in-out;
 
-      svg path {
-        stroke: $contrast-color;
-        fill: $contrast-color;
+      svg {
+        [fill]:not([fill="none"]) {
+          fill: $hover-color;
+        }
+        [stroke]:not([stroke="none"]) {
+          stroke: $hover-color;
+        }
       }
+      box-shadow:
+        inset 0 -2px 0 $primary-color,
+        0 1px 2px $primary-color,
+        0 5px 12px -3px color-mix(in srgb, $primary-color 60%, transparent);
     }
     &:focus-visible,
     &:focus {
       border-radius: $border-radius-circle;
+    }
+    box-shadow:
+      inset 0 -2px 0 $primary-color,
+      0 1px 2px $primary-color,
+      0 5px 12px -3px color-mix(in srgb, $primary-color 60%, transparent);
+    &:active {
+      translate: 0 1px;
+      box-shadow: inset 0 2px 4px $background-color;
+    }
+  }
+}
+
+@mixin icon-container-xl(
+  $background-color: $primary-color,
+  $color: $contrast-color,
+  $hover-background-color: $secondary-color,
+  $hover-color: $primary-color
+) {
+  width: fit-content;
+  .icon,
+  .btn {
+    > svg {
+      width: 100%;
+      height: 100%;
+      [fill]:not([fill="none"]) {
+        fill: $color;
+        transition: fill 0.3s ease-in-out;
+      }
+      [stroke]:not([stroke="none"]) {
+        stroke: $color;
+        transition: stroke 0.3s ease-in-out;
+      }
+    }
+  }
+  .icon {
+    width: $icon-xl;
+    height: $icon-xl;
+    border-radius: $border-radius-circle;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $background-color;
+  }
+  .btn {
+    border-radius: $border-radius-circle;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $background-color;
+    width: $icon-xl;
+    height: $icon-xl;
+    opacity: 1;
+    transition: background-color 0.3s ease-in-out;
+    &:hover {
+      background-color: $hover-background-color;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
+
+      svg {
+        [fill]:not([fill="none"]) {
+          fill: $hover-color;
+        }
+        [stroke]:not([stroke="none"]) {
+          stroke: $hover-color;
+        }
+      }
+      box-shadow:
+        inset 0 -2px 0 $primary-color,
+        0 1px 2px $primary-color,
+        0 5px 12px -3px color-mix(in srgb, $primary-color 60%, transparent);
+    }
+    &:focus-visible,
+    &:focus {
+      border-radius: $border-radius-circle;
+    }
+    box-shadow:
+      inset 0 -2px 0 $primary-color,
+      0 1px 2px $primary-color,
+      0 5px 12px -3px color-mix(in srgb, $primary-color 60%, transparent);
+    &:active {
+      translate: 0 1px;
+      box-shadow: inset 0 2px 4px $background-color;
     }
   }
 }
@@ -529,7 +698,7 @@
   }
 }
 
-@mixin dropdown-custom-hover-open($color: $primary-color) {
+@mixin dropdown-custom-hover-open($color: $default-color) {
   overflow: hidden;
 
   //hover and focus states

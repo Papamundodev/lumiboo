@@ -6,10 +6,10 @@
 .drawer {
   position: fixed;
   bottom: 0;
-  background-color: color-mix(in srgb, $gray-color 50%, transparent);
+  background-color: $secondary-shade-color;
   z-index: 1000;
-  padding: $spacer-sm;
-  border-radius: $border-radius-rounded 0 0 $border-radius-rounded;
+  padding: $spacer-xs;
+  border-radius: $border-radius-rounded $border-radius-rounded 0 0;
   @media (width >= $breakpoint-md) {
     top: 50vh;
     transform: translateY(-50%);
@@ -17,13 +17,20 @@
     bottom: auto;
     width: fit-content;
     max-width: 150px;
-    padding: $spacer-md;
+    border-radius: $border-radius-rounded 0 0 $border-radius-rounded;
   }
+  box-shadow:
+    inset 0 -2px 0 $primary-color,
+    0 1px 2px $primary-color,
+    0 5px 12px -3px color-mix(in srgb, $primary-color 60%, transparent);
 }
 
 .wrapper-tool-kit {
   display: flex;
-  flex-direction: column;
+  @media (width >= $breakpoint-md) {
+    flex-direction: column;
+  }
+  overflow: hidden;
   & > * {
     margin-block: $spacer-xs;
     padding: $spacer-xs;

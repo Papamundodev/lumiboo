@@ -5,7 +5,6 @@
 @use "../mixins" as *;
 
 .scroll-top-container {
-  @include icon-container;
   position: fixed;
   right: 1.8em;
   bottom: calc($spacer-xl * 3);

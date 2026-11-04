@@ -1,4 +1,4 @@
-const SLIDER_NAMES = ["products"];
+const SLIDER_NAMES = ["products", "carrousel-left"];
 
 class SliderPrevNextDesktop {
   constructor(el, name) {
@@ -73,6 +73,8 @@ class SliderPrevNextDesktop {
     });
   }
 }
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
   SLIDER_NAMES.forEach((name) => {

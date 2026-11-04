@@ -1,4 +1,9 @@
 /* ----- ANIMATIONS ----- */
+@use "../design-tokens/colors" as *;
+@use "../design-tokens/tokens" as *;
+@use "../utilities/spacer" as *;
+@use "../utilities/container" as *;
+
 @keyframes fade-in {
   from {
     opacity: 0;
@@ -29,4 +34,283 @@
 
 .fade-out {
   animation: fade-out 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@mixin flying-img-container(
+  $color: $primary-color,
+  $animation: circle-primary,
+  $rotate: rotate(0deg),
+  $width: 80px,
+  $time: 10s,
+  $top: -10vh,
+  $left: 0
+) {
+  position: absolute;
+  top: $top;
+  left: $left;
+  width: $width;
+  height: auto;
+  z-index: -1;
+  mix-blend-mode: multiply;
+  animation: $animation $time linear infinite;
+  pointer-events: none;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    transform: $rotate;
+
+    path {
+      fill: $color;
+    }
+  }
+}
+
+.animation-moving {
+  position: relative;
+  z-index: 0;
+  align-self: center;
+
+  .flying-img-container-primary {
+    @include flying-img-container(
+      $primary-color,
+      circle-primary,
+      $width: 40px,
+      $time: 40s,
+      $top: -15vh,
+      $left: -2vw
+    );
+
+    svg {
+      animation: rotate-shift-primary 100s linear infinite;
+    }
+  }
+
+  .flying-img-container-secondary {
+    @include flying-img-container(
+      $primary-color,
+      circle-primary,
+      $width: 40px,
+      $time: 30s,
+      $top: -25vh,
+      $left: 0
+    );
+
+    svg {
+      animation: rotate-shift-secondary 80s linear infinite;
+    }
+  }
+
+  .flying-img-container-tertiary {
+    @include flying-img-container(
+      $primary-color,
+      circle-secondary,
+      $width: 10px,
+      $time: 50s,
+      $top: -15vh,
+      $left: 3vw
+    );
+
+    svg {
+      animation: rotate-shift-tertiary 130s linear infinite;
+    }
+  }
+}
+
+@keyframes circle-primary {
+  0% {
+    transform: rotate(0deg) translate(-50px) rotate(0deg);
+    width: 40px;
+  }
+
+  20% {
+    width: 35px;
+  }
+
+  40% {
+    width: 30px;
+  }
+
+  60% {
+    width: 30px;
+  }
+
+  80% {
+    width: 35px;
+  }
+
+  100% {
+    transform: rotate(-360deg) translate(-50px) rotate(360deg);
+    width: 40px;
+  }
+}
+
+@keyframes rotate-shift-primary {
+  0% {
+    transform: rotate(0deg);
+    filter: blur(0);
+    opacity: 1;
+  }
+
+  20% {
+    transform: rotate(72deg);
+    filter: blur(0);
+    opacity: 1;
+  }
+
+  40% {
+    transform: rotate(144deg);
+    filter: blur(2px);
+    opacity: 0.8;
+  }
+
+  60% {
+    transform: rotate(216deg);
+    filter: blur(0);
+    opacity: 1;
+  }
+
+  80% {
+    transform: rotate(288deg);
+    filter: blur(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotate(360deg);
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+@keyframes circle-secondary {
+  0% {
+    transform: rotate(0deg) translate(-50px) rotate(0deg);
+    width: 10px;
+  }
+
+  20% {
+    width: 15px;
+  }
+
+  40% {
+    width: 20px;
+  }
+
+  60% {
+    width: 15px;
+  }
+
+  80% {
+    width: 15px;
+  }
+
+  100% {
+    transform: rotate(-360deg) translate(-50px) rotate(360deg);
+    width: 10px;
+  }
+}
+
+@keyframes rotate-shift-secondary {
+  0% {
+    transform: rotate(0deg);
+    filter: blur(0);
+    opacity: 1;
+  }
+
+  20% {
+    transform: rotate(-72deg);
+    filter: blur(0);
+    opacity: 1;
+  }
+
+  40% {
+    transform: rotate(-144deg);
+    filter: blur(2px);
+    opacity: 0.8;
+  }
+
+  60% {
+    transform: rotate(-216deg);
+    filter: blur(0);
+    opacity: 1;
+  }
+
+  80% {
+    transform: rotate(-288deg);
+    filter: blur(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotate(-360deg);
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+@keyframes circle-tertiary {
+  0% {
+    transform: rotate(0deg) translate(50px) rotate(0deg);
+    width: 40px;
+  }
+
+  20% {
+    width: 35px;
+  }
+
+  40% {
+    width: 30px;
+  }
+
+  60% {
+    width: 35px;
+  }
+
+  80% {
+    width: 40px;
+  }
+
+  100% {
+    transform: rotate(-360deg) translate(50px) rotate(360deg);
+    width: 40px;
+  }
+}
+
+@keyframes rotate-shift-tertiary {
+  0% {
+    transform: rotate(0deg);
+    filter: blur(0);
+    opacity: 1;
+  }
+
+  20% {
+    transform: rotate(72deg);
+    filter: blur(0);
+    opacity: 1;
+  }
+
+  40% {
+    transform: rotate(144deg);
+    filter: blur(2px);
+    opacity: 0.8;
+  }
+
+  60% {
+    transform: rotate(216deg);
+    filter: blur(0);
+    opacity: 1;
+  }
+
+  80% {
+    transform: rotate(288deg);
+    filter: blur(0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotate(360deg);
+    filter: blur(0);
+    opacity: 1;
+  }
 }

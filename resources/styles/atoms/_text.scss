@@ -1,8 +1,13 @@
 @use "../mixins" as *;
 @use "../design-tokens/colors" as *;
+@use "../utilities/spacer" as *;
 
 p {
   @include text-default;
+}
+
+.text-md {
+  @include text-md;
 }
 
 .text-default {
@@ -25,10 +30,18 @@ p {
   @include text-bold;
 }
 
+.bullet-list {
+  @include bullet-list;
+}
+
 // LINKS
 
-a {
+a:not(.btn):not(.nav-link) {
   @include link;
+}
+
+a {
+  text-decoration: none;
 }
 
 .visually-hidden {
@@ -47,6 +60,10 @@ a {
   @include heading-big;
 }
 
+.heading-bg {
+  @include heading-bg;
+}
+
 .heading-xxl {
   @include heading-xxl;
 }
@@ -59,12 +76,52 @@ a {
   @include heading-lg;
 }
 
-.heading-md {
-  @include heading-md;
+section {
+  margin-block-end: $spacer-big;
+}
+
+.content-wysiwyg {
+  color: $primary-color;
+  text-align: center;
+}
+
+.section-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-block-end: $spacer-xxl;
 }
 
 .section-title {
   @include heading-xl;
-  text-align: center;
   color: $primary-color;
+  text-transform: uppercase;
+  width: fit-content;
+  text-align: center;
+  &:after {
+    content: "";
+    display: block;
+    width: 50px;
+    height: 3px;
+    background-color: $primary-color;
+    margin-block: $spacer-sm $spacer-xs;
+    margin-inline: auto;
+  }
+}
+
+#section-hero-title {
+  color: $primary-color;
+  text-transform: uppercase;
+  margin-block-end: $spacer-xxl;
+  @include heading-xxl;
+}
+
+.neon-text {
+  color: $primary-color;
+  text-shadow:
+    0 0 4px $secondary-color,
+    0 0 12px $primary-color,
+    0 0 28px $primary-color,
+    0 0 60px $primary-color;
 }

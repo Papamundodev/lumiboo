@@ -25,7 +25,6 @@
 @use "utilities/slider" as *;
 @use "pages/front-page" as *;
 @use "woocommerce/single-product" as *;
-@use "sections/valeurs" as *;
 @use "reset" as *;
 @use "mixins" as *;
 
@@ -59,7 +58,7 @@ body {
 
   p {
     margin-block-end: $spacer-lg;
-    @include text-default;
+    @include text-md;
   }
 
   ul,

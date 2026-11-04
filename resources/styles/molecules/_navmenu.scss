@@ -6,6 +6,7 @@
 .navmenu {
   & > ul {
     width: max-content;
+    max-width: 100%;
     display: flex;
     align-items: center;
     list-style: none;

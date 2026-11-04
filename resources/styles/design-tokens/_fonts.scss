@@ -4,7 +4,7 @@ See post on fluid typo in my blog.
 
 @font-face {
   font-family: "Barlow";
-  src: url("../fonts/Barlow-Regular.woff2") format("woff2");
+  src: url("../fonts/Barlow-Thin.woff2") format("woff2");
   font-weight: 100;
   font-style: normal;
   font-display: swap;
@@ -20,7 +20,7 @@ See post on fluid typo in my blog.
 
 @font-face {
   font-family: "Barlow";
-  src: url("../fonts/Barlow-Regular.woff2") format("woff2");
+  src: url("../fonts/Barlow-SemiBold.woff2") format("woff2");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -79,18 +79,18 @@ $fonts: (
 }
 
 /* font size */
-$font-size-lead: 0.625rem;
-$font-size-xs: 0.875rem;
-$font-size-sm: 1rem;
-$font-size-default: 1.25rem;
-$font-size-md: 1.5rem;
-$font-size-lg: 2rem;
-$font-size-xl: 2.25rem;
-$font-size-xxl: 3rem;
-$font-size-bg: 4.5rem;
-$font-size-big: 5rem;
+$font-size-lead: 0.625rem; // 10px
+$font-size-xs: 0.75rem; // 12px
+$font-size-sm: 0.875; // 14px
+$font-size-default: 1rem; // 16px
+$font-size-md: 1.25rem; // 20px
+$font-size-lg: 2rem; // 32px
+$font-size-xl: 2.25rem; // 36px
+$font-size-xxl: 2.5rem; // 40px
+$font-size-bg: 4rem; // 64px
+$font-size-big: 6rem; //
 
-$font-size-button: 1rem;
+$font-size-button: $font-size-default;
 
 $font-sizes: (
   "xs": $font-size-xs,
@@ -133,7 +133,7 @@ $font-weights: (
 
 /* line height */
 $line-height-heading: 1.1;
-$line-height-paragraph: 1.6;
+$line-height-paragraph: 1.4;
 
 /* letter spacing */
 $letter-spacing-heading: 0.02em;

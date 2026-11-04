@@ -31,6 +31,8 @@ class Base
             add_image_size('logo', 60, 60, true);
             add_image_size('post-preview-image', 400, 350, true);
 
+            add_image_size('section-hero-image', 400, 600, true);
+
             add_theme_support('woocommerce');
         }, 99);
     }
@@ -176,10 +178,10 @@ class Base
         return [
             'svg'      => ['xmlns' => true, 'viewbox' => true, 'width' => true, 'height' => true, 'fill' => true, 'stroke' => true, 'class' => true, 'aria-hidden' => true, 'role' => true, 'focusable' => true, 'preserveaspectratio' => true],
             'g'        => ['fill' => true, 'stroke' => true, 'transform' => true, 'class' => true, 'clip-path' => true, 'mask' => true],
-            'path'     => ['d' => true, 'fill' => true, 'stroke' => true, 'stroke-width' => true, 'stroke-linecap' => true, 'stroke-linejoin' => true, 'fill-rule' => true, 'clip-rule' => true, 'transform' => true, 'class' => true],
-            'circle'   => ['cx' => true, 'cy' => true, 'r' => true, 'fill' => true, 'stroke' => true, 'stroke-width' => true, 'class' => true],
-            'ellipse'  => ['cx' => true, 'cy' => true, 'rx' => true, 'ry' => true, 'fill' => true, 'stroke' => true, 'class' => true],
-            'rect'     => ['x' => true, 'y' => true, 'width' => true, 'height' => true, 'rx' => true, 'ry' => true, 'fill' => true, 'stroke' => true, 'class' => true],
+            'path'     => ['d' => true, 'fill' => true, 'fill-opacity' => true, 'stroke' => true, 'stroke-width' => true, 'stroke-opacity' => true, 'stroke-linecap' => true, 'stroke-linejoin' => true, 'fill-rule' => true, 'clip-rule' => true, 'opacity' => true, 'transform' => true, 'class' => true],
+            'circle'   => ['cx' => true, 'cy' => true, 'r' => true, 'fill' => true, 'fill-opacity' => true, 'stroke' => true, 'stroke-width' => true, 'opacity' => true, 'transform' => true, 'class' => true],
+            'ellipse'  => ['cx' => true, 'cy' => true, 'rx' => true, 'ry' => true, 'fill' => true, 'stroke' => true, 'transform' => true, 'class' => true],
+            'rect'     => ['x' => true, 'y' => true, 'width' => true, 'height' => true, 'rx' => true, 'ry' => true, 'fill' => true, 'stroke' => true, 'transform' => true, 'class' => true],
             'line'     => ['x1' => true, 'y1' => true, 'x2' => true, 'y2' => true, 'stroke' => true, 'stroke-width' => true, 'class' => true],
             'polyline' => ['points' => true, 'fill' => true, 'stroke' => true, 'class' => true],
             'polygon'  => ['points' => true, 'fill' => true, 'stroke' => true, 'class' => true],
@@ -334,8 +336,10 @@ class Base
         foreach ($menu_items as $k => $m) {
 
             if (empty($m->menu_item_parent)) {
+                $object = null;
                 $menu[$m->ID] = [];
                 $menu[$m->ID]['ID'] = intval($m->ID);
+                $menu[$m->ID]['type'] = $m->type;
                 $menu[$m->ID]['title'] = $m->title;
                 $menu[$m->ID]['classes'] = $m->classes;
                 $menu[$m->ID]['url'] = $m->url;
@@ -368,6 +372,7 @@ class Base
                 if ($m->menu_item_parent == $menu_item->ID) {
                     $children[$m->ID] = [];
                     $children[$m->ID]['ID'] = intval($m->ID);
+                    $children[$m->ID]['type'] = $m->type;
                     $children[$m->ID]['title'] = $m->title;
                     $children[$m->ID]['classes'] = $m->classes;
                     $children[$m->ID]['url'] = $m->url;
@@ -412,9 +417,6 @@ class Base
             return '';
         }
 
-        $flags          = ['current-menu-item', 'current-menu-parent', 'current-menu-ancestor'];
-        $page_for_posts = (int) get_option('page_for_posts');
-
         if (function_exists('is_shop') && function_exists('wc_get_page_id') && is_shop()) {
             $shop = get_post(wc_get_page_id('shop'));
             if ($shop) {
@@ -422,41 +424,54 @@ class Base
             }
         }
 
-        $current_post_id = $object instanceof \WP_Post ? (int) $object->ID : 0;
-        $current_term    = $object instanceof \WP_Term ? $object : null;
-        $is_single_post  = $object instanceof \WP_Post && $object->post_type === 'post';
+        return self::is_menu_node_active($item, $object) ? 'active' : '';
+    }
 
-        $stack = [$item];
-        while ($stack) {
-            $node = array_pop($stack);
-            if (! is_array($node)) {
-                continue;
-            }
+    /**
+     * Custom links are never active on their own: only through an active descendant.
+     */
+    private static function is_menu_node_active(array $node, $object): bool
+    {
+        if (($node['type'] ?? '') !== 'custom' && self::node_matches_current($node, $object)) {
+            return true;
+        }
 
-            if (array_intersect($flags, $node['classes'] ?? [])) {
-                return 'active';
-            }
-
-            if ($current_post_id && (int) ($node['object_id'] ?? 0) === $current_post_id) {
-                return 'active';
-            }
-
-            $node_object = $node['object'] ?? null;
-
-            if ($is_single_post && $page_for_posts && $node_object instanceof \WP_Post && $node_object->ID === $page_for_posts) {
-                return 'active';
-            }
-
-            if ($current_term && $node_object instanceof \WP_Term && $node_object->term_id === (int) $current_term->parent) {
-                return 'active';
-            }
-
-            foreach ($node['children'] ?? [] as $child) {
-                $stack[] = $child;
+        foreach ($node['children'] ?? [] as $child) {
+            if (is_array($child) && self::is_menu_node_active($child, $object)) {
+                return true;
             }
         }
 
-        return '';
+        return false;
+    }
+
+    private static function node_matches_current(array $node, $object): bool
+    {
+        $flags          = ['current-menu-item', 'current-menu-parent', 'current-menu-ancestor'];
+        $page_for_posts = (int) get_option('page_for_posts');
+
+        $current_post_id = $object instanceof \WP_Post ? (int) $object->ID : 0;
+        $current_term    = $object instanceof \WP_Term ? $object : null;
+        $is_single_post  = $object instanceof \WP_Post && $object->post_type === 'post';
+        $node_object     = $node['object'] ?? null;
+
+        if (array_intersect($flags, $node['classes'] ?? [])) {
+            return true;
+        }
+
+        if ($current_post_id && (int) ($node['object_id'] ?? 0) === $current_post_id) {
+            return true;
+        }
+
+        if ($is_single_post && $page_for_posts && $node_object instanceof \WP_Post && $node_object->ID === $page_for_posts) {
+            return true;
+        }
+
+        if ($current_term && $node_object instanceof \WP_Term && $node_object->term_id === (int) $current_term->parent) {
+            return true;
+        }
+
+        return false;
     }
 
     public function sidebar_widgets_trustindex_init(): void

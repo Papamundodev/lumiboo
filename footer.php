@@ -9,7 +9,27 @@ $object = get_queried_object();
  * La section FAQ est fournie par le mu-plugin `faq`.
  * Sans cet appel, elle serait rendue automatiquement dans wp_footer().
  */
+
+$section_faq = get_field('section_faq', 'option');
+if (!empty($section_faq)) {
+?>
+    <section aria-labelledby="section-faq-title" class="section-faq">
+        <div class="container">
+            <div class="section-faq-header section-header">
+                <h2 id="section-faq-title" class="section-title"><?= strip_tags($section_faq['title'], '<strong>'); ?></h2>
+                <?php if (!empty($section_faq['text'])) : ?>
+                    <div class="content-wysiwyg">
+                        <?= wpautop($section_faq['text']); ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <?php do_action('theme_faq_render'); ?>
+        </div>
+    </section>
+<?php }
 do_action('theme_faq_render');
+
+
 $section_menu_footer = "footer";
 $menu_items_footer = \Theme_base\Base::wp_get_menu_array($section_menu_footer);
 $section_menu_footer_contact = "footer-contact";
@@ -211,7 +231,7 @@ $menu_items_footer_copyright = \Theme_base\Base::wp_get_menu_array($section_menu
     </div>
 </footer>
 
-<div class="icon-container scroll-top-container">
+<div class="icon-container-secondary scroll-top-container">
     <a href="#" id="scroll-top" class="scroll-top btn" title="<?= __('Scroll to top', 'theme_base'); ?>">
         <?= Base::inline_svg('arrow-up.svg'); ?>
     </a>

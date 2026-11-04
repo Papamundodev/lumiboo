@@ -31,7 +31,6 @@
 
             <?php get_template_part('partials/header/navbar-desktop', 'header'); ?>
             <?php get_template_part('partials/header/navbar-mobile', 'header'); ?>
-
             <?php get_template_part('partials/header/nav-cta', 'header'); ?>
 
             <div class="burger-container">
@@ -50,7 +49,7 @@
 
     <aside class="drawer">
         <div class="wrapper-tool-kit">
-            <div class="cart-container icon-container">
+            <div class="cart-container icon-container-secondary-lg">
                 <?php
                 $picto_cart = get_field('picto_cart', "option") ?? null;
                 ?>
@@ -70,7 +69,7 @@
                 </a>
             </div>
             <!-- account  -->
-            <div class="account-container icon-container">
+            <div class="account-container icon-container-secondary-lg">
                 <?php
                 $picto_account = get_field('picto_account', "option") ?? null;
                 ?>

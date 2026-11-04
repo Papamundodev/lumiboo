@@ -8,10 +8,59 @@
   @include button-focus-within;
 }
 
-.icon-container {
-  @include icon-container;
+.icon-container-primary-lg {
+  @include icon-container-lg(
+    $background-color: $primary-color,
+    $color: $contrast-color,
+    $hover-background-color: $secondary-color,
+    $hover-color: $primary-color
+  );
 }
 
+.icon-container-primary-xl {
+  @include icon-container-xl(
+    $background-color: $primary-color,
+    $color: $contrast-color,
+    $hover-background-color: $secondary-color,
+    $hover-color: $primary-color
+  );
+}
+
+.icon-container-secondary-lg {
+  @include icon-container-lg(
+    $background-color: $secondary-color,
+    $color: $primary-color,
+    $hover-background-color: $tertiary-shade-color,
+    $hover-color: $primary-color
+  );
+}
+
+.icon-container-secondary-xl {
+  @include icon-container-xl(
+    $background-color: $secondary-color,
+    $color: $primary-color,
+    $hover-background-color: $tertiary-shade-color,
+    $hover-color: $primary-color
+  );
+}
+
+.icon-container-tertiary-lg {
+  @include icon-container-lg(
+    $background-color: transparent,
+    $color: $primary-color,
+    $hover-background-color: $tertiary-shade-color,
+    $hover-color: $primary-color
+  );
+}
+
+.icon-container-tertiary-xl {
+  @include icon-container-xl(
+    $background-color: transparent,
+    $color: $primary-color,
+    $hover-background-color: $tertiary-shade-color,
+    $hover-color: $primary-color
+  );
+}
 .cart-container {
   .cart-count {
     position: absolute;

@@ -1,4 +1,5 @@
 @use "../mixins" as *;
+@use "../design-tokens/colors" as *;
 @use "../utilities/spacer" as *;
 /* ------- BUTTONS  ------- */
 
@@ -10,10 +11,15 @@
 
 .button-background-primary {
   @include button-background-primary;
+  @include button-shadow;
 }
 
 .button-background-secondary {
   @include button-background-secondary;
+  @include button-shadow(
+    $color: $secondary-color,
+    $inset-color: $primary-color
+  );
 }
 
 .button-background-tertiary {
